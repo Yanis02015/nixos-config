@@ -1,72 +1,77 @@
 import Quickshell
 import QtQuick
-import qs.styling // personal lib with
 import QtQuick.Layouts // need for rowlayout and colomnLayout
-import Quickshell.Hyprland
+import qs // home for colours, font etc
+import qs.battery
+import qs.sysUtils
 
-ShellRoot {
-    PanelWindow { // used for bars panels and overlays
-        id: global
-        // this is what the colors for background and text are -> matugen generated & can be expanded
-        property color bgColor: "#1e1e1e"
-        property color fgColor: Colors.primary
+// import Quickshell.Hyprland
 
-        //default font and font size global
-        property font shellFont: Qt.font({
-            family: "SF Pro Display",
-            letterSpacing: 1,
-            pixelSize: 15,
-            weight: Font.Bold,
-            bold: true
-        })
+Scope {
+    Variants {
+        model: Quickshell.screens
+        PanelWindow { // used for bars panels and overlays
+            id: shell
 
-        color: "transparent" // this is to make the main bar transparent
+            // in charge of making a new bar on any connected screen
+            property var modelData
+            screen: modelData
+            //
 
-        // makes bar go to top
-        anchors {
-            top: true
-            left: true
-            right: true
-        }
+            color: "transparent" // this is to make the main bar transparent
+            // makes bar go to top
+            anchors {
+                top: true
+                left: true
+                right: true
+            }
 
-        // makes it float instead of touching anything
-        margins.top: 6
-        margins.left: 10
-        margins.right: 10
+            // makes it float instead of touching anything
+            margins {
+                top: 6
+                left: 10
+                right: 10
+                bottom: -3
+            }
 
-        // WlrLayershell.exclusiveZone: 24 // Reduced further, bar will partially overlay maximized windows
-        // WlrLayershell.layer: WlrLayer.Top // Ensure it renders above windows
+            // WlrLayershell.exclusiveZone: 24 // Reduced further, bar will partially overlay maximized windows
+            // WlrLayershell.layer: WlrLayer.Top // Ensure it renders above windows
 
-        implicitHeight: Math.max(12, island.implicitHeight)
+            // Default States of the bar -> level 1 to 3
+            property int barLevel: 1
+            property bool isLocked: false
 
-        // States of the bar -> level 1 to 3
-        property int barLevel: 1
-        property bool isLocked: false
+            // get Hyprland to focus on the bar if its in level 2
+            focusable: shell.barLevel > 1
 
-        // get Hyprland to focus on the bar if its in level 2
-        focusable: global.barLevel > 1
+            implicitHeight: Math.max(12, island.implicitHeight)
+            // simple state engine will go here we basically just want to have a spring effect with no bounce that is purely just going to resize based on island.implicitHeight and implicitWidth
 
-        Rectangle {
-            id: island
-            anchors.centerIn: parent
-            radius: height / 2
-            color: global.bgColor
-            implicitHeight: colomn.implicitHeight + 12
-            implicitWidth: colomn.implicitWidth + 12
-
-            Item {
-                id: contentRoot
+            Rectangle {
+                id: island
+                color: Globals.bgColor // literally the only time we need a bg in the main bar
                 anchors.centerIn: parent
-                ColumnLayout {
-                    id: colomn
+                radius: height / 2
+                implicitHeight: contentRoot.implicitHeight + 10
+                implicitWidth: contentRoot.implicitWidth + 14
+
+                Item {
+                    id: contentRoot
                     anchors.centerIn: parent
-                    spacing: 6
-                    RowLayout {
-                        id: row1
+                    implicitHeight: colomn.implicitHeight
+                    implicitWidth: colomn.implicitWidth
+                    ColumnLayout {
+                        id: colomn
+                        anchors.centerIn: parent
                         spacing: 6
-                        Workspaces {
-                            fgColor: global.fgColor
-                            bgColor: global.bgColor
+                        RowLayout {
+                            id: row1
+                            spacing: 6
+                            Clock {}
+                            Workspaces {}
+                            BatteryIcons {}
+                            CPU {}
+                            Memory {}
                         }
                     }
                 }

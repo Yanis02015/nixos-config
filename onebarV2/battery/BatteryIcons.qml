@@ -1,46 +1,45 @@
-pragma ComponentBehavior: Bound
-
-import Quickshell
 import Quickshell.Services.UPower
 import QtQuick
+import qs
 
-StatusButton {
-    id: batBtn
+Item {
+    id: batteryBtn
 
-    property var chargingIcons: ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
+    property var chargingIcons: ["󰢜 ", "󰂆 ", "󰂇 ", "󰂈 ", "󰢝 ", "󰂉 ", "󰢞 ", "󰂊 ", "󰂋 ", "󰂅 "]
     property var defaultIcons: ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
 
     property var bat: UPower.displayDevice
-
     property int percent: (bat != null && bat.ready) ? Math.round(bat.percentage * 100) : 0
     property bool isCharging: bat != null && bat.ready && bat.state === UPowerDeviceState.Charging
     property bool isCritical: bat != null && bat.ready && !isCharging && percent <= 20
 
-    visible: bat != null && bat.ready
-
-    icon: {
+    property string icon: {
         if (bat == null || !bat.ready)
             return "";
         if (bat.state === UPowerDeviceState.FullyCharged || (isCharging && percent === 100))
-            return "󰂅";
+            return "󰂅 ";
         let idx = Math.min(Math.floor(percent / 10), 9);
         return isCharging ? chargingIcons[idx] : defaultIcons[idx];
     }
 
-    label: percent + "%"
-    isActive: true
-
-    fgColor: {
+    property color displayColor: {
         if (percent <= 10 && !isCharging)
-            return "#f38ba8";
+            return Globals.criticalColor;
         if (percent <= 20 && !isCharging)
-            return "#f9e2af";
-        return "#FFFFFF";
+            return Globals.warningColor;
+        if (percent >= 80 && isCharging)
+            return Globals.healthy;
+        return Globals.fgColor;
     }
 
-    Behavior on fgColor {
-        ColorAnimation {
-            duration: 60
-        }
+    visible: bat != null && bat.ready
+    implicitWidth: row.implicitWidth
+    implicitHeight: row.implicitHeight
+
+    Text {
+        id: row
+        text: batteryBtn.icon + batteryBtn.percent + "%"
+        color: batteryBtn.displayColor
+        font: Globals.textFont
     }
 }
