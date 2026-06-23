@@ -1,6 +1,6 @@
-import QtQuick 2.0
+import QtQuick
 import Quickshell.Io
-import qs
+import qs.defaults
 
 Item {
     id: memoryItem
@@ -35,6 +35,7 @@ Item {
                 memoryItem.memoryUsage = Math.round((used / total) * 100);
             }
         }
+        Component.onCompleted: running = true // avoids having to wait for the timer to fire just to get the memory to start going
     }
 
     // what I see
