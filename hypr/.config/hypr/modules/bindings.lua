@@ -1,14 +1,7 @@
 ---------------
 --- Bindings---
 ---------------
-
 local bind = hl.bind
-
--- rofi
-bind("SUPER + ALT + SPACE", hl.dsp.exec_cmd("pkill rofi || ~/.config/waybar/scripts/sysmenu.sh"))
-bind("SUPER + SPACE", hl.dsp.exec_cmd(MENU))
-bind("SUPER + SHIFT + V", hl.dsp.exec_cmd("pkill rofi || /home/leabua/.dotfiles/scripts/cliphist-rofi"))
-bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("pkill rofi || /home/leabua/.dotfiles/scripts/cliphist-rofi"))
 
 -- wallpaper switcher
 bind("SUPER + SHIFT + P", hl.dsp.exec_cmd("~/.dotfiles/scripts/rotate_wallpaper.sh"))
@@ -26,6 +19,9 @@ bind(
 )
 
 -- quickshell Bindings
-bind("SUPER + ALT+ SPACE", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/onebarV2 ipc call cycleBarLevel cycle"))
-
-bind("SUPER +  N", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/onebarV2 ipc call notifications toggle"))
+bind("SUPER + SHIFT+ SPACE", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/onebarV2 ipc call cycleBarLevel cycle")) -- bar levels
+bind("SUPER +  N", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/onebarV2 ipc call notifications toggle")) -- noti panel
+bind("SUPER + C", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/onebarV2 ipc call clipboard toggle")) -- clipboard secondary
+bind("SUPER + SPACE", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/onebarV2 ipc call launcher toggle")) -- launcher
+-- hide shell bar
+bind("SUPER + ALT + SPACE", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/onebarV2 ipc call bar toggle")) --hide bar

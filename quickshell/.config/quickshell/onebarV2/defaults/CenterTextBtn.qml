@@ -12,17 +12,16 @@ Rectangle {
     signal clicked
     property bool isActive: false // keep button coloured if it is already active
 
-    // feeding this upstream as the size of a whatever the content is in future
-    property int contentWidth: contentCol.implicitWidth
+    property int contentWidth: contentCol.implicitWidth // feeding this upstream as the size of a whatever the content is in future
 
     implicitWidth: root.largestButton
-    implicitHeight: implicitWidth
+
+    implicitHeight: contentCol.implicitHeight + Globals.padding  // height fits the content (icon + label) rather than being a big square
 
     radius: Globals.radius
-    // color: ma.containsMouse ? Globals.fgColor : "transparent"
-    color: isActive ? Globals.fgColor2 : (ma.containsMouse ? Globals.fgColor : "transparent")
+    color: isActive ? Globals.fgColor : (ma.containsMouse ? Globals.fgColor : "transparent")
 
-    // border.width: Globals.borderWidth
+    // border.width: Globals.borderWidth //-> if I ever wanted borders for buttons again
     // border.color: Globals.borderColor
 
     ColumnLayout {
@@ -33,6 +32,7 @@ Rectangle {
         // icon
         Text {
             text: root.icon
+            visible: Globals.buttonIcons
             color: root.isActive ? Globals.bgColor : (ma.containsMouse ? Globals.bgColor : Globals.fgColor)
             font.pixelSize: Globals.textFont.pixelSize + 10
             font.family: Globals.textFont.family

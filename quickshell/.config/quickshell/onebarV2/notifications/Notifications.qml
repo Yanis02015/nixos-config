@@ -1,11 +1,11 @@
 import Quickshell
 import Quickshell.Io
+import Quickshell.Wayland
 import Quickshell.Services.Notifications
 import qs.defaults
 import QtQuick
 import QtQuick.Layouts
 
-// TODO figure out how to attached Escape as a close command for everything. I imagine the way is t focus it first and then press Escape
 Scope {
     id: root
 
@@ -47,6 +47,8 @@ Scope {
 
     // incoming toast notification
     PanelWindow { // qmllint disable uncreatable-type
+
+        visible: !root.centerOpen // don't show toasts while the notification center is open (they'd overlap if otherwise)
         anchors {
             top: true
             right: true
@@ -59,70 +61,93 @@ Scope {
         implicitHeight: Math.max(1, column.implicitHeight)
         color: "transparent"
         exclusionMode: ExclusionMode.Ignore
+        // draw toasts above fullscreen windows
+        WlrLayershell.layer: WlrLayer.Overlay
 
         ColumnLayout {
             id: column
             width: parent.width
-            spacing: Globals.spacing
+            spacing: Globals.spacing - 2
 
             Repeater {
                 model: server.trackedNotifications
-                delegate: Rectangle {
+                delegate: Item {
                     id: card
                     required property var modelData
 
+                    // transparent wrapper is the layout item; the bordered card is an anchored child inside it. The layout drives this Item, never the
+                    // bordered rect directly -> stops the fgColor border tearing on reflow
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: cardRect.implicitHeight
+
+                    Behavior on Layout.preferredHeight {
+                        NumberAnimation {
+                            duration: Globals.animFast
+                            easing.type: Easing.OutCubic
+                        }
+                    }
+
                     Timer {
-                        running: card.modelData.urgency !== NotificationUrgency.Critical
-                        interval: 5000
+                        running: true
+                        interval: card.modelData.urgency === NotificationUrgency.Critical ? 10000 : 5000 // 10 seconds on crit and 5 seconds otherwise
                         onTriggered: card.modelData.dismiss()
                     }
 
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: cardLayout.implicitHeight + 20
-                    radius: 8
-                    color: Globals.bgColor
-                    border.width: Globals.borderWidth
-                    border.color: card.modelData.urgency === NotificationUrgency.Critical ? Globals.criticalColor : Globals.fgColor
-
-                    RowLayout {
-                        id: cardLayout
+                    Rectangle {
+                        id: cardRect
                         anchors {
                             left: parent.left
                             right: parent.right
                             top: parent.top
-                            margins: Globals.margins
                         }
-                        spacing: Globals.spacing
+                        height: parent.Layout.preferredHeight
+                        implicitHeight: cardLayout.implicitHeight + 20
+                        radius: Globals.radius
+                        color: Globals.menuBg
+                        border.width: Globals.borderWidth
+                        border.color: card.modelData.urgency === NotificationUrgency.Critical ? Globals.criticalColor : Globals.fgColor
+                        layer.enabled: true // should stop screen smeer on resize
 
-                        ColumnLayout {
-                            Layout.fillWidth: true
-                            spacing: Globals.spacing / 3
-
-                            Text {
-                                Layout.fillWidth: true
-                                text: card.modelData.summary
-                                color: Globals.fgColor
-                                font.family: Globals.textFont.family
-                                font.pixelSize: Globals.textFont.pixelSize + 2
-                                font.weight: Globals.textFont.weight
-                                elide: Text.ElideRight
+                        RowLayout {
+                            id: cardLayout
+                            anchors {
+                                left: parent.left
+                                right: parent.right
+                                top: parent.top
+                                margins: Globals.margins
                             }
-                            Text {
+                            spacing: Globals.spacing
+
+                            ColumnLayout {
                                 Layout.fillWidth: true
-                                text: card.modelData.body
-                                color: Globals.fgColor
-                                font.family: Globals.textFont.family
-                                font.pixelSize: Globals.textFont.pixelSize - 1
-                                wrapMode: Text.WordWrap
-                                visible: card.modelData.body !== ""
+                                spacing: Globals.spacing / 3
+
+                                Text {
+                                    Layout.fillWidth: true
+                                    text: card.modelData.summary
+                                    color: Globals.fgColor
+                                    font.family: Globals.textFont.family
+                                    font.pixelSize: Globals.textFont.pixelSize + 2
+                                    font.weight: Globals.textFont.weight
+                                    elide: Text.ElideRight
+                                }
+                                Text {
+                                    Layout.fillWidth: true
+                                    text: card.modelData.body
+                                    color: Globals.fgColor
+                                    font.family: Globals.textFont.family
+                                    font.pixelSize: Globals.textFont.pixelSize - 1
+                                    wrapMode: Text.WordWrap
+                                    visible: card.modelData.body !== ""
+                                }
                             }
                         }
-                    }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: card.modelData.dismiss()
-                        cursorShape: Qt.PointingHandCursor
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: card.modelData.dismiss()
+                            cursorShape: Qt.PointingHandCursor
+                        }
                     }
                 }
             }
@@ -130,195 +155,205 @@ Scope {
     }
 
     // notification center
-    PanelWindow { // qmllint disable uncreatable-type
-        id: centerWindow
-        visible: root.centerOpen
-        anchors {
-            top: true
-            right: true
-        }
+    // PopupWindow provides the full-screen catcher, Escape-to-close and
+    // outside-click dismissal; the card is anchored top-right via hAlign.
+    PopupWindow {
+        open: root.centerOpen
+        onDismissed: root.centerOpen = false
+        hAlign: "right"
+
         margins {
             top: Globals.marginsTop
             right: Globals.marginsRight
         }
-        implicitWidth: 380
-        implicitHeight: container.implicitHeight
-        color: "transparent"
-        exclusionMode: ExclusionMode.Ignore
 
-        Rectangle {
-            id: container
-            anchors {
-                top: parent.top
-                left: parent.left
-                right: parent.right
-            }
-            implicitHeight: centerCol.implicitHeight + 24
-            radius: Globals.radius
-            color: Globals.bgColor
-            border.width: Globals.borderWidth
-            border.color: Globals.fgColor
+        ColumnLayout {
+            id: centerCol
+            width: 360 // PopupWindow padding (Globals.margins) brings the card to ~380
+            spacing: Globals.spacing + 2
 
-            ColumnLayout {
-                id: centerCol
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                    margins: Globals.margins
-                }
-                spacing: Globals.spacing + 2
+            // header row
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: Globals.spacing
 
-                // header row
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: Globals.spacing
-
-                    Text {
-                        Layout.fillWidth: true
-                        text: "Notifications"
-                        color: Globals.fgColor
-                        font.family: Globals.textFont.family
-                        font.pixelSize: Globals.textFont.pixelSize + 2
-                        font.weight: Globals.textFont.weight
-                    }
-
-                    Text {
-                        text: "Clear all"
-                        visible: history.count > 0
-                        color: Globals.criticalColor
-                        font.family: Globals.textFont.family
-                        font.pixelSize: Globals.textFont.pixelSize - 1
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: history.clear()
-                            anchors.margins: -1
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
-                }
-
-                // empty state
                 Text {
-                    visible: history.count === 0
+                    text: String.fromCodePoint(0xF009A) // nf-md-bell 󰂚
+                    visible: Globals.headerIcons
+                    color: Globals.fgColor
+                    font.family: Globals.textFont.family
+                    font.pixelSize: Globals.textFont.pixelSize + 2
+                    font.weight: Globals.textFont.weight
+                }
+
+                Text {
                     Layout.fillWidth: true
-                    text: "No notifications"
-                    color: Qt.alpha(Globals.fgColor, 0.4)
+                    text: "Notifications"
+                    color: Globals.fgColor
+                    font.family: Globals.textFont.family
+                    font.pixelSize: Globals.textFont.pixelSize + 2
+                    font.weight: Globals.textFont.weight
+                }
+
+                Text {
+                    text: "Clear all"
+                    visible: history.count > 0
+                    color: Globals.criticalColor
                     font.family: Globals.textFont.family
                     font.pixelSize: Globals.textFont.pixelSize - 1
-                    horizontalAlignment: Text.AlignHCenter
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: history.clear()
+                        anchors.margins: -1
+                        cursorShape: Qt.PointingHandCursor
+                    }
                 }
+            }
 
-                // history list if not empty
-                Repeater {
-                    id: rep
-                    model: history
-                    delegate: Item {
-                        // Item wrapper handles the height animation and clipping
-                        // so the inner Rectangle never bleeds its border outside -> needs way more work - works well on increase sucks on decrease
-                        id: delegateWrapper
-                        Layout.fillWidth: true
-                        property bool removing: false
-                        Layout.preferredHeight: inner.implicitHeight
+            MenuDivider {}
 
-                        Behavior on Layout.preferredHeight {
-                            NumberAnimation {
-                                duration: 60
-                                easing.type: Easing.OutCubic
-                            }
+            // empty state
+            Text {
+                visible: history.count === 0
+                Layout.fillWidth: true
+                text: "No notifications"
+                color: Qt.alpha(Globals.fgColor, 0.4)
+                font.family: Globals.textFont.family
+                font.pixelSize: Globals.textFont.pixelSize - 1
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            // history list if not empty
+            Repeater {
+                id: rep
+                model: history
+                delegate: Item {
+                    // transparent wrapper drives the layout; the bordered card is anchored inside and clipped while removing, so it collapses smoothly on dismiss.
+                    id: delegateWrapper
+                    property bool removing: false
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: removing ? 0 : inner.implicitHeight
+
+                    clip: removing
+                    opacity: removing ? 0 : 1
+
+                    Behavior on Layout.preferredHeight {
+                        NumberAnimation {
+                            duration: Globals.animFast
+                            easing.type: Easing.OutCubic
                         }
+                    }
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: Globals.animFast
+                        }
+                    }
 
-                        Rectangle {
-                            id: inner
+                    Rectangle {
+                        id: inner
+                        anchors {
+                            left: parent.left
+                            right: parent.right
+                            top: parent.top
+                        }
+                        // height tracks parent so it collapses with it
+                        height: parent.Layout.preferredHeight
+                        implicitHeight: historyLayout.implicitHeight + Globals.spacing * 2
+                        radius: Globals.radius
+                        // transparent so the panel's translucency shows through uniformly
+                        // (border alone defines the card)
+                        color: "transparent"
+                        border.width: Globals.borderWidth
+                        border.color: Globals.fgColor
+
+                        // composite through an offscreen buffer so the border can't smear while cards resize/collapse during reflowt
+                        layer.enabled: true
+
+                        ColumnLayout {
+                            id: historyLayout
                             anchors {
                                 left: parent.left
                                 right: parent.right
                                 top: parent.top
+                                margins: Globals.spacing
                             }
-                            // height tracks parent so it collapses with it
-                            height: parent.Layout.preferredHeight - (delegateWrapper.removing ? 0 : 0)
-                            implicitHeight: historyLayout.implicitHeight + 16
-                            radius: 8
-                            color: Globals.bgColor
-                            border.width: Globals.borderWidth
-                            border.color: Globals.fgColor
+                            // tight spacing between summary / body / app name
+                            spacing: Globals.spacing / 3
 
-                            ColumnLayout {
-                                id: historyLayout
-                                anchors {
-                                    left: parent.left
-                                    right: parent.right
-                                    top: parent.top
-                                    margins: 8
-                                }
+                            RowLayout {
+                                Layout.fillWidth: true
                                 spacing: Globals.spacing
 
-                                RowLayout {
-                                    Layout.fillWidth: true
-                                    spacing: Globals.spacing
-
-                                    Text {
-                                        Layout.fillWidth: true
-                                        text: model.summary
-                                        color: Globals.fgColor
-                                        font.family: Globals.textFont.family
-                                        font.pixelSize: Globals.textFont.pixelSize
-                                        font.weight: Globals.textFont.weight
-                                        elide: Text.ElideRight
-                                    }
-
-                                    Text {
-                                        text: model.time
-                                        color: Globals.fgColor2
-                                        font.family: Globals.textFont.family
-                                        font.pixelSize: Globals.textFont.pixelSize - 3
-                                        font.weight: Globals.textFont.weight + 100
-                                    }
-
-                                    Text {
-                                        text: "󰖭"
-                                        color: Globals.fgColor2
-                                        font.family: Globals.textFont.family
-                                        font.pixelSize: Globals.textFont.pixelSize - 1
-                                        font.weight: Globals.textFont.weight + 100
-
-                                        MouseArea {
-                                            anchors.fill: parent
-                                            anchors.margins: -4
-                                            cursorShape: Qt.PointingHandCursor
-                                            onClicked: {
-                                                // animate out first, then remove
-                                                delegateWrapper.removing = true;
-                                                removeTimer.start();
-                                            }
-                                        }
-
-                                        Timer { // todo
-                                            id: removeTimer
-                                            interval: 210 // just after the 200ms animation
-                                            onTriggered: history.remove(index)
-                                        }
-                                    }
-                                }
-
                                 Text {
-                                    visible: model.body !== ""
-                                    text: model.body
+                                    Layout.fillWidth: true
+                                    text: model.summary
                                     color: Globals.fgColor
                                     font.family: Globals.textFont.family
-                                    font.pixelSize: Globals.textFont.pixelSize - 1
-                                    wrapMode: Text.WordWrap
-                                    Layout.fillWidth: true
+                                    font.pixelSize: Globals.textFont.pixelSize
+                                    font.weight: Globals.textFont.weight
+                                    elide: Text.ElideRight
                                 }
 
                                 Text {
-                                    visible: model.appName !== ""
-                                    text: model.appName
+                                    text: model.time
                                     color: Globals.fgColor2
                                     font.family: Globals.textFont.family
                                     font.pixelSize: Globals.textFont.pixelSize - 3
+                                    font.weight: Globals.textFont.weight + 100
+                                }
+
+                                Text {
+                                    text: "󰖭"
+                                    color: Globals.fgColor2
+                                    font.family: Globals.textFont.family
+                                    font.pixelSize: Globals.textFont.pixelSize - 1
+                                    font.weight: Globals.textFont.weight + 100
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        anchors.margins: -4
+                                        cursorShape: Qt.PointingHandCursor
+                                        onClicked: {
+                                            // future todo -> bit of lag depending on system and monitor combo -> non-urgent since I look at this once or twice but if I ever need to find the lag its somewhere here
+                                            // animate out first, then remove
+                                            delegateWrapper.removing = true;
+                                            removeTimer.start();
+                                        }
+                                    }
+
+                                    Timer {
+                                        id: removeTimer
+                                        interval: Globals.animFast + 30 // just after the collapse animation
+                                        onTriggered: history.remove(index)
+                                    }
                                 }
                             }
+
+                            Text {
+                                visible: model.body !== ""
+                                text: model.body
+                                color: Globals.fgColor
+                                font.family: Globals.textFont.family
+                                font.pixelSize: Globals.textFont.pixelSize - 1
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
+                            }
+
+                            Text {
+                                visible: model.appName !== ""
+                                text: model.appName
+                                color: Globals.fgColor2
+                                font.family: Globals.textFont.family
+                                font.pixelSize: Globals.textFont.pixelSize - 3
+                            }
+                            Text { // blankline for spacer
+                                visible: history.count > 0
+                                text: ""
+                                color: Globals.fgColor2
+                                font.family: Globals.textFont.family
+                                font.pixelSize: Globals.spacing
+                            }
+                            MenuDivider {}
                         }
                     }
                 }

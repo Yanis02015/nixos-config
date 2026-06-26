@@ -1,19 +1,21 @@
-# theme = Aizen Dark
-theme = Carbonfox
+theme = Aizen Dark
+# theme = Carbonfox
 # theme = Ayu
 # theme = Catppuccin Mocha
 # theme = Modus Vivendi Tinted
 # theme = Dracula
+# theme = TokyoNight Night
 
 
 # font-family = "JetBrainsMono Nerd Font"
 # font-family = "IoskeleyMono Nerd Font"
 font-family = "Iosevka Nerd Font"
 font-style = Medium
-font-size = 15
+font-size = 13
 
 # window
-window-padding-y = 0
+window-padding-y = 1
+window-padding-x = 4
 resize-overlay = never
 background-opacity = 0.85
 window-inherit-working-directory = true
