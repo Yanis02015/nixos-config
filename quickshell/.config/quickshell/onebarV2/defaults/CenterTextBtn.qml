@@ -8,7 +8,7 @@ Rectangle {
     property int largestButton
     property string icon
     property string label
-    property var runThis
+    property var runThis: [] // empty by default -> view-switch buttons carry no command
     signal clicked
     property bool isActive: false // keep button coloured if it is already active
 
@@ -16,7 +16,7 @@ Rectangle {
 
     implicitWidth: root.largestButton
 
-    implicitHeight: contentCol.implicitHeight + Globals.padding  // height fits the content (icon + label) rather than being a big square
+    implicitHeight: contentCol.implicitHeight + Globals.spacing
 
     radius: Globals.radius
     color: isActive ? Globals.fgColor : (ma.containsMouse ? Globals.fgColor : "transparent")
@@ -26,7 +26,7 @@ Rectangle {
 
     ColumnLayout {
         id: contentCol
-        spacing: Globals.spacing - 2
+        spacing: Globals.spacing - 4
         anchors.centerIn: parent
 
         // icon
@@ -34,17 +34,19 @@ Rectangle {
             text: root.icon
             visible: Globals.buttonIcons
             color: root.isActive ? Globals.bgColor : (ma.containsMouse ? Globals.bgColor : Globals.fgColor)
-            font.pixelSize: Globals.textFont.pixelSize + 10
+            font.pixelSize: Globals.textFont.pixelSize + 28
             font.family: Globals.textFont.family
             Layout.alignment: Qt.AlignHCenter
         }
 
-        // text
+        // text -> dropped (excluded from the layout) when empty so the button can be icon-only
         Text {
             text: root.label
+            visible: root.label !== ""
             color: root.isActive ? Globals.bgColor : (ma.containsMouse ? Globals.bgColor : Globals.fgColor)
             font.pixelSize: Globals.textFont.pixelSize
             font.family: Globals.textFont.family
+            font.weight: Globals.textFont.weight - 100
             Layout.alignment: Qt.AlignHCenter
         }
     }
@@ -60,7 +62,8 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         hoverEnabled: true
         onClicked: {
-            commandProcess.running = true;
+            if (root.runThis && root.runThis.length > 0) // some buttons only switch views and have no command
+                commandProcess.running = true;
             root.clicked();
         }
     }

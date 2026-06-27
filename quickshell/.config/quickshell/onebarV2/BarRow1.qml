@@ -6,11 +6,10 @@ import qs.defaults
 import qs.power
 import qs.sysUtils
 
-// orchestrating what comes out when
 RowLayout {
     id: root
     property int barLvl
-    spacing: Globals.spacing
+    spacing: Globals.spacing + 4
     // Use shown: false to have it gone forever and true to always have it there
     Reveal {
         shown: false
@@ -44,12 +43,6 @@ RowLayout {
     }
     Reveal {
         shown: root.barLvl >= 3
-        Network {
-            id: network
-        }
-    }
-    Reveal {
-        shown: root.barLvl >= 3
         Volume {
             id: volume
         }
@@ -58,6 +51,12 @@ RowLayout {
         shown: root.barLvl >= 3 || (battery.percent <= 20 && !battery.isCharging) || (battery.isCharging && battery.percent >= 80)
         BatteryIcons {
             id: battery
+        }
+    }
+    Reveal {
+        shown: root.barLvl >= 3
+        Network {
+            id: network
         }
     }
     Reveal {

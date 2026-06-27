@@ -16,7 +16,7 @@ import QtQuick.Layouts
 Scope {
     id: root
 
-    // local open state, toggled via IPC (mirrors what I did in Notifications' centerOpen S/O tony on yt)
+    // local open state, toggled via IPC (mirrors Notifications' centerOpen)
     property bool clipboardOpen: false
 
     // single source of truth for the active row (drives both the highlight and the
@@ -239,13 +239,13 @@ Scope {
                     visible: Globals.headerIcons
                     color: Globals.fgColor
                     font.family: Globals.textFont.family
-                    font.pixelSize: Globals.textFont.pixelSize + 2
+                    font.pixelSize: Globals.textFont.pixelSize + 6
                     font.weight: Globals.textFont.weight
                 }
 
                 Text {
                     Layout.fillWidth: true
-                    text: "Clipboard Menu"
+                    text: "Clipboard"
                     color: Globals.fgColor
                     font.family: Globals.textFont.family
                     font.pixelSize: Globals.textFont.pixelSize + 2
@@ -257,8 +257,8 @@ Scope {
                     visible: clipModel.count > 0
                     color: Globals.criticalColor
                     font.family: Globals.textFont.family
-                    font.pixelSize: Globals.textFont.pixelSize - 1
                     font.weight: Globals.textFont.weight
+                    font.pixelSize: Globals.textFont.pixelSize - 1
 
                     MouseArea {
                         anchors.fill: parent

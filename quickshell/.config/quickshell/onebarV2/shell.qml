@@ -2,19 +2,19 @@ pragma ComponentBehavior: Bound
 
 import Quickshell
 import Quickshell.Io
+import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
 import qs.audio
 import qs.defaults
 import qs.launcher // installs the qs.launcher module so Launcher.qml can resolve its sibling components (SearchInput/ResultList)
 import qs.sysUtils
+import qs.wifi // installs the qs.wifi module so WifiMenu.qml can resolve WifiView/WifiNetworkRow
 import QtQuick
 
 Scope {
     id: root
     property int barLevel: 1
     property bool barShown: true // toggled via the "bar" IPC handler; bar level is remembered
-
-    // the layer-shell window stays mapped during the collapse, then unmaps so the  compositor reserves zero space once hidden (and re-maps before the open anim)
 
     property bool windowVisible: true
 
@@ -54,7 +54,6 @@ Scope {
                 right: true
             }
 
-            // need to figure out how to disable the other error
             margins { // qmllint disable unresolved-type
                 top: Globals.marginsTop
                 left: Globals.marginsLeft
@@ -99,7 +98,7 @@ Scope {
                     text: "Wg"
                 }
 
-                implicitHeight: heightAnchor.implicitHeight + 10
+                implicitHeight: heightAnchor.implicitHeight + 8
                 implicitWidth: contentRoot.implicitWidth + 14
                 radius: implicitHeight / 2
 
@@ -135,6 +134,14 @@ Scope {
                     opacity: (root.barShown && root.activeOsd === "brightness") ? 1 : 0
                     brightness: root.brightness
                     maxBrightness: root.maxBrightness
+                }
+                MediaOsd {
+                    opacity: (root.barShown && root.activeOsd === "media") ? 1 : 0
+                    pulse: root.mediaPulse
+                    title: root.activeMediaPlayer ? root.activeMediaPlayer.trackTitle : ""
+                    artist: root.activeMediaPlayer ? root.activeMediaPlayer.trackArtist : ""
+                    onFinished: if (root.activeOsd === "media")
+                        root.activeOsd = ""
                 }
 
                 Behavior on implicitWidth {
@@ -212,6 +219,14 @@ Scope {
         active: true
     }
     LazyLoader {
+        source: "audio/AudioMenu.qml"
+        active: true
+    }
+    LazyLoader {
+        source: "wifi/WifiMenu.qml"
+        active: true
+    }
+    LazyLoader {
         source: "clipboard/Clipboard.qml"
         active: true
     }
@@ -281,6 +296,46 @@ Scope {
             osdTimer.restart();
         }
     }
+    // ----- media OSD: marquee the track whenever a song changes -----
+    // we watch every MPRIS player and react to whichever one's track actually changes,
+    // so changing a song in (say) the Apple Music tab surfaces that track, not a
+    // background YouTube video that didn't change.
+    property var activeMediaPlayer: null
+    property int mediaPulse: 0 // bumped per change -> tells MediaOsd to (re)start its scroll
+
+    // don't flash for the values that settle in on launch/reload
+    property bool mediaArmed: false
+    Timer {
+        interval: 1500
+        running: true
+        onTriggered: root.mediaArmed = true
+    }
+
+    function flashTrack(player): void {
+        if (!root.mediaArmed || !player || !player.trackTitle)
+            return;
+        root.activeMediaPlayer = player;
+        root.activeOsd = "media";
+        root.mediaPulse++;
+    }
+
+    // one watcher per player; fires only when that player's title/artist pair changes
+    Instantiator {
+        model: Mpris.players
+        delegate: QtObject {
+            id: watcher
+            required property var modelData
+            readonly property string key: (modelData && modelData.trackTitle ? modelData.trackTitle : "") + "" + (modelData && modelData.trackArtist ? modelData.trackArtist : "")
+            property string lastKey: ""
+            onKeyChanged: {
+                if (key === lastKey || key === "")
+                    return;
+                lastKey = key;
+                root.flashTrack(modelData);
+            }
+        }
+    }
+
     IpcHandler {
         target: "cycleBarLevel"
         function cycle(): void {

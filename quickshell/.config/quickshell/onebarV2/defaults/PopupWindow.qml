@@ -6,8 +6,6 @@ import qs.defaults
 
 import QtQuick
 
-// Friendly reminder to future me when I get to kanban and calendar integration -> basically jsut a wrapper util
-
 // Reusable popup chrome for the second-order menus (PowerMenu, PowerProfiles,
 // Clipboard, and the upcoming audio/bluetooth/wifi cards).
 //
@@ -98,6 +96,21 @@ PanelWindow { // qmllint disable uncreatable-type
         // size to what ever the nested content is plus padding on every side
         implicitWidth: contentHolder.childrenRect.width + root.padding * 2
         implicitHeight: contentHolder.childrenRect.height + root.padding * 2
+
+        // smooth the size change when a menu swaps its body (e.g. audio <-> bluetooth);
+        // menus that keep a fixed size while open never trigger this
+        Behavior on implicitWidth {
+            NumberAnimation {
+                duration: Globals.animDuration
+                easing.type: Easing.OutCubic
+            }
+        }
+        Behavior on implicitHeight {
+            NumberAnimation {
+                duration: Globals.animDuration
+                easing.type: Easing.OutCubic
+            }
+        }
 
         color: Globals.menuBg
         radius: Globals.radius
