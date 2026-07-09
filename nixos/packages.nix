@@ -32,17 +32,22 @@
       neovim
       obs-studio
       obsidian
+      papirus-icon-theme   # complete, crisp MIME/app icons desktop-wide (see icon-theme in configuration.nix)
       pavucontrol
       playerctl
+      pnpm
+      qt6.qtdeclarative   # ships the `qmlls` QML language server (for Quickshell/QML in nvim)
       quickshell
       ripgrep
       satty
       slurp
       stow
       tmux
+      trash-cli
       tree-sitter
       wget
       wl-clipboard
+      yazi
       zoxide
       zsh-powerlevel10k
       zsh-autosuggestions
@@ -70,6 +75,20 @@
 
 # flakes
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
+
+# desktop entry so GUI apps open text files in nvim inside
+# ghostty. Named nvim-terminal to avoid colliding with neovim's own nvim.desktop.
+      (makeDesktopItem {
+        name = "nvim-terminal";
+        desktopName = "Neovim (Terminal)";
+        genericName = "Text Editor";
+        exec = "ghostty -e nvim %F";
+        terminal = false;
+        icon = "nvim";
+        categories = [ "Utility" "TextEditor" ];
+        mimeTypes = [ "text/plain" "text/markdown" "text/x-python" "text/x-lua" "text/javascript" "application/json" ];
+        startupNotify = false;
+      })
       ];
 
 # fonts (system-wide, via fonts.packages not systemPackages)

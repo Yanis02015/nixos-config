@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # /bin/bash does not exist on NixOS; use env so the right bash is found.
 
-config="$HOME/.config/quickshell/onebarV2"
+config="$HOME/.config/quickshell/minimalBar"
 ini="$config/.qmlls.ini"
 
 # The presence of a .qmlls.ini opts this config into quickshell's QML tooling

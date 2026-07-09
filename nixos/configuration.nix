@@ -34,7 +34,24 @@
 
     services.libinput.enable = true;
 
-# backing services for the quickshell bar widgets
+    hardware.graphics = {
+        enable = true;
+        extraPackages = with pkgs; [
+            intel-media-driver   
+            libvdpau-va-gl       
+        ];
+    };
+
+fileSystems."/mnt/hdd" = {
+  device = "/dev/disk/by-uuid/4fc12482-bbb3-4ced-a896-2b5f560c9f6b";
+  fsType = "ext4";
+  options = [
+    "nofail"                          
+    "x-systemd.device-timeout=5s"     
+  ];
+};
+
+# backend services for the quickshell bar widgets
     services.upower.enable = true;                 # battery
     services.power-profiles-daemon.enable = true;  # power profiles
     hardware.bluetooth.enable = true;              # bluetooth
@@ -52,10 +69,19 @@
     };
     programs.niri.enable = true;
 
-# hyprpolkitagent ships a user systemd unit (WantedBy=graphical-session.target)
-# rather than a plain binary on PATH, so it's wired via systemd, not autostart.lua
     systemd.packages = with pkgs; [ hyprpolkitagent ];
     systemd.user.services.hyprpolkitagent.wantedBy = [ "graphical-session.target" ];
+
+    # purge trashed files (yazi's delete, trash-cli's `trash-put`, etc. all
+    # write to the same freedesktop.org Trash dir) older than 20 days
+    systemd.user.services.trash-cleanup.serviceConfig.ExecStart = "${pkgs.trash-cli}/bin/trash-empty 20";
+    systemd.user.timers.trash-cleanup = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+            OnCalendar = "daily";
+            Persistent = true;
+        };
+    };
 
     programs.firefox.enable = true;
     services.openssh.enable = true;
@@ -70,10 +96,20 @@
         "/share/zsh-history-substring-search"
     ];
 
+    # file manager backends (USB/udisks2 mounting, phone/MTP via gvfs)
+    services.gvfs.enable = true;
+    services.udisks2.enable = true;
+
     # Forcing dark mode via session variables (better for Wayland/Hyprland)
     environment.sessionVariables = {
         GTK_THEME = "Adwaita:dark";
         QT_QPA_PLATFORM = "wayland;xcb";
+        LIBVA_DRIVER_NAME = "iHD";
+        # default apps for CLI tools (git, etc. read these; GUI file-open uses
+        # xdg.mime.defaultApplications below)
+        EDITOR = "nvim";
+        VISUAL = "nvim";
+        BROWSER = "zen-beta";
     };
 
     programs.dconf.enable = true;
@@ -88,6 +124,9 @@
         settings = {
             "org/gnome/desktop/interface" = {
                 color-scheme = "prefer-dark";
+                # Papirus has full, crisp MIME-type icons. Adwaita 50 dropped its
+                # colour file icons, leaving jagged fallbacks in GTK apps.
+                icon-theme = "Papirus-Dark";
             };
         };
     }];
@@ -98,8 +137,25 @@
         config.common.default = "*";
     };
 
+    # System-wide default apps (writes /etc/xdg/mimeapps.list). A per-user
+    # ~/.config/mimeapps.list still overrides these for whatever it lists
+    # (currently the browser/html handlers, already set to zen-beta).
+    # nvim-terminal.desktop (defined in packages.nix) opens text in nvim inside
+    # ghostty, since the stock nvim.desktop is Terminal=true and won't launch on Hyprland.
+    xdg.mime.defaultApplications = {
+        "text/plain"        = "nvim-terminal.desktop";
+        "text/markdown"     = "nvim-terminal.desktop";
+        "text/x-python"     = "nvim-terminal.desktop";
+        "text/x-lua"        = "nvim-terminal.desktop";
+        "text/javascript"   = "nvim-terminal.desktop";
+        "application/json"  = "nvim-terminal.desktop";
+        # browser — declarative source of truth (mirrors the per-user file)
+        "text/html"                = "zen-beta.desktop";
+        "x-scheme-handler/http"    = "zen-beta.desktop";
+        "x-scheme-handler/https"   = "zen-beta.desktop";
+    };
+
     nix.settings.experimental-features = ["nix-command" "flakes"];
     nixpkgs.config.allowUnfree = true;
-
     system.stateVersion = "26.05";
 }
