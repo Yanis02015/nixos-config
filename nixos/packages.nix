@@ -9,6 +9,7 @@
       btop
       brightnessctl
       bibata-cursors
+      google-chrome
       claude-code
       cliphist
       fastfetch

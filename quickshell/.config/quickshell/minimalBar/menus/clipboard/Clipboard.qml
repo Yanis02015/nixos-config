@@ -235,7 +235,7 @@ Scope {
                 spacing: Globals.spacing
 
                 Text {
-                    text: String.fromCodePoint(0xF46D) // font-awesome clipboard
+                    text: String.fromCodePoint(0xF014D) // nf-md-clipboard_text 󰅍
                     visible: Globals.headerIcons
                     color: Globals.fgColor
                     font.family: Globals.textFont.family
