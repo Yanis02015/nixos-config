@@ -19,7 +19,6 @@
       ghostty
       glib
       gnome-themes-extra
-      go
       google-chrome
       grim
       hypridle
@@ -59,23 +58,26 @@
       zsh-history-substring-search
 
 # languages and runtimes
-      python3
+      go
       nodejs
+      python3
 
 # lsp
       basedpyright
       gnumake
+      gopls
       jdt-language-server
       lua-language-server
       tailwindcss-language-server
       typescript-language-server
       vscode-langservers-extracted
 
+
 # conform -> formatters
-      stylua
-      prettier
       black
+      prettier
       shfmt
+      stylua
 
 # flakes
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
