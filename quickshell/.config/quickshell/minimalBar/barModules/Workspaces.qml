@@ -10,10 +10,6 @@ RowLayout {
     id: workspaceLayout
     spacing: Globals.spacing
 
-    //  TODO: set per-instance from shell.qml -> BarRow1.qml (this bar is instantiated
-    // once per monitor) -> only used on niri, since niri's workspaces genuinely
-    // belong to one output each, unlike Hyprland's shared global numbering
-
     property string screenName: ""
 
     // defaults -> check Globals.qml
@@ -89,8 +85,8 @@ RowLayout {
             visible: workspaceLayout.isNiri ? true : workspaceId <= Math.max(5, workspaceLayout.maxWorkspaceId)
 
             // spherical indicators -> a circle is just a square where the radius = 0.5 x height ie make them equal to get a circle
-            implicitWidth: isActive ? Globals.textFont.pixelSize + 7 : Globals.textFont.pixelSize // decrease to make more vertical
-            implicitHeight: isActive ? Globals.textFont.pixelSize - 4 : Globals.textFont.pixelSize // decrease to make more flat
+            implicitWidth: isActive ? Globals.textFont.pixelSize + 12 : Globals.textFont.pixelSize // decrease to make more vertical
+            implicitHeight: isActive ? Globals.textFont.pixelSize - 0 : Globals.textFont.pixelSize // decrease to make more flat -> could be without ternaries for no IsActive conditon
             radius: implicitHeight / 2
 
             property color dotColor: {

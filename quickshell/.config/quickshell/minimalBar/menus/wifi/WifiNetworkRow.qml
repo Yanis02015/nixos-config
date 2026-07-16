@@ -29,13 +29,14 @@ ColumnLayout {
     signal focusField(string field)
     signal toggleReveal
 
-    // signal-bar glyph; secured networks use the lock-overlay variants
+    // signal-bar glyph; the lock overlay only flags NEW secured networks (you'll
+    // need a password) — known nets already hold their credentials, so no lock
     function signalGlyph(): int {
         if (root.signalStrength < 0)
             return 0xF092F; // wifi-strength-outline (saved, out of range)
         const lvl = root.signalStrength > 80 ? 4 : root.signalStrength > 55 ? 3 : root.signalStrength > 30 ? 2 : 1;
-        if (root.secured)
-            return [0, 0xF0920, 0xF0923, 0xF0926, 0xF0929][lvl]; // wifi-strength-N-lock
+        if (root.secured && !root.known)
+            return [0, 0xF0921, 0xF0924, 0xF0927, 0xF092A][lvl]; // wifi-strength-N-lock
         return [0, 0xF091F, 0xF0922, 0xF0925, 0xF0928][lvl];     // wifi-strength-N
     }
 

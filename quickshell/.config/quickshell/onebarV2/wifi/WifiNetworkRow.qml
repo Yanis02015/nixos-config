@@ -64,9 +64,6 @@ ColumnLayout {
             anchors.rightMargin: Globals.spacing
             spacing: Globals.spacing
 
-            // signal icon, filled box when connected (mirrors BtDeviceRow)
-            // fixed square so every row's icon reads at the same size regardless
-            // of which wifi-strength glyph (which vary in visual weight) is shown
             Rectangle {
                 implicitWidth: Globals.barIconSize + Globals.spacing * 2
                 implicitHeight: Globals.barIconSize + Globals.spacing * 2
