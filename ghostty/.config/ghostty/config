@@ -9,9 +9,10 @@ theme = Aizen Dark
 
 # font-family = "JetBrainsMono Nerd Font"
 # font-family = "IoskeleyMono Nerd Font"
-font-family = "Iosevka Nerd Font"
-font-style = Medium
-font-size = 13
+# font-family = "Iosevka Nerd Font"
+font-family = "Maple Mono NF"
+font-style = Regular
+font-size = 12
 font-feature = calt
 # Center the asterisk: Iosevka's VSAB selector. 8 = hex-mid (centered
 # 6-point). Default 1 = penta-high (sits high); 2 = penta-mid (5-point).

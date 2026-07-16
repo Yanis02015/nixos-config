@@ -100,6 +100,7 @@
 # fonts (system-wide, via fonts.packages not systemPackages)
   fonts.packages = with pkgs; [
     departure-mono
+    maple-mono.NF
       nerd-fonts.departure-mono
       nerd-fonts.iosevka
   ];
