@@ -89,6 +89,9 @@ ShellRoot {
         }
     }
 
+    // ------- single-instance low-battery notifier (fires once, not per-screen) -------
+    BatteryWarnings {}
+
     // ------- menus: mounted once, opened via bar clicks / ipc -------
     LazyLoader {
         source: "menus/audio/AudioMenu.qml"

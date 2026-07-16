@@ -14,6 +14,9 @@ Scope {
 
     property bool centerOpen: false
 
+    // the live persistent low-battery toast, so we can pull it down once the laptop is charging again
+    property var batteryCriticalNotif: null
+
     ListModel {
         id: history
     }
@@ -31,7 +34,21 @@ Scope {
                 urgency: n.urgency,
                 time: Qt.formatDateTime(new Date(), "HH:mm")
             });
+            // remember the persistent battery warning so charging can dismiss it
+            if (n.appName === "Battery" && n.urgency === NotificationUrgency.Critical)
+                root.batteryCriticalNotif = n;
             n.tracked = true;
+        }
+    }
+
+    // charging resumed -> retire the persistent 10% warning
+    Connections {
+        target: Globals
+        function onBatteryChargingChanged(): void {
+            if (Globals.batteryCharging && root.batteryCriticalNotif) {
+                root.batteryCriticalNotif.dismiss();
+                root.batteryCriticalNotif = null;
+            }
         }
     }
 
@@ -64,7 +81,7 @@ Scope {
 
         anchors {
             top: true
-            left: true
+            right: true
         }
         margins {
             top: Globals.marginsTop + Math.max(toast.barDrop, toast.menuDrop)
@@ -98,8 +115,11 @@ Scope {
                         }
                     }
 
+                    // the persistent low-battery warning never auto-dismisses -> only a click or charging clears it
+                    readonly property bool persistent: card.modelData.appName === "Battery" && card.modelData.urgency === NotificationUrgency.Critical
+
                     Timer {
-                        running: true
+                        running: !card.persistent
                         interval: card.modelData.urgency === NotificationUrgency.Critical ? 15000 : 5000
                         onTriggered: card.modelData.dismiss()
                     }
@@ -136,7 +156,8 @@ Scope {
                                 Text {
                                     Layout.fillWidth: true
                                     text: card.modelData.summary
-                                    color: Globals.fgColor
+                                    // battery warnings get a coloured heading: red when critical (10%), amber when low (20%)
+                                    color: card.modelData.appName === "Battery" ? (card.modelData.urgency === NotificationUrgency.Critical ? Globals.criticalColor : Globals.warningColor) : Globals.fgColor
                                     font.family: Globals.textFont.family
                                     font.pixelSize: Globals.textFont.pixelSize
                                     font.weight: Globals.textFont.weight
@@ -249,6 +270,7 @@ Scope {
                     required property string summary
                     required property string body
                     required property string appName
+                    required property int urgency
                     required property string time
                     property bool removing: false
                     Layout.fillWidth: true
@@ -305,7 +327,8 @@ Scope {
                                 Text {
                                     Layout.fillWidth: true
                                     text: delegateWrapper.summary
-                                    color: Globals.fgColor
+                                    // keep battery headings coloured in the history list too
+                                    color: delegateWrapper.appName === "Battery" ? (delegateWrapper.urgency === NotificationUrgency.Critical ? Globals.criticalColor : Globals.warningColor) : Globals.fgColor
                                     font.family: Globals.textFont.family
                                     font.pixelSize: Globals.textFont.pixelSize
                                     font.weight: Globals.textFont.weight
