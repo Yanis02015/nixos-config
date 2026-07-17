@@ -75,8 +75,13 @@ Scope {
         // ~~~ clear the bar strip when it's up ~~~
         readonly property real barDrop: Globals.barShown ? Globals.currentBarHeight + Globals.hyprGaps : 0
 
+        // ~~~ the toast column rides the right edge -> measure its scene span there so the overlap test tracks
+        //     right-side menus (power profiles, wifi…) instead of the old left column ~~~
+        readonly property real toastRightEdge: (toast.screen ? toast.screen.width : 0) - Globals.marginsRight
+        readonly property real toastLeftEdge: toast.toastRightEdge - toast.implicitWidth
+
         // ~~~ an open menu card overlapping the toast column pushes them below it instead ~~~
-        readonly property bool menuInWay: Globals.menuCardRect.width > 0 && Globals.menuCardRect.x < Globals.marginsLeft + toast.implicitWidth && Globals.menuCardRect.x + Globals.menuCardRect.width > Globals.marginsLeft
+        readonly property bool menuInWay: Globals.menuCardRect.width > 0 && Globals.menuCardRect.x < toast.toastRightEdge && Globals.menuCardRect.x + Globals.menuCardRect.width > toast.toastLeftEdge
         readonly property real menuDrop: toast.menuInWay ? Globals.menuCardRect.y + Globals.menuCardRect.height + Globals.hyprGaps - Globals.marginsTop : 0
 
         anchors {
