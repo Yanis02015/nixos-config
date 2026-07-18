@@ -17,6 +17,14 @@ font-feature = calt
 # 6-point). Default 1 = penta-high (sits high); 2 = penta-mid (5-point).
 font-feature = VSAB=5    
 
+# Plain-style italic glyphs (font.subf.dev "plain style"): upright i j k l x y.
+# cv32 left off on purpose so the cursive italic f stays.
+font-feature = cv33
+font-feature = cv34
+font-feature = cv35
+font-feature = cv36
+font-feature = cv37
+
 # window
 window-padding-y = 1
 window-padding-x = 4
