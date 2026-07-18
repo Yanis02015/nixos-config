@@ -28,7 +28,7 @@ Singleton {
     })
 
     // bar entry icons sit a touch larger than their value text -> one knob to tune -> convenient fix
-    readonly property int barIconSize: textFont.pixelSize + 2
+    readonly property int barIconSize: textFont.pixelSize 
     readonly property int bigIcon: textFont.pixelSize + 28
 
     // --------- colors -----------------
@@ -72,10 +72,10 @@ Singleton {
 
     // margins
     readonly property int margins: 10
-    readonly property int marginsTop: 6
+    readonly property int marginsTop: 4
     readonly property int marginsLeft: 8
     readonly property int marginsRight: 8
-    readonly property int marginsBottom: -4
+    readonly property int marginsBottom: -3
 
     // -------- borders and radii ----------
     readonly property int borderWidth: 0
