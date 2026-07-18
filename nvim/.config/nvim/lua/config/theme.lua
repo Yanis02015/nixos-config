@@ -75,7 +75,9 @@ local function fix_italics()
 			and not name:find("[Ee]mphasis")
 		then
 			def.italic = nil
-			vim.api.nvim_set_hl(0, name, def)
+			-- pcall so one group whose def can't round-trip through nvim_set_hl
+			-- can't abort the sweep and leave later groups (e.g. @variable) italic.
+			pcall(vim.api.nvim_set_hl, 0, name, def)
 		end
 	end
 
@@ -85,7 +87,7 @@ local function fix_italics()
 		local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
 		if next(hl) ~= nil then
 			hl.italic = true
-			vim.api.nvim_set_hl(0, name, hl)
+			pcall(vim.api.nvim_set_hl, 0, name, hl)
 		end
 	end
 end
@@ -123,6 +125,34 @@ function M.load()
 	return nil
 end
 
+-- One place that normalises the active scheme. Each step is pcall-guarded and
+-- independent, so a single un-settable highlight group can't abort the rest
+-- (that was leaving code italic when a scheme loaded in a fully-populated
+-- session with lots of plugin/LSP highlight groups).
+local function apply_fixes()
+	pcall(strip_backgrounds)
+	pcall(fix_italics)
+	vim.schedule(strip_bufferline_backgrounds)
+end
+
+-- Re-assert the fixes once the dust settles, debounced. Telescope's colorscheme
+-- picker (<leader>uc) applies schemes asynchronously -- rapid previews plus an
+-- Esc-restore -- and the immediate ColorScheme pass can race that, leaving the
+-- scheme that's actually on screen un-stripped and the wrong name persisted.
+-- Renormalise + persist ~50ms after the last change, from whatever won.
+local reassert_gen = 0
+local function schedule_reassert()
+	reassert_gen = reassert_gen + 1
+	local mine = reassert_gen
+	vim.defer_fn(function()
+		if mine ~= reassert_gen then
+			return -- superseded by a newer scheme change; let that one win
+		end
+		apply_fixes()
+		M.save(vim.g.colors_name)
+	end, 50)
+end
+
 function M.setup()
 	-- Capture the persisted pick *now*, before nightfox's startup colorscheme
 	-- fires the ColorScheme autocmd and overwrites the file.
@@ -133,12 +163,13 @@ function M.setup()
 	vim.api.nvim_create_autocmd("ColorScheme", {
 		group = group,
 		callback = function()
-			strip_backgrounds()
-			fix_italics()
-			vim.schedule(strip_bufferline_backgrounds)
+			apply_fixes()
 			-- Whatever scheme just took effect (incl. a Telescope preview you land
 			-- on with <CR>) becomes the pick that survives a restart.
 			M.save(vim.g.colors_name)
+			-- ...and re-assert once the picker's async churn settles, so a scheme
+			-- applied in a racy context is still normalised + persisted correctly.
+			schedule_reassert()
 		end,
 	})
 
