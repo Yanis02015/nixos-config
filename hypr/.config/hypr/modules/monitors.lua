@@ -11,12 +11,15 @@ hl.monitor({
 	scale = 1,
 })
 
--- Écran externe (adapte le mode si besoin) : décommente si tu branches un
--- moniteur externe. Le setup original de l'auteur pointait vers HDMI-A-1 ;
--- ajuste le nom de sortie avec `hyprctl monitors` une fois branché.
--- hl.monitor({
--- 	output = "HDMI-A-1",
--- 	mode = "1920x1080@60",
--- 	position = "0x-1080",
--- 	scale = 1,
--- })
+-- Écran externe : LG Electronics E2251, branché en HDMI. Positionné à droite
+-- du laptop (auto-détecté ainsi par Hyprland avant même d'ajouter cette
+-- règle ; on la rend juste explicite/permanente).
+hl.monitor({
+	output = "HDMI-A-1",
+	mode = "1920x1080@60",
+	position = "1920x0",
+	scale = 1,
+})
+
+-- Si l'écran externe est débranché, Hyprland se rabat automatiquement sur
+-- eDP-1 seul (pas besoin de gérer ce cas à la main).
