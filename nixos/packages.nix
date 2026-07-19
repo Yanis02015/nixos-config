@@ -89,6 +89,9 @@
 
 # flakes
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
+      # claude-desktop-fhs (default de ce flake) : wrappe le .deb officiel Anthropic
+      # (bêta Linux depuis le 2026-06-30) + support MCP via npx/uvx/docker (FHS env)
+      inputs.claude-desktop.packages."${pkgs.stdenv.hostPlatform.system}".default
 
 # desktop entry so GUI apps open text files in nvim inside
 # ghostty. Named nvim-terminal to avoid colliding with neovim's own nvim.desktop.
