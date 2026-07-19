@@ -10,13 +10,13 @@ SAVEHIST=1000
 
 # ── input & completion ───────────────────────────────────────
 bindkey -v
-zstyle :compinstall filename '/home/leabua/.zshrc'
+zstyle :compinstall filename '/home/yanis/.zshrc'
 autoload -Uz compinit
 compinit
 
 # ── path ─────────────────────────────────────────────────────
 export PATH="$HOME/dotfiles/scripts:$PATH"
-export PATH="$PATH:/home/leabua/.local/bin"
+export PATH="$PATH:/home/yanis/.local/bin"
 
 # ── ssh agent (gcr/gnome-keyring) ────────────────────────────
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gcr/ssh"
@@ -55,7 +55,10 @@ _src \
   /run/current-system/sw/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # ── nixos ────────────────────────────────────────────────────
-alias clean="sudo nix-collect-garbage -d && sudo nixos-rebuild boot --flake $HOME/dotfiles/nixos#nixos"
+# ATTENTION : supprime TOUTES les anciennes générations NixOS (plus de rollback possible).
+# Nom explicite exprès (l'original s'appelait juste "clean", trop discret pour ce que ça fait),
+# + confirmation avant de lancer.
+alias nix-purge-old-generations="echo 'Ceci va supprimer TOUTES les anciennes générations NixOS (plus de retour en arrière possible). Ctrl+C pour annuler, Entrée pour continuer.' && read -r && sudo nix-collect-garbage -d && sudo nixos-rebuild boot --flake $HOME/dotfiles/nixos#nixos"
 alias nixconf="nvim $HOME/dotfiles/nixos"
 alias rebuild="sudo nixos-rebuild switch --flake $HOME/dotfiles/nixos#nixos |& nom"
 alias search="nix search nixpkgs"
