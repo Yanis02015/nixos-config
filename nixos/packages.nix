@@ -6,6 +6,7 @@
       adwaita-qt6
       awww
       bibata-cursors
+      brave
       brightnessctl
       btop
       bun
@@ -52,6 +53,7 @@
       tmux
       trash-cli
       tree-sitter
+      vscode
       wget
       wl-clipboard
       yazi
