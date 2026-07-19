@@ -46,6 +46,15 @@ hl.window_rule({
 	size = "600 400",
 })
 
+-- yazi
+hl.window_rule({
+	name = "yazi-float",
+	match = { title = "^yazi-term$", class = "com.mitchellh.ghostty" },
+	float = true,
+	center = true,
+	size = "70% 70%",
+})
+
 -- bluetui
 hl.window_rule({
 	name = "bluetui-float",

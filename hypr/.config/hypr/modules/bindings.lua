@@ -10,6 +10,7 @@ bind("SUPER + P", hl.dsp.exec_cmd("~/dotfiles/scripts/rotate_wallpaper.sh"))
 bind("SUPER + Return", hl.dsp.exec_cmd(TERMINAL))
 bind("SUPER + SHIFT + O", hl.dsp.exec_cmd("obsidian"))
 bind("SUPER + SHIFT + F", hl.dsp.exec_cmd(FILEMANAGER))
+bind("SUPER + SHIFT + E", hl.dsp.exec_cmd("ghostty --title=yazi-term -e yazi"))
 bind("SUPER +  B", hl.dsp.exec_cmd(BROWSER))
 
 -- quickshell Bindings
