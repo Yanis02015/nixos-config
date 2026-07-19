@@ -11,9 +11,7 @@
     boot.loader.efi.canTouchEfiVariables = true;
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
-# systemwide caps <-> escape
     services.xserver.xkb.layout = "us";
-    services.xserver.xkb.options = "caps:swapescape";
     console.useXkbConfig = true;
 
     zramSwap.enable = true;
