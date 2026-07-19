@@ -71,6 +71,7 @@ alias q="exit"
 alias wq="exit"
 alias weather="curl wttr.in"
 alias y="yazi"
+alias zed="zeditor"
 
 # ── git QoL ──────────────────────────────────────────────────
 alias ga="git add ."
