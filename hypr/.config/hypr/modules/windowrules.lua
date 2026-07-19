@@ -5,6 +5,16 @@ hl.window_rule({
 	suppress_event = "maximize",
 })
 
+-- default size/position for any window toggled to floating (SUPER+O), so it
+-- doesn't just keep its full tiled size. Placed before the per-app float
+-- rules below so those still win for the apps that specify their own size.
+hl.window_rule({
+	name = "default-float-size",
+	match = { float = true },
+	size = "60% 60%",
+	center = true,
+})
+
 -- fix xwayland drags
 hl.window_rule({
 	name = "fix-xwayland-drags",
