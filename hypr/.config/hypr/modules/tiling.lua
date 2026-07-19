@@ -37,15 +37,19 @@ bind("SUPER + Left", hl.dsp.focus({ workspace = "-1" }))
 bind("SUPER + Right", hl.dsp.focus({ workspace = "+1" }))
 
 -- switch workspaces
+-- Liés par code physique (code:10 = touche "1", etc.), pas par symbole : en
+-- AZERTY la touche "1" tape "&" sans Shift, "1" n'existe qu'avec Shift, donc
+-- un bind par symbole ("SUPER + 1") ne matchait plus rien sans Shift enfoncé.
 for i = 1, 9 do
-	bind("SUPER +" .. i, hl.dsp.focus({ workspace = i }))
-	bind("SUPER + SHIFT +" .. i, hl.dsp.window.move({ workspace = i }))
-	bind("SUPER + SHIFT + CTRL +" .. i, hl.dsp.window.move({ workspace = i, follow = false }))
+	local code = "code:" .. (9 + i)
+	bind("SUPER + " .. code, hl.dsp.focus({ workspace = i }))
+	bind("SUPER + SHIFT + " .. code, hl.dsp.window.move({ workspace = i }))
+	bind("SUPER + SHIFT + CTRL + " .. code, hl.dsp.window.move({ workspace = i, follow = false }))
 end
 
 -- floating display stuff
-bind("SUPER + 0", hl.dsp.focus({ workspace = 10 }))
-bind("SUPER + + SHIFT + 0", hl.dsp.window.move({ workspace = 10 }))
+bind("SUPER + code:19", hl.dsp.focus({ workspace = 10 }))
+bind("SUPER + SHIFT + code:19", hl.dsp.window.move({ workspace = 10 }))
 
 -- special workspace (scrathpad)
 bind("SUPER + S", hl.dsp.workspace.toggle_special("magic"))
