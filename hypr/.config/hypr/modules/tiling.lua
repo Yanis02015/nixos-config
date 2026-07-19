@@ -29,6 +29,9 @@ bind("SUPER + code:21", hl.dsp.window.resize({ x = 100, y = 0, relative = true }
 bind("SUPER + SHIFT + code:20", hl.dsp.window.resize({ x = 0, y = -100, relative = true }))
 bind("SUPER + SHIFT + code:21", hl.dsp.window.resize({ x = 0, y = 100, relative = true }))
 
+-- move active window to the next empty workspace
+bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "empty" }))
+
 -- switch workspaces with arrow keys
 bind("SUPER + Left", hl.dsp.focus({ workspace = "-1" }))
 bind("SUPER + Right", hl.dsp.focus({ workspace = "+1" }))
