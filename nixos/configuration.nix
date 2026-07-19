@@ -107,7 +107,7 @@
     };
 
     programs.firefox.enable = true;
-    services.openssh.enable = true;
+    services.openssh.enable = false; # désactivé, pas de besoin d'accès distant
     services.printing.enable = true;
 
     programs.zsh.enable = true;

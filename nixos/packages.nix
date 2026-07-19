@@ -24,6 +24,7 @@
       hypridle
       hyprlock
       hyprpolkitagent
+      hyprsunset
       jdk
       jq
       kitty
@@ -54,6 +55,7 @@
       wget
       wl-clipboard
       yazi
+      zed-editor
       zoxide
       zsh-powerlevel10k
       zsh-autosuggestions
