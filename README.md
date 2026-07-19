@@ -1,4 +1,4 @@
-# Lea's dots for arch and nixos (hyprland and niri)
+# Yanis's dots for Nixos (Hyprland)
 
 ![Quickshell minimalBar on the blue train wallpaper - bar, app menu, clipboard history and the reminders panel](assets/screenshot-1.png)
 
@@ -6,9 +6,7 @@
 
 ![Ghostty running tmux with the Neovim dashboard and fastfetch side by side](assets/screenshot-3.png)
 
-Simple set of modular dots that can get a whole system up in less than an hour, using either Nixos or Arch. 
-Dots are rather personal, are more my arch configs converted to nixos where needed and tuned for Nixos file system currently, however when using arch most things will likely resolve and if there are any issues it will likely be a pathing issue that an LLM will likely be able to resolve.
-Note: I assume that you'll do the part of figuring out how to install arch or nixos and getting it to a point that you can clone a repo. Same for learning what the packages that you'll need are. 
+Personal NixOS + Hyprland setup, originally forked from [Leabua/dotfiles](https://github.com/Leabua/dotfiles) and since heavily customized: NVIDIA support, a different keyboard layout, dead/duplicate configs removed, and everything reorganized under `dots/`. See [`CLAUDE.md`](./CLAUDE.md) for the full list of deviations from upstream and the pitfalls already found and fixed.
 
 ## Required packages 
 - stow  
@@ -17,7 +15,7 @@ Note: I assume that you'll do the part of figuring out how to install arch or ni
 
 ## Getting Nixos up
 
-The whole system is declared in [`nixos/`](https://github.com/Leabua/dotfiles/tree/master/nixos) as a flake. It is *not* stowed and does *not* live in `/etc/nixos` - you build straight out of the repo.
+The whole system is declared in [`nixos/`](https://github.com/Yanis02015/nixos-config/tree/master/nixos) as a flake. It is *not* stowed and does *not* live in `/etc/nixos` - you build straight out of the repo (`/etc/nixos` is a symlink pointing into it).
 
 1. Install Nixos from the ISO as normal, then clone this repo to `~/nixos-config`.
 2. Enable flakes if the installer hasn't, by adding to `/etc/nixos/configuration.nix`:
@@ -32,12 +30,12 @@ sudo nixos-rebuild switch --flake ~/nixos-config/nixos#nixos
 ```
 5. Stow whatever configs you want from the table below.
 
-Day to day there are aliases in [`zsh`](https://github.com/Leabua/dotfiles/tree/master/zsh) for this: `rebuild` to apply changes, `upgrade` to bump the flake inputs and rebuild, `clean` to garbage collect old generations.
+Day to day there are aliases in [`zsh`](https://github.com/Yanis02015/nixos-config/tree/master/dots/zsh) for this: `rebuild` to apply changes, `upgrade` to bump the flake inputs and rebuild, `nix-purge-old-generations` to garbage collect old generations.
 
-Packages go in [`nixos/packages.nix`](https://github.com/Leabua/dotfiles/blob/master/nixos/packages.nix), not into an imperative `nix-env` install.
+Packages go in [`nixos/packages.nix`](https://github.com/Yanis02015/nixos-config/blob/master/nixos/packages.nix), not into an imperative `nix-env` install.
 
 ## Usage
-1. Flash either nixos or arch onto the system. Once internet is connected and operational install a window manager of your choice. 
+1. Flash Nixos onto the system. Once internet is connected and operational install a window manager of your choice. 
 2. Install the required packages above. 
 3. Clone this repo down. 
 You may need to setup git if you haven't yet.
@@ -46,7 +44,7 @@ git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
 
 ```
-Then: `git clone https://github.com/Leabua/dotfiles.git`. <- Now you have all the files on your system.
+Then: `git clone https://github.com/Yanis02015/nixos-config.git`. <- Now you have all the files on your system.
 
 4. Stow usage 
 All stowable packages live under `dots/`, with a `.stowrc` there pinning the target to your home directory, so no flags are needed.
@@ -79,27 +77,27 @@ stow hypr quickshell matugen wallpapers ghostty tmux zsh nvim btop fastfetch gtk
 
 | Package | What it does | Files |
 | --- | --- | --- |
-| `bluetui` | TUI for bluetooth | [bluetui](https://github.com/Leabua/dotfiles/tree/master/bluetui/.config/bluetui) |
-| `btop` | Resource monitor | [btop](https://github.com/Leabua/dotfiles/tree/master/btop/.config/btop) |
-| `fastfetch` | System info on shell start | [fastfetch](https://github.com/Leabua/dotfiles/tree/master/fastfetch/.config/fastfetch) |
-| `ghostty` | Terminal emulator - the daily driver | [ghostty](https://github.com/Leabua/dotfiles/tree/master/ghostty/.config/ghostty) |
-| `gtk` | GTK 3 and GTK 4 theme settings, so GTK apps match the rest | [gtk](https://github.com/Leabua/dotfiles/tree/master/gtk/.config) |
-| `hypr` | Hyprland compositor: Lua modules for bindings, monitors, tiling and window rules, plus hyprlock / hypridle / hyprpaper / hyprsunset | [hypr](https://github.com/Leabua/dotfiles/tree/master/hypr/.config/hypr) |
-| `impala` | TUI for wifi (iwd) | [impala](https://github.com/Leabua/dotfiles/tree/master/impala/.config/impala) |
-| `matugen` | Generates the Material You colour palette from the current wallpaper; everything else reads its output | [matugen](https://github.com/Leabua/dotfiles/tree/master/matugen/.config/matugen) |
-| `nvim` | Neovim: LSP, plugins and colours | [nvim](https://github.com/Leabua/dotfiles/tree/master/nvim/.config/nvim) |
-| `quickshell` | Custom QtQuick desktop shell: bar, menus, OSDs and launcher. Two bars live here, `minimalBar` and `onebarV2`. Setup requires matugen for dynamic color switching. | [quickshell](https://github.com/Leabua/dotfiles/tree/master/quickshell/.config/quickshell) |
-| `satty` | Screenshot annotation tool | [satty](https://github.com/Leabua/dotfiles/tree/master/satty/.config/satty) |
-| `tmux` | Terminal multiplexer | [tmux](https://github.com/Leabua/dotfiles/tree/master/tmux/.config/tmux) |
-| `wallpapers` | The wallpaper collection - lands at `~/Wallpapers`, which is where `rotate_wallpaper.sh` looks | [wallpapers](https://github.com/Leabua/dotfiles/tree/master/wallpapers/Wallpapers) |
-| `wiremix` | TUI mixer for PipeWire audio | [wiremix](https://github.com/Leabua/dotfiles/tree/master/wiremix/.config/wiremix) |
-| `yazi` | Terminal file manager | [yazi](https://github.com/Leabua/dotfiles/tree/master/yazi/.config/yazi) |
-| `zsh` | Shell config with the powerlevel10k prompt (`.zshrc`, `.p10k.zsh`) | [zsh](https://github.com/Leabua/dotfiles/tree/master/zsh) |
+| `bluetui` | TUI for bluetooth | [bluetui](https://github.com/Yanis02015/nixos-config/tree/master/dots/bluetui/.config/bluetui) |
+| `btop` | Resource monitor | [btop](https://github.com/Yanis02015/nixos-config/tree/master/dots/btop/.config/btop) |
+| `fastfetch` | System info on shell start | [fastfetch](https://github.com/Yanis02015/nixos-config/tree/master/dots/fastfetch/.config/fastfetch) |
+| `ghostty` | Terminal emulator - the daily driver | [ghostty](https://github.com/Yanis02015/nixos-config/tree/master/dots/ghostty/.config/ghostty) |
+| `gtk` | GTK 3 and GTK 4 theme settings, so GTK apps match the rest | [gtk](https://github.com/Yanis02015/nixos-config/tree/master/dots/gtk/.config) |
+| `hypr` | Hyprland compositor: Lua modules for bindings, monitors, tiling and window rules, plus hyprlock / hypridle / hyprpaper / hyprsunset | [hypr](https://github.com/Yanis02015/nixos-config/tree/master/dots/hypr/.config/hypr) |
+| `impala` | TUI for wifi (iwd) | [impala](https://github.com/Yanis02015/nixos-config/tree/master/dots/impala/.config/impala) |
+| `matugen` | Generates the Material You colour palette from the current wallpaper; everything else reads its output | [matugen](https://github.com/Yanis02015/nixos-config/tree/master/dots/matugen/.config/matugen) |
+| `nvim` | Neovim: LSP, plugins and colours | [nvim](https://github.com/Yanis02015/nixos-config/tree/master/dots/nvim/.config/nvim) |
+| `quickshell` | Custom QtQuick desktop shell: bar, menus, OSDs and launcher. Two bars live here, `minimalBar` and `onebarV2`. Setup requires matugen for dynamic color switching. | [quickshell](https://github.com/Yanis02015/nixos-config/tree/master/dots/quickshell/.config/quickshell) |
+| `satty` | Screenshot annotation tool | [satty](https://github.com/Yanis02015/nixos-config/tree/master/dots/satty/.config/satty) |
+| `tmux` | Terminal multiplexer | [tmux](https://github.com/Yanis02015/nixos-config/tree/master/dots/tmux/.config/tmux) |
+| `wallpapers` | The wallpaper collection - lands at `~/Wallpapers`, which is where `rotate_wallpaper.sh` looks | [wallpapers](https://github.com/Yanis02015/nixos-config/tree/master/wallpapers/Wallpapers) |
+| `wiremix` | TUI mixer for PipeWire audio | [wiremix](https://github.com/Yanis02015/nixos-config/tree/master/dots/wiremix/.config/wiremix) |
+| `yazi` | Terminal file manager | [yazi](https://github.com/Yanis02015/nixos-config/tree/master/dots/yazi/.config/yazi) |
+| `zsh` | Shell config with the powerlevel10k prompt (`.zshrc`, `.p10k.zsh`) | [zsh](https://github.com/Yanis02015/nixos-config/tree/master/dots/zsh) |
 
 ## Not stow packages
 
 Three directories are in here but are not meant to be symlinked:
 
-- [`nixos`](https://github.com/Leabua/dotfiles/tree/master/nixos) - the system config (`flake.nix`, `configuration.nix`, `packages.nix`). Rebuild straight from the repo, don't stow it.
-- [`scripts`](https://github.com/Leabua/dotfiles/tree/master/scripts) - helper scripts. The configs call them by their repo path (`~/nixos-config/scripts/rotate_wallpaper.sh`), so they run in place.
-- [`assets`](https://github.com/Leabua/dotfiles/tree/master/assets) - the screenshot at the top of this README. Nothing reads it at runtime.
+- [`nixos`](https://github.com/Yanis02015/nixos-config/tree/master/nixos) - the system config (`flake.nix`, `configuration.nix`, `packages.nix`). Rebuild straight from the repo, don't stow it.
+- [`scripts`](https://github.com/Yanis02015/nixos-config/tree/master/scripts) - helper scripts. The configs call them by their repo path (`~/nixos-config/scripts/rotate_wallpaper.sh`), so they run in place.
+- [`assets`](https://github.com/Yanis02015/nixos-config/tree/master/assets) - the screenshot at the top of this README. Nothing reads it at runtime.
