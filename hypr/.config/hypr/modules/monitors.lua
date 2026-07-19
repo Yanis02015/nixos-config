@@ -11,13 +11,12 @@ hl.monitor({
 	scale = 1,
 })
 
--- Écran externe : LG Electronics E2251, branché en HDMI. Positionné à droite
--- du laptop (auto-détecté ainsi par Hyprland avant même d'ajouter cette
--- règle ; on la rend juste explicite/permanente).
+-- Écran externe : LG Electronics E2251, branché en HDMI. Positionné à gauche
+-- du laptop (largeur 1920, donc origine en -1920x0 pour être collé contre eDP-1).
 hl.monitor({
 	output = "HDMI-A-1",
 	mode = "1920x1080@60",
-	position = "1920x0",
+	position = "-1920x0",
 	scale = 1,
 })
 
