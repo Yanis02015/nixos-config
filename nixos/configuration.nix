@@ -12,6 +12,7 @@
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
     services.xserver.xkb.layout = "us";
+    services.xserver.xkb.options = "ctrl:swap_lalt_lctl";
     console.useXkbConfig = true;
 
     zramSwap.enable = true;
