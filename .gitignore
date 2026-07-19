@@ -61,5 +61,10 @@ Desktop.ini
 
 # hyprlock.conf's wallpaper path changes locally when wallpaper switches;
 # it's still tracked, but marked skip-worktree so local edits don't show as diffs
-# (see: git update-index --skip-worktree hypr/.config/hypr/hyprlock.conf)
+# (see: git update-index --skip-worktree dots/hypr/.config/hypr/hyprlock.conf)
 tmux/.config/tmux/plugins/
+
+# Nix build artifacts and VM testing state
+result
+result-*
+*.qcow2

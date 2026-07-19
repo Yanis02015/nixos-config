@@ -83,6 +83,25 @@
         shell = pkgs.zsh;
     };
 
+    # VM-only override for `nixos-rebuild build-vm` testing: the real machine's password
+    # lives in /etc/shadow, set imperatively via `passwd`, never in this repo — so a fresh
+    # VM built from this config has no password for `yanis` at all. This block only applies
+    # to VM builds (never `switch`/`boot` on the real system). SSH + port forward is here
+    # too so login can be verified from the host terminal instead of fighting the QEMU
+    # window for keyboard/VT-switch focus (services.openssh is intentionally disabled on
+    # the real machine, see CLAUDE.md).
+    virtualisation.vmVariant = {
+        # plaintext `password` kept failing auth entirely (both ly and SSH); using an
+        # explicit pre-computed hash + non-mutable users sidesteps whatever's wrong with
+        # that path and is fully deterministic for testing. Password is "test".
+        users.mutableUsers = false;
+        users.users.yanis.hashedPassword = "$6$qhzU5CaUiCUKdHdG$fDtrRM.Hz9R6duUghhn51jSGogNBTTseMCo4FOvSB7vbcAsX4yFmVF./wRMN.GS3kOmAXG1R1NVh02Mlylfu2/";
+        services.openssh.enable = lib.mkForce true;
+        virtualisation.forwardPorts = [
+            { from = "host"; host.port = 2222; guest.port = 22; }
+        ];
+    };
+
     # Docker Compose est inclus dans le paquet docker (plugin `docker compose`),
     # pas besoin de l'ajouter séparément dans packages.nix.
     virtualisation.docker.enable = true;

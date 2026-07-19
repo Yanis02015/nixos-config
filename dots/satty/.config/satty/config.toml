@@ -12,7 +12,7 @@ initial-tool = "rectangle"
 copy-command = "wl-copy"
 annotation-size-factor = 2
 # Save to your dedicated folder
-output-filename = "/home/leabua/Pictures/Screenshots/satty-%Y-%m-%d_%H:%M:%S.png"
+output-filename = "/home/yanis/Pictures/Screenshots/satty-%Y-%m-%d_%H:%M:%S.png"
 # Don't clutter the drive if you only wanted a clipboard copy
 save-after-copy = false
 default-hide-toolbars = false
