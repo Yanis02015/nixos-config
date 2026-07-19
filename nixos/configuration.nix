@@ -12,6 +12,7 @@
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
 # systemwide caps <-> escape
+    services.xserver.xkb.layout = "us";
     services.xserver.xkb.options = "caps:swapescape";
     console.useXkbConfig = true;
 
@@ -20,7 +21,20 @@
     networking.hostName = "nixos"; # Define your hostname.
     networking.networkmanager.enable = true;
 
-    time.timeZone = "Africa/Johannesburg";
+    time.timeZone = "America/Toronto";
+
+    i18n.defaultLocale = "en_US.UTF-8";
+    i18n.extraLocaleSettings = {
+        LC_ADDRESS = "en_US.UTF-8";
+        LC_IDENTIFICATION = "en_US.UTF-8";
+        LC_MEASUREMENT = "en_US.UTF-8";
+        LC_MONETARY = "en_US.UTF-8";
+        LC_NAME = "en_US.UTF-8";
+        LC_NUMERIC = "en_US.UTF-8";
+        LC_PAPER = "en_US.UTF-8";
+        LC_TELEPHONE = "en_US.UTF-8";
+        LC_TIME = "en_US.UTF-8";
+    };
 
     services.pulseaudio.enable = false;
     security.rtkit.enable = true;
@@ -34,22 +48,28 @@
 
     services.libinput.enable = true;
 
-    hardware.graphics = {
-        enable = true;
-        extraPackages = with pkgs; [
-            intel-media-driver   
-            libvdpau-va-gl       
-        ];
+    # ---------------------------------------------------------------------------
+    # Pilote NVIDIA (GTX 1070 - architecture Pascal).
+    # Adaptation obligatoire : le repo Leabua/dotfiles est pensé pour un laptop
+    # Intel-only (intel-media-driver). Cette machine a une GTX 1070 dédiée, sans
+    # GPU Intel du tout (lspci ne montre qu'un seul contrôleur VGA : NVIDIA).
+    # legacy_580 est nécessaire : le pilote "stable" a abandonné le support
+    # Pascal, ce qui causait un écran figé en 1024x768 sans EDID.
+    # ---------------------------------------------------------------------------
+    services.xserver.videoDrivers = [ "nvidia" ];
+
+    hardware.graphics.enable = true;
+
+    hardware.nvidia = {
+        modesetting.enable = true;
+        powerManagement.enable = false;
+        open = false;
+        nvidiaSettings = true;
+        package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     };
 
-fileSystems."/mnt/hdd" = {
-  device = "/dev/disk/by-uuid/4fc12482-bbb3-4ced-a896-2b5f560c9f6b";
-  fsType = "ext4";
-  options = [
-    "nofail"                          
-    "x-systemd.device-timeout=5s"     
-  ];
-};
+# Note : fileSystems."/mnt/hdd" du repo original est omis — c'est un disque
+# secondaire propre à la machine de l'auteur, absent ici.
 
 # backend services for the quickshell bar widgets
     services.upower.enable = true;                 # battery
@@ -57,10 +77,14 @@ fileSystems."/mnt/hdd" = {
     hardware.bluetooth.enable = true;              # bluetooth
     services.logind.powerKey = "ignore";           # stop logind powering off; let hyprland's XF86PowerOff bind open the quickshell powerMenu (long-press still forces off)
 
-    users.users.leabua = {
+    users.users.yanis = {
         isNormalUser = true;
+        description = "yanis";
         extraGroups = [ "wheel" "networkmanager" ];
+        shell = pkgs.zsh;
     };
+
+    security.sudo.wheelNeedsPassword = false;
 
 # List services that you want to enable:
     services.displayManager.ly.enable = true;
@@ -68,8 +92,9 @@ fileSystems."/mnt/hdd" = {
         enable = true;
         xwayland.enable = true;
     };
-    programs.niri.enable = true;
+    programs.niri.enable = false;
 
+    security.polkit.enable = true;
     systemd.packages = with pkgs; [ hyprpolkitagent ];
     systemd.user.services.hyprpolkitagent.wantedBy = [ "graphical-session.target" ];
 
@@ -84,9 +109,9 @@ fileSystems."/mnt/hdd" = {
 
     programs.firefox.enable = true;
     services.openssh.enable = true;
+    services.printing.enable = true;
 
     programs.zsh.enable = true;
-    users.users.leabua.shell = pkgs.zsh;
     environment.pathsToLink = [
         "/share/fzf"
         "/share/zsh-powerlevel10k"
@@ -100,10 +125,17 @@ fileSystems."/mnt/hdd" = {
     services.udisks2.enable = true;
 
     # Forcing dark mode via session variables (better for Wayland/Hyprland)
+    # LIBVA_DRIVER_NAME, GBM_BACKEND, __GLX_VENDOR_LIBRARY_NAME, NVD_BACKEND,
+    # NIXOS_OZONE_WL : adaptation obligatoire pour la GTX 1070 (le repo original
+    # utilise LIBVA_DRIVER_NAME=iHD, spécifique aux GPU Intel).
     environment.sessionVariables = {
         GTK_THEME = "Adwaita:dark";
         QT_QPA_PLATFORM = "wayland;xcb";
-        LIBVA_DRIVER_NAME = "iHD";
+        LIBVA_DRIVER_NAME = "nvidia";
+        GBM_BACKEND = "nvidia-drm";
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        NVD_BACKEND = "direct";
+        NIXOS_OZONE_WL = "1";
         EDITOR = "nvim";
         VISUAL = "nvim";
         BROWSER = "zen-beta";

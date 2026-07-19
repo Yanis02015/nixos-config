@@ -4,7 +4,7 @@
   environment.systemPackages = with pkgs; [
     adwaita-qt
       adwaita-qt6
-      awww          
+      awww
       bibata-cursors
       brightnessctl
       btop
@@ -31,11 +31,14 @@
       libnotify
       matugen
       maven
+      # nautilus : ajouté (le repo source déclare FILEMANAGER = "nautilus"
+      # dans hyprland.lua mais oublie de l'installer dans packages.nix)
+      nautilus
       nix-output-monitor # give me some visual for the nix rebuilds and upgrades
       neovim
       obs-studio
       obsidian
-      papirus-icon-theme  
+      papirus-icon-theme
       pavucontrol
       playerctl
       pnpm
@@ -98,10 +101,15 @@
       ];
 
 # fonts (system-wide, via fonts.packages not systemPackages)
+# noto-fonts / noto-fonts-color-emoji : ajoutés en plus du set du repo, pour
+# éviter les glyphes manquants (tofu boxes) hors terminal — le repo ne
+# déclare que des polices monospace/nerd-font.
   fonts.packages = with pkgs; [
     departure-mono
     maple-mono.NF
       nerd-fonts.departure-mono
       nerd-fonts.iosevka
+      noto-fonts
+      noto-fonts-color-emoji
   ];
 }
