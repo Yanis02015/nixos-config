@@ -79,9 +79,13 @@
     users.users.yanis = {
         isNormalUser = true;
         description = "yanis";
-        extraGroups = [ "wheel" "networkmanager" ];
+        extraGroups = [ "wheel" "networkmanager" "docker" ];
         shell = pkgs.zsh;
     };
+
+    # Docker Compose est inclus dans le paquet docker (plugin `docker compose`),
+    # pas besoin de l'ajouter séparément dans packages.nix.
+    virtualisation.docker.enable = true;
 
     security.sudo.wheelNeedsPassword = false;
 
