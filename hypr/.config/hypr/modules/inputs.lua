@@ -4,7 +4,7 @@
 
 hl.config({
 	input = {
-		kb_layout = "us",
+		kb_layout = "fr",
 		kb_options = "ctrl:swap_lalt_lctl",
 
 		repeat_rate = 60,
