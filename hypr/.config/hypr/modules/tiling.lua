@@ -29,6 +29,10 @@ bind("SUPER + code:21", hl.dsp.window.resize({ x = 100, y = 0, relative = true }
 bind("SUPER + SHIFT + code:20", hl.dsp.window.resize({ x = 0, y = -100, relative = true }))
 bind("SUPER + SHIFT + code:21", hl.dsp.window.resize({ x = 0, y = 100, relative = true }))
 
+-- switch workspaces with arrow keys
+bind("SUPER + Left", hl.dsp.focus({ workspace = "-1" }))
+bind("SUPER + Right", hl.dsp.focus({ workspace = "+1" }))
+
 -- switch workspaces
 for i = 1, 9 do
 	bind("SUPER +" .. i, hl.dsp.focus({ workspace = i }))
