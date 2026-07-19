@@ -12,6 +12,7 @@
       bun
       claude-code
       cliphist
+      discord
       fastfetch
       fd
       fzf
