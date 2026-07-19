@@ -5,7 +5,7 @@
 hl.config({
 	input = {
 		kb_layout = "us",
-		kb_options = "caps:swapescape",
+		kb_options = "ctrl:swap_lalt_lctl",
 
 		repeat_rate = 60,
 		repeat_delay = 300,
