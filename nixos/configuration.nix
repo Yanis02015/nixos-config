@@ -110,6 +110,12 @@
 
 # List services that you want to enable:
     services.displayManager.ly.enable = true;
+    # Trousseau système (libsecret/org.freedesktop.secrets) : requis par Claude
+    # Desktop (Electron safeStorage) pour persister la session de login. ly a déjà
+    # l'intégration PAM (voir nixos/modules/services/display-managers/ly.nix,
+    # enableGnomeKeyring suit ce service), donc l'activer ici suffit à déverrouiller
+    # le trousseau automatiquement au login.
+    services.gnome.gnome-keyring.enable = true;
     programs.hyprland = {
         enable = true;
         xwayland.enable = true;
