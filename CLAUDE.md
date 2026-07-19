@@ -31,6 +31,9 @@ Le repo upstream de Leabua est pensé pour un laptop **Intel-only** — ne jamai
 - Clavier : `caps:swapescape` retiré (causait un Verr.Maj fantôme via Échap), `ctrl:swap_lalt_lctl` ajouté (inversion volontaire Ctrl/Alt gauche), layout `fr` (pas `us`), `²`/`<` inversés via `custom.xkb`
 - `services.openssh.enable = false` (pas de besoin d'accès distant sur cette machine)
 - `pacseek` retiré (config stow morte, jamais installé comme paquet, outil Arch/pacman sans usage sur NixOS)
+- `waybar`, `rofi`, `walker`, `mako`, `alacritty` retirés (2026-07-19) : configs mortes, entièrement remplacées par quickshell (bar, launcher, notifs, power menu) et ghostty (terminal) — aucune n'était lancée dans `autostart.lua`/`bindings.lua` ni installée via `packages.nix`, malgré le README upstream qui les présentait comme "unstowed on purpose". `rofi`/`walker`/`mako`/`alacritty` étaient en fait stow (symlinks actifs dans `~/.config`) sur cette machine sans être utilisées — nettoyage via `stow -D` + suppression des dossiers. Le script orphelin `scripts/cliphist-rofi` (dépendait de rofi, jamais appelé) a été supprimé avec.
+- `niri` retiré (2026-07-19) : jamais stow, compositeur désactivé (`programs.niri.enable = false`, voir section déviations ci-dessous) — la config restait sans utilité.
+- `arch.md` retiré (2026-07-19) : notes d'installation Arch Linux de l'auteur upstream, sans rapport avec cette machine NixOS-only.
 - Alias `.zshrc` `clean` renommé `nix-purge-old-generations` + confirmation avant exécution (l'original supprimait silencieusement TOUTES les générations NixOS sans avertissement)
 - Références résiduelles à `/home/leabua/...` corrigées vers `/home/yanis/...` dans `.zshrc`
 - Timer systemd `wallpaper-rotate.timer` ajouté (rotation horaire automatique, absent chez l'auteur qui ne le fait qu'en manuel)
