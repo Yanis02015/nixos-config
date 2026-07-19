@@ -19,16 +19,16 @@ Note: I assume that you'll do the part of figuring out how to install arch or ni
 
 The whole system is declared in [`nixos/`](https://github.com/Leabua/dotfiles/tree/master/nixos) as a flake. It is *not* stowed and does *not* live in `/etc/nixos` - you build straight out of the repo.
 
-1. Install Nixos from the ISO as normal, then clone this repo to `~/dotfiles`.
+1. Install Nixos from the ISO as normal, then clone this repo to `~/nixos-config`.
 2. Enable flakes if the installer hasn't, by adding to `/etc/nixos/configuration.nix`:
    `nix.settings.experimental-features = [ "nix-command" "flakes" ];` then `sudo nixos-rebuild switch`.
 3. Copy your machine's real hardware config over the one in the repo - this file is specific to the machine that generated it and will not work on yours as-is:
 ```
-cp /etc/nixos/hardware-configuration.nix ~/dotfiles/nixos/
+cp /etc/nixos/hardware-configuration.nix ~/nixos-config/nixos/
 ```
 4. Build it. The flake target is `#nixos`, which matches the hostname set in `configuration.nix` - change both if you want a different hostname.
 ```
-sudo nixos-rebuild switch --flake ~/dotfiles/nixos#nixos
+sudo nixos-rebuild switch --flake ~/nixos-config/nixos#nixos
 ```
 5. Stow whatever configs you want from the table below.
 
@@ -49,20 +49,20 @@ git config --global user.email "your.email@example.com"
 Then: `git clone https://github.com/Leabua/dotfiles.git`. <- Now you have all the files on your system.
 
 4. Stow usage 
-Go into the cloned directory then:
+All stowable packages live under `dots/`, with a `.stowrc` there pinning the target to your home directory, so no flags are needed.
 Symlinking your configs
-Recommended: `stow <folderName> `. I.e. `stow hypr` or for multiple files `stow hypr nvim tmux ghostty`.
+Recommended: from `dots/`, `stow <folderName> `. I.e. `stow hypr` or for multiple files `stow hypr nvim tmux ghostty`.
 Fastest and not recommended: `stow .` -> symlinks it all. Not recommeneded since thats just a mess since some packages do the same role.
 
 Unstowing a directory
-Go into the cloned repository. 
+Go into `dots/`. 
 `stow -D <folderName>` <- removes the symlink (capital D; lowercase `-d` sets the stow directory instead)
 
-You will be able to change the contents of anything either in dotfiles or in the actual place the files link to (likely ~/.config/ in most circumstances).
+You will be able to change the contents of anything either in the repo or in the actual place the files link to (likely ~/.config/ in most circumstances).
 
 ## Stowable packages
 
-Every package below is stowed the same way -`stow <package>` from inside `~/dotfiles`, no flags. Pick only what you need, they're all independent.
+Every package below is stowed the same way -`stow <package>` from inside `~/nixos-config/dots`, no flags (a `.stowrc` there pins the target to your home directory) — except `wallpapers`, which lives at the repo root instead of `dots/` and stows with plain `stow wallpapers` from `~/nixos-config`. Pick only what you need, they're all independent.
 
 Almost everything lands in `~/.config/<package>`. The only two exceptions are `zsh` (which drops `.zshrc` and `.p10k.zsh` straight into your home directory, since that's where zsh looks for them) and `wallpapers` (which lands at `~/Wallpapers`, since that's where `rotate_wallpaper.sh` looks).
 NB: quickshell is the bar, launcher, notification daemon and power menu, so the standalone alternatives that used to live here (`alacritty`, `mako`, `rofi`, `walker`, `waybar`, `niri`, `pacseek`) have been removed from this fork — nothing stows or runs them anymore.
@@ -101,5 +101,5 @@ stow hypr quickshell matugen wallpapers ghostty tmux zsh nvim btop fastfetch gtk
 Three directories are in here but are not meant to be symlinked:
 
 - [`nixos`](https://github.com/Leabua/dotfiles/tree/master/nixos) - the system config (`flake.nix`, `configuration.nix`, `packages.nix`). Rebuild straight from the repo, don't stow it.
-- [`scripts`](https://github.com/Leabua/dotfiles/tree/master/scripts) - helper scripts. The configs call them by their repo path (`~/dotfiles/scripts/rotate_wallpaper.sh`), so they run in place.
+- [`scripts`](https://github.com/Leabua/dotfiles/tree/master/scripts) - helper scripts. The configs call them by their repo path (`~/nixos-config/scripts/rotate_wallpaper.sh`), so they run in place.
 - [`assets`](https://github.com/Leabua/dotfiles/tree/master/assets) - the screenshot at the top of this README. Nothing reads it at runtime.

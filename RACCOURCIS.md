@@ -1,6 +1,6 @@
 # Raccourcis — Hyprland (Leabua theme) & tmux
 
-Vérifiés directement dans `~/dotfiles/hypr/.config/hypr/modules/*.lua` et `~/dotfiles/tmux/.config/tmux/tmux.conf`.
+Vérifiés directement dans `~/nixos-config/dots/hypr/.config/hypr/modules/*.lua` et `~/nixos-config/dots/tmux/.config/tmux/tmux.conf`.
 
 ## Navigation générale (Hyprland)
 

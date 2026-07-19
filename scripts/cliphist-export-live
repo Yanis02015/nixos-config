@@ -11,4 +11,4 @@ cat >/dev/null
 sleep 1
 
 # Idempotent, so a missed entry is picked up on the next copy rather than lost.
-exec "$HOME/dotfiles/scripts/cliphist-export" >/dev/null 2>&1
+exec "$HOME/nixos-config/scripts/cliphist-export" >/dev/null 2>&1

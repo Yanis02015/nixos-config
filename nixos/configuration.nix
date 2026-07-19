@@ -111,7 +111,7 @@
     };
 
     # Change de wallpaper (+ régénère les couleurs Matugen) toutes les heures.
-    systemd.user.services.wallpaper-rotate.serviceConfig.ExecStart = "%h/dotfiles/scripts/rotate_wallpaper.sh";
+    systemd.user.services.wallpaper-rotate.serviceConfig.ExecStart = "%h/nixos-config/scripts/rotate_wallpaper.sh";
     systemd.user.timers.wallpaper-rotate = {
         wantedBy = [ "timers.target" ];
         timerConfig = {

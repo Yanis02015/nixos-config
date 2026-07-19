@@ -15,7 +15,7 @@ autoload -Uz compinit
 compinit
 
 # ── path ─────────────────────────────────────────────────────
-export PATH="$HOME/dotfiles/scripts:$PATH"
+export PATH="$HOME/nixos-config/scripts:$PATH"
 export PATH="$PATH:/home/yanis/.local/bin"
 
 # ── ssh agent (gcr/gnome-keyring) ────────────────────────────
@@ -58,11 +58,12 @@ _src \
 # ATTENTION : supprime TOUTES les anciennes générations NixOS (plus de rollback possible).
 # Nom explicite exprès (l'original s'appelait juste "clean", trop discret pour ce que ça fait),
 # + confirmation avant de lancer.
-alias nix-purge-old-generations="echo 'Ceci va supprimer TOUTES les anciennes générations NixOS (plus de retour en arrière possible). Ctrl+C pour annuler, Entrée pour continuer.' && read -r && sudo nix-collect-garbage -d && sudo nixos-rebuild boot --flake $HOME/dotfiles/nixos#nixos"
-alias nixconf="nvim $HOME/dotfiles/nixos"
-alias rebuild="sudo nixos-rebuild switch --flake $HOME/dotfiles/nixos#nixos |& nom"
+alias nix-purge-old-generations="echo 'Ceci va supprimer TOUTES les anciennes générations NixOS (plus de retour en arrière possible). Ctrl+C pour annuler, Entrée pour continuer.' && read -r && sudo nix-collect-garbage -d && sudo nixos-rebuild boot --flake $HOME/nixos-config/nixos#nixos"
+alias nixconf="nvim $HOME/nixos-config/nixos"
+alias rebuild="sudo nixos-rebuild switch --flake $HOME/nixos-config/nixos#nixos |& nom"
 alias search="nix search nixpkgs"
-alias upgrade="nix flake update --flake $HOME/dotfiles/nixos && rebuild"
+alias upgrade="nix flake update --flake $HOME/nixos-config/nixos && rebuild"
+alias dots="cd $HOME/nixos-config"
 
 # ── general QoL ──────────────────────────────────────────────
 alias catall="find . -type f -exec tail -n +1 {} + | nvim"

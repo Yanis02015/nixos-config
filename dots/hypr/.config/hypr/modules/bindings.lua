@@ -4,7 +4,7 @@
 local bind = hl.bind
 
 -- wallpaper switcher
-bind("SUPER + P", hl.dsp.exec_cmd("~/dotfiles/scripts/rotate_wallpaper.sh"))
+bind("SUPER + P", hl.dsp.exec_cmd("~/nixos-config/scripts/rotate_wallpaper.sh"))
 
 -- generics
 bind("SUPER + Return", hl.dsp.exec_cmd(TERMINAL))
