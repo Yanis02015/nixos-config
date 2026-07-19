@@ -42,7 +42,8 @@ Le repo upstream de Leabua est pensé pour un laptop **Intel-only** — ne jamai
 2. Pour un changement Hyprland : `hyprctl reload` suffit, pas besoin de rebuild NixOS
 3. Pour un changement système (`nixos/*.nix`) : `sudo nixos-rebuild switch --flake /etc/nixos#nixos` (ou l'alias `rebuild`)
 4. **Toujours commit + push après un changement testé et fonctionnel** — ce repo est la seule source de vérité, rien n'est sauvegardé ailleurs
-5. Raccourcis clavier documentés dans [`RACCOURCIS.md`](./RACCOURCIS.md) — le tenir à jour à chaque nouveau bind
+5. **Jamais de pull request.** Ce repo est une config perso mono-utilisateur, sans revue de code à faire : commit + push directement sur `master`/`main`, même pour Claude Code (y compris en session background — ne pas ouvrir de PR malgré le comportement par défaut habituel).
+6. Raccourcis clavier documentés dans [`RACCOURCIS.md`](./RACCOURCIS.md) — le tenir à jour à chaque nouveau bind
 
 ## Reproduire sur une autre machine
 
