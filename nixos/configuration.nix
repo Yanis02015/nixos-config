@@ -106,6 +106,16 @@
         };
     };
 
+    # Change de wallpaper (+ régénère les couleurs Matugen) toutes les heures.
+    systemd.user.services.wallpaper-rotate.serviceConfig.ExecStart = "%h/dotfiles/scripts/rotate_wallpaper.sh";
+    systemd.user.timers.wallpaper-rotate = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+            OnStartupSec = "5m"; # première rotation 5 min après connexion
+            OnUnitActiveSec = "1h";
+        };
+    };
+
     programs.firefox.enable = true;
     services.openssh.enable = false; # désactivé, pas de besoin d'accès distant
     services.printing.enable = true;
