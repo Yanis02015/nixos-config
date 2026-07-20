@@ -54,6 +54,20 @@ systemctl --user status wallpaper-rotate.timer
 
 Pas de "suppression" de workspace à proprement parler : un workspace disparaît tout seul dès qu'il n'a plus aucune fenêtre et n'est plus affiché.
 
+## Barre Quickshell — icônes d'apps épinglées
+
+Dans l'île du milieu de la barre (à droite des workspaces), quelques icônes cliquables lancent directement une app — pas besoin de passer par le launcher (`SUPER + Espace`).
+
+Actuellement épinglées : **Discord**, **Zed**.
+
+Pour ajouter/retirer une app : éditer la liste `pins` dans [`dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml`](./dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml), format `{ icon: "<nom Icon= du .desktop de l'app>", command: ["binaire", "args"...] }`. L'icône est résolue depuis le thème d'icônes système (`Quickshell.iconPath`), donc `icon` doit correspondre au champ `Icon=` du fichier `.desktop` de l'app (`grep Icon= /run/current-system/sw/share/applications/<app>.desktop`), pas à un glyphe Nerd Font.
+
+Aucun rebuild NixOS nécessaire. Pour voir le changement, il faut relancer quickshell (il ne fait pas de hot-reload) :
+```
+qs kill -p ~/.config/quickshell/minimalBar && qs -p ~/.config/quickshell/minimalBar &
+```
+(`qs -p` seul sans `kill` d'abord lance une 2ᵉ instance en double au lieu de remplacer la première.)
+
 ## Captures d'écran
 
 | Raccourci | Action |
