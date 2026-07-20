@@ -21,3 +21,7 @@ output_path = '~/.cache/hypr/hyprlock-colors.conf'
 input_path = '~/.config/matugen/templates/hyprborderTemplate.lua'
 output_path = '~/.cache/hypr/border-colors.lua'
 
+[templates.ghostty]
+input_path = '~/.config/matugen/templates/ghosttyTemplate.conf'
+output_path = '~/.cache/ghostty/theme-matugen'
+
