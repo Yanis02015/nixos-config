@@ -6,20 +6,24 @@ import Quickshell.Io
 import qs.templates
 
 // Quick-launch icons for pinned apps -> click to spawn, list is meant to grow over time.
-// Icons are resolved from the system icon theme (same lookup the app launcher uses),
-// so `icon` must match a .desktop file's Icon= key, not a glyph.
+// Each pin resolves its icon one of two ways:
+//   - `icon: "<name>"`  -> looked up in the system icon theme (.desktop Icon= key), same as the launcher
+//   - `asset: "assets/<file>"` -> bundled file next to this component, for logos that need a specific
+//     rendering (e.g. a mark that's illegible at icon-theme sizes, or has no theme icon at all)
+// `size` is optional -> overrides Globals.barIconSize for pins whose mark needs more room to stay legible
+// (Zed's nested-line logo turns into a blob below ~22px, unlike Discord's bolder mark).
 RowLayout {
     id: root
     spacing: Globals.spacing
 
-    // add new pins here: { icon: "<icon-theme name, from the app's .desktop Icon= key>", command: ["binary", "args"...] }
     property var pins: [
         {
             icon: "discord",
             command: ["discord"]
         },
         {
-            icon: "zed",
+            asset: "assets/zed.png",
+            size: Globals.barIconSize + 8,
             command: ["zeditor"]
         }
     ]
@@ -30,13 +34,16 @@ RowLayout {
             id: pin
             required property var modelData
 
-            implicitWidth: Globals.barIconSize
-            implicitHeight: Globals.barIconSize
+            readonly property int iconSize: pin.modelData.size ?? Globals.barIconSize
+
+            implicitWidth: pin.iconSize
+            implicitHeight: pin.iconSize
+            Layout.alignment: Qt.AlignVCenter
 
             Image {
                 id: content
                 anchors.fill: parent
-                source: Quickshell.iconPath(pin.modelData.icon, "")
+                source: pin.modelData.asset ? Qt.resolvedUrl("../" + pin.modelData.asset) : Quickshell.iconPath(pin.modelData.icon, "")
                 fillMode: Image.PreserveAspectFit
                 smooth: true
                 opacity: ma.containsMouse ? 0.75 : 1
