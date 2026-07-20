@@ -16,6 +16,7 @@ Rectangle {
         Logo {} // -> new access point for power settings
         Clock {}
         Workspaces {}
+        PinnedApps {} // quick-launch icons for pinned apps
         CriticalAlerts {} // battery / cpu / ram alerts when the right island is hidden
     }
 }
