@@ -56,6 +56,7 @@
       tree-sitter
       vscode
       wget
+      wireguard-tools
       wl-clipboard
       yazi
       zed-editor
