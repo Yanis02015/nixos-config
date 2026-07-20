@@ -76,6 +76,12 @@
     hardware.bluetooth.enable = true;              # bluetooth
     services.logind.settings.Login.HandlePowerKey = "ignore";  # stop logind powering off; let hyprland's XF86PowerOff bind open the quickshell powerMenu (long-press still forces off)
 
+    # KDE Connect : équivalent Linux de "Mon téléphone"/Phone Link (Windows).
+    # Installe kdeconnect-kde (daemon + kdeconnect-indicator, tray icon
+    # utilisable hors Plasma) et ouvre automatiquement les ports TCP/UDP
+    # 1714-1764 requis pour la découverte/appairage sur le réseau local.
+    programs.kdeconnect.enable = true;
+
     users.users.yanis = {
         isNormalUser = true;
         description = "yanis";
