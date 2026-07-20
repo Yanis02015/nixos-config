@@ -52,7 +52,7 @@ hl.window_rule({
 	match = { title = "^yazi-term$", class = "com.mitchellh.ghostty" },
 	float = true,
 	center = true,
-	size = "70% 70%",
+	size = "60% 60%",
 })
 
 -- bluetui
@@ -107,6 +107,39 @@ hl.window_rule({
 	float = true,
 	center = true,
 	size = "900 600",
+})
+
+-- pinned bar apps -> float small & centered on launch, same 60%x60% look as the SUPER+O default
+hl.window_rule({
+	name = "discord-float",
+	match = { class = "^discord$" },
+	float = true,
+	center = true,
+	size = "60% 60%",
+})
+
+hl.window_rule({
+	name = "zed-float",
+	match = { class = "^dev.zed.Zed$" },
+	float = true,
+	center = true,
+	size = "60% 60%",
+})
+
+hl.window_rule({
+	name = "claude-desktop-float",
+	match = { class = "^com.anthropic.Claude$" },
+	float = true,
+	center = true,
+	size = "60% 60%",
+})
+
+hl.window_rule({
+	name = "zen-browser-float",
+	match = { class = "^zen-beta$" },
+	float = true,
+	center = true,
+	size = "60% 60%",
 })
 
 -- Apple Music PWA
