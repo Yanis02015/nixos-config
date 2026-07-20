@@ -12,6 +12,10 @@ bind("SUPER + SHIFT + O", hl.dsp.exec_cmd("obsidian"))
 bind("SUPER + SHIFT + F", hl.dsp.exec_cmd(FILEMANAGER))
 bind("SUPER + SHIFT + E", hl.dsp.exec_cmd("ghostty --title=yazi-term -e yazi"))
 bind("SUPER + SHIFT + D", hl.dsp.exec_cmd("ghostty --title=lazydocker-term -e lazydocker"))
+-- sesh : sélecteur de session tmux (nouveau terminal ne rejoint plus de
+-- session partagée automatiquement, voir .zshrc) — retrouve/crée une
+-- session par projet en un raccourci
+bind("SUPER + T", hl.dsp.exec_cmd("ghostty --title=sesh-term -e ~/nixos-config/scripts/sesh-picker.sh"))
 bind("SUPER +  B", hl.dsp.exec_cmd(BROWSER))
 
 -- quickshell Bindings

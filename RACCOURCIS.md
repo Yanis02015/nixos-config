@@ -20,6 +20,7 @@ Vérifiés directement dans `~/nixos-config/dots/hypr/.config/hypr/modules/*.lua
 | `SUPER + Shift + Espace` | Cacher/afficher la barre Quickshell |
 | `SUPER + P` | Changer de wallpaper manuellement (régénère les couleurs Matugen) |
 | `SUPER + Ctrl + L` | Verrouiller l'écran (hyprlock) |
+| `SUPER + T` | Sélecteur de session tmux (sesh) — retrouver/créer une session par projet, fenêtre flottante |
 
 **Rotation automatique** : le wallpaper change aussi tout seul, **toutes les heures**, via le timer systemd `wallpaper-rotate.timer` (première rotation 5 min après connexion). `SUPER + P` reste dispo pour forcer un changement à tout moment. Pour vérifier/gérer le timer :
 ```
@@ -86,6 +87,7 @@ Souris activée — tu peux aussi cliquer sur les onglets/panneaux directement.
 | `Ctrl+b` puis `-` | Scinder le panneau en haut/bas |
 | `Alt + H/J/K/L` | Naviguer entre panneaux (vim-style) |
 | `Ctrl+b` puis `d` | Se détacher (la session continue en arrière-plan) |
+| `Ctrl+b` puis `s` | Sélecteur de session tmux (sesh, popup fzf) — retrouver/créer/tuer une session |
 
 ### Sidebar (plugin tmux-pane-tree)
 
@@ -112,7 +114,7 @@ Une fois le focus dans la sidebar :
 | `p` | Cacher/afficher les panneaux |
 | `q` | Quitter la sidebar |
 
-**Important** : chaque nouveau terminal (`SUPER+Entrée`) se rattache automatiquement à la **même session tmux partagée** (configuré dans `.zshrc`). Ce n'est pas un bug — c'est voulu. Utilise `Ctrl+b c` pour une vraie nouvelle fenêtre de travail indépendante à l'intérieur de cette session.
+**Important** : chaque nouveau terminal (`SUPER+Entrée`) ouvre un shell zsh normal, **sans tmux** — l'auto-attach à une session partagée a été désactivé (voir `.zshrc`). Pour retrouver ou créer une session tmux par projet : `SUPER+T` depuis un nouveau terminal, ou `Ctrl+b` puis `s` si tu es déjà dans une session — les deux ouvrent le même sélecteur `sesh`.
 
 ---
 

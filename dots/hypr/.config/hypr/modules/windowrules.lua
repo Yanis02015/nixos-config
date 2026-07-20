@@ -82,6 +82,15 @@ hl.window_rule({
 	size = "600 800",
 })
 
+-- sesh (sélecteur de session tmux)
+hl.window_rule({
+	name = "sesh-float",
+	match = { title = "^sesh-term$", class = "com.mitchellh.ghostty" },
+	float = true,
+	center = true,
+	size = "80% 70%",
+})
+
 -- nmtui
 hl.window_rule({
 	name = "nmtui-float",

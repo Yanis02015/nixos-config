@@ -51,6 +51,7 @@
       quickshell
       ripgrep
       satty
+      sesh # sélecteur/créateur de session tmux fuzzy (SUPER+T / tmux prefix+s)
       slurp
       stow
       tmux
