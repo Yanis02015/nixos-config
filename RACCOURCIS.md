@@ -34,6 +34,7 @@ systemctl --user status wallpaper-rotate.timer
 | `SUPER + O` | Basculer flottant/tuilé (flottant = 60%×60%, centré par défaut) |
 | `SUPER + F` | Plein écran |
 | `SUPER + H / J / K / L` | Naviguer entre fenêtres (gauche/bas/haut/droite, façon vim) |
+| `SUPER + Tab` | Passer à la fenêtre ouverte suivante (cycle, sans aperçu visuel) |
 | `SUPER + Shift + H/J/K/L` | Déplacer/échanger la fenêtre |
 | `SUPER + glisser` (clic gauche, avec SUPER) | Déplacer une fenêtre flottante |
 | `SUPER + Shift + S` | Réduire la fenêtre active (l'envoie dans le workspace spécial, sans la fermer) |
@@ -47,6 +48,8 @@ systemctl --user status wallpaper-rotate.timer
 | `SUPER + ←` / `SUPER + →` | Aller au workspace précédent / suivant |
 | `SUPER + Shift + 1..0` | Déplacer la fenêtre vers ce workspace (et la suivre) |
 | `SUPER + Shift + Ctrl + 1..0` | Déplacer la fenêtre vers ce workspace (sans la suivre) |
+| `SUPER + Shift + ←/→` | Déplacer la fenêtre active vers le workspace précédent/suivant (et la suivre) |
+| `SUPER + Shift + Ctrl + ←/→` | Déplacer la fenêtre active vers le workspace précédent/suivant (sans la suivre) |
 | `SUPER + Shift + N` | Déplacer la fenêtre active vers le prochain workspace vide |
 
 Pas de "suppression" de workspace à proprement parler : un workspace disparaît tout seul dès qu'il n'a plus aucune fenêtre et n'est plus affiché.

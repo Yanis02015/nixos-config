@@ -32,9 +32,19 @@ bind("SUPER + SHIFT + code:21", hl.dsp.window.resize({ x = 0, y = 100, relative 
 -- move active window to the next empty workspace
 bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "empty" }))
 
+-- cycle through open windows (no visual preview, just focus-hopping —
+-- stopgap en attendant un vrai switcher visuel façon Alt+Tab)
+bind("SUPER + Tab", hl.dsp.window.cycle_next())
+
 -- switch workspaces with arrow keys
 bind("SUPER + Left", hl.dsp.focus({ workspace = "-1" }))
 bind("SUPER + Right", hl.dsp.focus({ workspace = "+1" }))
+
+-- move active window to the previous/next workspace with arrow keys
+bind("SUPER + SHIFT + Left", hl.dsp.window.move({ workspace = "-1" }))
+bind("SUPER + SHIFT + Right", hl.dsp.window.move({ workspace = "+1" }))
+bind("SUPER + SHIFT + CTRL + Left", hl.dsp.window.move({ workspace = "-1", follow = false }))
+bind("SUPER + SHIFT + CTRL + Right", hl.dsp.window.move({ workspace = "+1", follow = false }))
 
 -- switch workspaces
 -- Liés par code physique (code:10 = touche "1", etc.), pas par symbole : en
