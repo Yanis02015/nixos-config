@@ -68,3 +68,7 @@ tmux/.config/tmux/plugins/
 result
 result-*
 *.qcow2
+
+# Nautilus sidebar bookmarks: purely local (which folders you've pinned),
+# not something a fresh machine should inherit from this one.
+dots/gtk/.config/gtk-3.0/bookmarks
