@@ -21,10 +21,10 @@ export PATH="$PATH:/home/yanis/.local/bin"
 # ── ssh agent (gcr/gnome-keyring) ────────────────────────────
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gcr/ssh"
 
-# ── tmux autostart ───────────────────────────────────────────
-if command -v tmux &>/dev/null && [[ -z "$TMUX" ]]; then
-  tmux attach 2>/dev/null || tmux new-session
-fi
+# ── tmux autostart (disabled) ────────────────────────────────
+# if command -v tmux &>/dev/null && [[ -z "$TMUX" ]]; then
+#   tmux attach 2>/dev/null || tmux new-session
+# fi
 
 # ── prompt (powerlevel10k) ───────────────────────────────────
 _src() { local f; for f in "$@"; do [[ -r $f ]] && { source "$f"; return 0; }; done; return 1 }
