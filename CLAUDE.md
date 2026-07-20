@@ -39,6 +39,7 @@ Le repo upstream de Leabua est pensé pour un laptop **Intel-only** — ne jamai
 - Références résiduelles à `/home/leabua/...` corrigées vers `/home/yanis/...` dans `.zshrc`
 - Timer systemd `wallpaper-rotate.timer` ajouté (rotation horaire automatique, absent chez l'auteur qui ne le fait qu'en manuel)
 - `nautilus` ajouté aux paquets (référencé comme `FILEMANAGER` par l'auteur mais oublié dans son propre `packages.nix`)
+- Alias `.zshrc` `tmux_kill` nettoyé (2026-07-20) : faisait `rm -rf ~/.local/share/tmux/resurrect/*.txt && tmux kill-server`, un reliquat du plugin `tmux-resurrect` de l'upstream — jamais déclaré dans `tmux.conf` ici (seuls `tpm` et `tmux-pane-tree` le sont), donc le dossier n'existe jamais et le glob raté empêchait `tmux kill-server` de s'exécuter (`&&` court-circuité). Simplifié en `tmux kill-server`.
 - Repo réorganisé et renommé (2026-07-19) : `~/dotfiles` → `~/nixos-config`, packages stow déplacés sous `dots/` (voir section Architecture ci-dessus) — pure préférence de lisibilité personnelle, aucun changement fonctionnel côté upstream.
 
 ## Workflow de modification
