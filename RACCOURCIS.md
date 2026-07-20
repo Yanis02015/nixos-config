@@ -88,6 +88,8 @@ Souris activée — tu peux aussi cliquer sur les onglets/panneaux directement.
 | `Alt + H/J/K/L` | Naviguer entre panneaux (vim-style) |
 | `Ctrl+b` puis `d` | Se détacher (la session continue en arrière-plan) |
 | `Ctrl+b` puis `s` | Sélecteur de session tmux (sesh, popup fzf) — retrouver/créer/tuer une session |
+| `Ctrl+b` puis `Ctrl+s` | Sauvegarder l'état des sessions (tmux-resurrect) — fenêtres, panneaux, dossier courant |
+| `Ctrl+b` puis `Ctrl+r` | Restaurer le dernier état sauvegardé |
 
 ### Sidebar (plugin tmux-pane-tree)
 
