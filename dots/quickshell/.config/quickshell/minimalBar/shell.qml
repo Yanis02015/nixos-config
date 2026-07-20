@@ -88,6 +88,7 @@ ShellRoot {
 
             // open-window icons, sat bare (no pill background) right beside the metrics island
             OpenWindows {
+                screen: modelData // same monitor as this bar instance -> its hover flyout must render here too, not on whichever monitor has keyboard focus
                 anchors {
                     right: rightIsland.left
                     rightMargin: Globals.spacing
