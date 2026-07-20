@@ -20,30 +20,6 @@
     networking.hostName = "nixos"; # Define your hostname.
     networking.networkmanager.enable = true;
 
-    # kill switch IPv6 pour le VPN boulot (1of10-work) : ce WireGuard ne
-    # tunnelise que l'IPv4 (AllowedIPs = 0.0.0.0/0, pas de ::/0), donc sans
-    # ça le trafic IPv6 natif du wifi maison contourne complètement le VPN
-    # (fuite constatée : IP publique inchangée malgré le tunnel actif).
-    networking.networkmanager.dispatcherScripts = [
-        {
-            type = "basic";
-            source = pkgs.writeShellScript "1of10-vpn-ipv6-killswitch" ''
-                if [ "$1" = "1of10-work" ]; then
-                    case "$2" in
-                        up)
-                            echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
-                            echo 1 > /proc/sys/net/ipv6/conf/default/disable_ipv6
-                            ;;
-                        down)
-                            echo 0 > /proc/sys/net/ipv6/conf/all/disable_ipv6
-                            echo 0 > /proc/sys/net/ipv6/conf/default/disable_ipv6
-                            ;;
-                    esac
-                fi
-            '';
-        }
-    ];
-
     time.timeZone = "America/Toronto";
 
     i18n.defaultLocale = "en_US.UTF-8";
