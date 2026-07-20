@@ -86,6 +86,8 @@ Souris activée — tu peux aussi cliquer sur les onglets/panneaux directement.
 | `Ctrl+b` puis `v` | Scinder le panneau côte à côte |
 | `Ctrl+b` puis `-` | Scinder le panneau en haut/bas |
 | `Alt + H/J/K/L` | Naviguer entre panneaux (vim-style) |
+| `Alt + \` | Basculer vers le dernier panneau actif (toggle) |
+| `Alt + Tab` | Passer au panneau suivant, en boucle |
 | `Ctrl+b` puis `d` | Se détacher (la session continue en arrière-plan) |
 | `Ctrl+b` puis `s` | Sélecteur de session tmux (sesh, popup fzf) — retrouver/créer/tuer une session |
 | `Ctrl+b` puis `Ctrl+s` | Sauvegarder l'état des sessions (tmux-resurrect) — fenêtres, panneaux, dossier courant |
