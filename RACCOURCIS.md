@@ -60,7 +60,11 @@ Juste à gauche de l'île de droite (CPU/RAM/volume/batterie/wifi), sans backgro
 
 Actuellement épinglées : **Discord**, **Zed**.
 
-Pour ajouter/retirer une app : éditer la liste `pins` dans [`dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml`](./dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml), format `{ icon: "<nom Icon= du .desktop de l'app>", command: ["binaire", "args"...] }`. L'icône est résolue depuis le thème d'icônes système (`Quickshell.iconPath`), donc `icon` doit correspondre au champ `Icon=` du fichier `.desktop` de l'app (`grep Icon= /run/current-system/sw/share/applications/<app>.desktop`), pas à un glyphe Nerd Font.
+Pour ajouter/retirer une app : éditer la liste `pins` dans [`dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml`](./dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml). Deux façons de fournir l'icône :
+- `{ icon: "<nom Icon= du .desktop de l'app>", command: [...] }` — résolue depuis le thème d'icônes système (`Quickshell.iconPath`, comme le launcher), cas par défaut. Trouver le nom avec `grep Icon= /run/current-system/sw/share/applications/<app>.desktop`.
+- `{ asset: "assets/<fichier>.png", command: [...] }` — image locale dans `dots/quickshell/.config/quickshell/minimalBar/assets/`, à utiliser si l'icône du thème est illisible en petit (ex: Zed, dont le logo en traits fins imbriqués s'écrase en tache floue en dessous de ~22px — on utilise le favicon transparent officiel de zed.dev à la place, plus simple que le PNG du thème qui a un fond carré noir intégré).
+
+`size` (optionnel, en px) override `Globals.barIconSize` par pin — utile pour agrandir un logo trop détaillé (le pin Zed est réglé à `barIconSize + 8`).
 
 Aucun rebuild NixOS nécessaire. Pour voir le changement, il faut relancer quickshell (il ne fait pas de hot-reload) :
 ```
