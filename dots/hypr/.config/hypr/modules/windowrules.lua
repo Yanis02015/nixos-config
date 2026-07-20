@@ -73,6 +73,15 @@ hl.window_rule({
 	size = "600 800",
 })
 
+-- nmtui
+hl.window_rule({
+	name = "nmtui-float",
+	match = { title = "^nmtui-term$", class = "com.mitchellh.ghostty" },
+	float = true,
+	move = "1307 51",
+	size = "600 800",
+})
+
 -- sysmenu tui
 hl.window_rule({
 	name = "sysmenu-floating-tui",

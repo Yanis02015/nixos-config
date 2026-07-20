@@ -107,6 +107,19 @@
         mimeTypes = [ "text/plain" "text/markdown" "text/x-python" "text/x-lua" "text/javascript" "application/json" ];
         startupNotify = false;
       })
+
+# desktop entry pour lancer nmtui (gestion wifi/VPN NetworkManager) depuis
+# le launcher quickshell, même contournement Terminal=true que nvim-terminal.
+      (makeDesktopItem {
+        name = "nmtui";
+        desktopName = "Network Connections (nmtui)";
+        genericName = "Network Manager";
+        exec = "ghostty --title=nmtui-term -e nmtui";
+        terminal = false;
+        icon = "network-wired";
+        categories = [ "Utility" "Network" ];
+        startupNotify = false;
+      })
       ];
 
 # fonts (system-wide, via fonts.packages not systemPackages)
