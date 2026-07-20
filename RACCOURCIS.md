@@ -62,9 +62,9 @@ Actuellement épinglées : **Discord**, **Zed**.
 
 Pour ajouter/retirer une app : éditer la liste `pins` dans [`dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml`](./dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml). Deux façons de fournir l'icône :
 - `{ icon: "<nom Icon= du .desktop de l'app>", command: [...] }` — résolue depuis le thème d'icônes système (`Quickshell.iconPath`, comme le launcher), cas par défaut. Trouver le nom avec `grep Icon= /run/current-system/sw/share/applications/<app>.desktop`.
-- `{ asset: "assets/<fichier>.png", command: [...] }` — image locale dans `dots/quickshell/.config/quickshell/minimalBar/assets/`, à utiliser si l'icône du thème est illisible en petit (ex: Zed, dont le logo en traits fins imbriqués s'écrase en tache floue en dessous de ~22px — on utilise le favicon transparent officiel de zed.dev à la place, plus simple que le PNG du thème qui a un fond carré noir intégré).
+- `{ asset: "assets/<fichier>.png", command: [...] }` — image locale dans `dots/quickshell/.config/quickshell/minimalBar/assets/`, à utiliser si l'app n'a pas d'icône dans le thème système (ex: Zed, via le favicon transparent officiel de zed.dev plutôt que le PNG du thème qui a un fond carré noir intégré).
 
-`size` (optionnel, en px) override `Globals.barIconSize` par pin — utile pour agrandir un logo trop détaillé (le pin Zed est réglé à `barIconSize + 8`).
+Toutes les icônes sont affichées à la même taille (`Globals.barIconSize`), volontairement — pas de `size` par pin, même si un logo plus détaillé (comme celui de Zed) reste un peu moins net à cette taille.
 
 Aucun rebuild NixOS nécessaire. Pour voir le changement, il faut relancer quickshell (il ne fait pas de hot-reload) :
 ```

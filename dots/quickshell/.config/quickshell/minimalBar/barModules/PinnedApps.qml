@@ -9,9 +9,8 @@ import qs.templates
 // Each pin resolves its icon one of two ways:
 //   - `icon: "<name>"`  -> looked up in the system icon theme (.desktop Icon= key), same as the launcher
 //   - `asset: "assets/<file>"` -> bundled file next to this component, for logos that need a specific
-//     rendering (e.g. a mark that's illegible at icon-theme sizes, or has no theme icon at all)
-// `size` is optional -> overrides Globals.barIconSize for pins whose mark needs more room to stay legible
-// (Zed's nested-line logo turns into a blob below ~22px, unlike Discord's bolder mark).
+//     rendering (e.g. no theme icon at all)
+// all pins render at Globals.barIconSize -> keep it that way, no per-pin size overrides (consistency > legibility here)
 RowLayout {
     id: root
     spacing: Globals.spacing
@@ -23,7 +22,6 @@ RowLayout {
         },
         {
             asset: "assets/zed.png",
-            size: Globals.barIconSize + 8,
             command: ["zeditor"]
         }
     ]
@@ -34,10 +32,8 @@ RowLayout {
             id: pin
             required property var modelData
 
-            readonly property int iconSize: pin.modelData.size ?? Globals.barIconSize
-
-            implicitWidth: pin.iconSize
-            implicitHeight: pin.iconSize
+            implicitWidth: Globals.barIconSize
+            implicitHeight: Globals.barIconSize
             Layout.alignment: Qt.AlignVCenter
 
             Image {
