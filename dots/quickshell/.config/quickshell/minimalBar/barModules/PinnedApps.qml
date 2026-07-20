@@ -23,6 +23,20 @@ RowLayout {
         {
             asset: "assets/zed.png",
             command: ["zeditor"]
+        },
+        {
+            icon: "claude-desktop",
+            command: ["claude-desktop"]
+        },
+        {
+            icon: "zen-browser",
+            command: ["zen-beta"]
+        },
+        {
+            icon: "yazi",
+            // Terminal=true apps don't get a terminal under Hyprland -> same ghostty wrapper as
+            // the SUPER+Shift+E keybind, caught by the "yazi-term" float rule in windowrules.lua
+            command: ["ghostty", "--title=yazi-term", "-e", "yazi"]
         }
     ]
 

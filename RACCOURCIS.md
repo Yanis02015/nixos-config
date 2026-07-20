@@ -58,7 +58,7 @@ Pas de "suppression" de workspace à proprement parler : un workspace disparaît
 
 Juste à gauche de l'île de droite (CPU/RAM/volume/batterie/wifi), sans background propre (posées nues à côté du pill), quelques icônes cliquables lancent directement une app — pas besoin de passer par le launcher (`SUPER + Espace`).
 
-Actuellement épinglées : **Discord**, **Zed**.
+Actuellement épinglées : **Discord**, **Zed**, **Claude desktop**, **Zen Browser**, **Yazi**.
 
 Pour ajouter/retirer une app : éditer la liste `pins` dans [`dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml`](./dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml). Deux façons de fournir l'icône :
 - `{ icon: "<nom Icon= du .desktop de l'app>", command: [...] }` — résolue depuis le thème d'icônes système (`Quickshell.iconPath`, comme le launcher), cas par défaut. Trouver le nom avec `grep Icon= /run/current-system/sw/share/applications/<app>.desktop`.
