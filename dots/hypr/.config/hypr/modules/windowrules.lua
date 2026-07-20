@@ -78,7 +78,7 @@ hl.window_rule({
 	name = "nmtui-float",
 	match = { title = "^nmtui-term$", class = "com.mitchellh.ghostty" },
 	float = true,
-	move = "1307 51",
+	center = true,
 	size = "600 800",
 })
 
