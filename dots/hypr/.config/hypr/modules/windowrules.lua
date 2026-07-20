@@ -55,6 +55,15 @@ hl.window_rule({
 	size = "70% 70%",
 })
 
+-- lazydocker
+hl.window_rule({
+	name = "lazydocker-float",
+	match = { title = "^lazydocker-term$", class = "com.mitchellh.ghostty" },
+	float = true,
+	center = true,
+	size = "80% 80%",
+})
+
 -- bluetui
 hl.window_rule({
 	name = "bluetui-float",

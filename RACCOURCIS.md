@@ -10,6 +10,7 @@ Vérifiés directement dans `~/nixos-config/dots/hypr/.config/hypr/modules/*.lua
 | `SUPER + B` | Ouvrir le navigateur (zen-beta) |
 | `SUPER + Shift + F` | Gestionnaire de fichiers (nautilus) |
 | `SUPER + Shift + E` | Yazi (gestionnaire de fichiers en TUI) dans une fenêtre flottante |
+| `SUPER + Shift + D` | Lazydocker (dashboard Docker en TUI) dans une fenêtre flottante |
 | `SUPER + Shift + O` | Ouvrir Obsidian |
 | `SUPER + Espace` | Launcher Quickshell (recherche d'applis) |
 | `SUPER + Alt + Espace` | Basculer le panneau de droite (Quickshell) |

@@ -30,6 +30,7 @@
       jdk
       jq
       kitty
+      lazydocker
       lazygit
       libnotify
       matugen
