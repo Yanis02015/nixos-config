@@ -56,7 +56,7 @@ Pas de "suppression" de workspace à proprement parler : un workspace disparaît
 
 ## Barre Quickshell — icônes d'apps épinglées
 
-Dans l'île du milieu de la barre (à droite des workspaces), quelques icônes cliquables lancent directement une app — pas besoin de passer par le launcher (`SUPER + Espace`).
+Juste à gauche de l'île de droite (CPU/RAM/volume/batterie/wifi), sans background propre (posées nues à côté du pill), quelques icônes cliquables lancent directement une app — pas besoin de passer par le launcher (`SUPER + Espace`).
 
 Actuellement épinglées : **Discord**, **Zed**.
 
