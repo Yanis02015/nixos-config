@@ -9,7 +9,7 @@ import qs.templates
 // Each pin resolves its icon one of two ways:
 //   - `icon: "<name>"`  -> looked up in the system icon theme (.desktop Icon= key), same as the launcher
 //   - `asset: "assets/<file>"` -> bundled file next to this component, for logos that need a specific
-//     rendering (e.g. no theme icon at all)
+//     rendering (no theme icon, or a preferred variant swapped in by hand)
 // all pins render at Globals.barIconSize -> keep it that way, no per-pin size overrides (consistency > legibility here)
 RowLayout {
     id: root
@@ -29,7 +29,7 @@ RowLayout {
             command: ["claude-desktop"]
         },
         {
-            icon: "zen-browser",
+            asset: "assets/zen.png",
             command: ["zen-beta"]
         },
         {
