@@ -54,24 +54,6 @@ systemctl --user status wallpaper-rotate.timer
 
 Pas de "suppression" de workspace à proprement parler : un workspace disparaît tout seul dès qu'il n'a plus aucune fenêtre et n'est plus affiché.
 
-## Barre Quickshell — icônes d'apps épinglées
-
-Juste à gauche de l'île de droite (CPU/RAM/volume/batterie/wifi), sans background propre (posées nues à côté du pill), quelques icônes cliquables lancent directement une app — pas besoin de passer par le launcher (`SUPER + Espace`).
-
-Actuellement épinglées : **Discord**, **Zed**, **Claude desktop**, **Zen Browser**, **Yazi**.
-
-Pour ajouter/retirer une app : éditer la liste `pins` dans [`dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml`](./dots/quickshell/.config/quickshell/minimalBar/barModules/PinnedApps.qml). Deux façons de fournir l'icône :
-- `{ icon: "<nom Icon= du .desktop de l'app>", command: [...] }` — résolue depuis le thème d'icônes système (`Quickshell.iconPath`, comme le launcher), cas par défaut. Trouver le nom avec `grep Icon= /run/current-system/sw/share/applications/<app>.desktop`.
-- `{ asset: "assets/<fichier>.png", command: [...] }` — image locale dans `dots/quickshell/.config/quickshell/minimalBar/assets/`, à utiliser si l'app n'a pas d'icône dans le thème système (ex: Zed, via le favicon transparent officiel de zed.dev plutôt que le PNG du thème qui a un fond carré noir intégré).
-
-Toutes les icônes sont affichées à la même taille (`Globals.barIconSize`), volontairement — pas de `size` par pin, même si un logo plus détaillé (comme celui de Zed) reste un peu moins net à cette taille.
-
-Aucun rebuild NixOS nécessaire. Pour voir le changement, il faut relancer quickshell (il ne fait pas de hot-reload) :
-```
-qs kill -p ~/.config/quickshell/minimalBar && qs -p ~/.config/quickshell/minimalBar &
-```
-(`qs -p` seul sans `kill` d'abord lance une 2ᵉ instance en double au lieu de remplacer la première.)
-
 ## Captures d'écran
 
 | Raccourci | Action |

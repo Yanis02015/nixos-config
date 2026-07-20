@@ -86,17 +86,7 @@ ShellRoot {
                 anchors.centerIn: parent
             }
 
-            // quick-launch icons, sat bare (no pill background) right beside the metrics island
-            PinnedApps {
-                anchors {
-                    right: rightIsland.left
-                    rightMargin: Globals.spacing
-                    verticalCenter: parent.verticalCenter
-                }
-            }
-
             BarRight {
-                id: rightIsland
                 visible: root.rightIslandVisible
                 anchors {
                     right: parent.right
