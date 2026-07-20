@@ -46,6 +46,7 @@
       pavucontrol
       playerctl
       pnpm
+      podman-desktop
       qt6.qtdeclarative   # ships the `qmlls` QML language server (for Quickshell/QML in nvim)
       quickshell
       ripgrep
