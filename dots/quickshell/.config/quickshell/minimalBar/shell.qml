@@ -86,7 +86,17 @@ ShellRoot {
                 anchors.centerIn: parent
             }
 
+            // open-window icons, sat bare (no pill background) right beside the metrics island
+            OpenWindows {
+                anchors {
+                    right: rightIsland.left
+                    rightMargin: Globals.spacing
+                    verticalCenter: parent.verticalCenter
+                }
+            }
+
             BarRight {
+                id: rightIsland
                 visible: root.rightIslandVisible
                 anchors {
                     right: parent.right
