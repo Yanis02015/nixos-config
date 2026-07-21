@@ -17,6 +17,9 @@ bind("SUPER + SHIFT + D", hl.dsp.exec_cmd("ghostty --title=lazydocker-term -e la
 -- session par projet en un raccourci
 bind("SUPER + T", hl.dsp.exec_cmd("ghostty --title=sesh-term -e ~/nixos-config/scripts/sesh-picker.sh"))
 bind("SUPER +  B", hl.dsp.exec_cmd(BROWSER))
+-- lance le setup de travail (brave/claude desktop/zed/discord+zen/terminal),
+-- un par workspace — jamais au démarrage, uniquement sur ce bind
+bind("SUPER + SHIFT + W", hl.dsp.exec_cmd("~/nixos-config/scripts/start-workspace.sh"))
 
 -- quickshell Bindings
 bind("SUPER + SPACE", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/minimalBar ipc call launcher toggle")) -- launcher

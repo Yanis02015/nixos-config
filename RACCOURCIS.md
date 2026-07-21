@@ -21,6 +21,7 @@ Vérifiés directement dans `~/nixos-config/dots/hypr/.config/hypr/modules/*.lua
 | `SUPER + P` | Changer de wallpaper manuellement (régénère les couleurs Matugen) |
 | `SUPER + Ctrl + L` | Verrouiller l'écran (hyprlock) |
 | `SUPER + T` | Sélecteur de session tmux (sesh) — retrouver/créer une session par projet, fenêtre flottante |
+| `SUPER + Shift + W` | Lance le setup de travail : Brave (plein écran, workspace 1), Claude Desktop (2), Zed (3), Discord + Zen (4), terminal flottant (5). Jamais automatique, uniquement sur ce raccourci |
 
 **Rotation automatique** : le wallpaper change aussi tout seul, **toutes les heures**, via le timer systemd `wallpaper-rotate.timer` (première rotation 5 min après connexion). `SUPER + P` reste dispo pour forcer un changement à tout moment. Pour vérifier/gérer le timer :
 ```
