@@ -3,6 +3,7 @@
 ---------------------------
 
 BROWSER = "zen-beta"
+EDITOR = "zeditor"
 FILEMANAGER = "nautilus"
 TERMINAL = "ghostty"
 
