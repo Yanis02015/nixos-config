@@ -37,6 +37,15 @@ hl.window_rule({
 	float = true,
 })
 
+-- terminal principal (SUPER+Return)
+hl.window_rule({
+	name = "main-term-float",
+	match = { title = "^main-term$", class = "com.mitchellh.ghostty" },
+	float = true,
+	center = true,
+	size = "70% 60%",
+})
+
 -- wiremix
 hl.window_rule({
 	name = "wiremix-float",

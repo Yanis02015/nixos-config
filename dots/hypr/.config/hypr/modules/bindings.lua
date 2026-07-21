@@ -7,7 +7,7 @@ local bind = hl.bind
 bind("SUPER + P", hl.dsp.exec_cmd("~/nixos-config/scripts/rotate_wallpaper.sh"))
 
 -- generics
-bind("SUPER + Return", hl.dsp.exec_cmd(TERMINAL))
+bind("SUPER + Return", hl.dsp.exec_cmd(TERMINAL .. " --title=main-term"))
 bind("SUPER + SHIFT + O", hl.dsp.exec_cmd("obsidian"))
 bind("SUPER + SHIFT + F", hl.dsp.exec_cmd(FILEMANAGER))
 bind("SUPER + SHIFT + E", hl.dsp.exec_cmd("ghostty --title=yazi-term -e yazi"))
