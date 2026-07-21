@@ -228,6 +228,18 @@
         "x-scheme-handler/https"   = "zen-beta.desktop";
     };
 
+    # nix-ld : permet aux binaires dynamiquement liés non patchés pour NixOS
+    # de tourner quand même (loader/rpath standard FHS), typiquement des
+    # wheels Python précompilées (manylinux) comme numpy/scipy/grpcio qui
+    # s'attendent à trouver libz.so.1 etc. dans un chemin standard absent sur
+    # NixOS. manylinux2014 est le bundle de libs que nixpkgs fournit pour
+    # exactement ce cas d'usage (voir 1of10-backend/shell.nix pour le premier
+    # projet qui a nécessité ça).
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = with pkgs; [
+        stdenv.cc.cc.lib
+    ] ++ pythonManylinuxPackages.manylinux2014;
+
     nix.settings.experimental-features = ["nix-command" "flakes"];
 
     # GC automatique hebdomadaire (générations de plus de 14 jours) + dédoublonnage
