@@ -4,6 +4,7 @@
   environment.systemPackages = with pkgs; [
     adwaita-qt
       adwaita-qt6
+      ansible
       awww
       bibata-cursors
       brave
@@ -17,6 +18,7 @@
       fd
       fzf
       gcc
+      gh
       git
       ghostty
       glib
