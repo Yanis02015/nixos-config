@@ -229,6 +229,18 @@
     };
 
     nix.settings.experimental-features = ["nix-command" "flakes"];
+
+    # GC automatique hebdomadaire (générations de plus de 14 jours) + dédoublonnage
+    # du store (hardlinks) le même jour. Complète l'alias manuel
+    # `nix-purge-old-generations` (.zshrc) qui reste dispo pour un nettoyage
+    # immédiat/agressif avec confirmation — ceci tourne seul en arrière-plan.
+    nix.gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 14d";
+    };
+    nix.optimise.automatic = true;
+
     nixpkgs.config.allowUnfree = true;
     system.stateVersion = "26.05";
 }
