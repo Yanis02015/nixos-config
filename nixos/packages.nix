@@ -31,7 +31,9 @@
       hyprsunset
       jdk
       jq
+      k9s
       kitty
+      kubectl
       lazydocker
       lazygit
       libnotify
