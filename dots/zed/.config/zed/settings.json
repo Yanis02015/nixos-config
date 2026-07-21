@@ -17,7 +17,11 @@
     "trust_all_worktrees": true
   },
   "base_keymap": "VSCode",
-  "icon_theme": "Base Charmed Icons",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Base Charmed Icons",
+    "dark": "Base Charmed Icons"
+  },
   "ui_font_size": 16,
   "buffer_font_size": 15,
   "theme": {
@@ -28,13 +32,11 @@
   "project_panel": {
     "hide_root": true,
     "sticky_scroll": false,
-    "scrollbar": {
-      "show": "never"
-    },
     "diagnostic_badges": true
   },
   "tabs": {
+    "git_status": true,
+    "file_icons": true,
     "show_diagnostics": "all"
   },
-  "diagnostics_max_severity": "all",
 }
