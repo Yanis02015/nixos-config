@@ -101,3 +101,7 @@ Three directories are in here but are not meant to be symlinked:
 - [`nixos`](https://github.com/Yanis02015/nixos-config/tree/master/nixos) - the system config (`flake.nix`, `configuration.nix`, `packages.nix`). Rebuild straight from the repo, don't stow it.
 - [`scripts`](https://github.com/Yanis02015/nixos-config/tree/master/scripts) - helper scripts. The configs call them by their repo path (`~/nixos-config/scripts/rotate_wallpaper.sh`), so they run in place.
 - [`assets`](https://github.com/Yanis02015/nixos-config/tree/master/assets) - the screenshot at the top of this README. Nothing reads it at runtime.
+
+## Credits
+
+This repo is a fork of [Leabua/dotfiles](https://github.com/Leabua/dotfiles). The overall structure, the Hyprland/quickshell/matugen setup and most of the original dotfiles are their work - full credit to them. See [`CLAUDE.md`](./CLAUDE.md) for the detailed list of what's been changed since forking.
