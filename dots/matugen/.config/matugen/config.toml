@@ -25,3 +25,7 @@ output_path = '~/.cache/hypr/border-colors.lua'
 input_path = '~/.config/matugen/templates/ghosttyTemplate.conf'
 output_path = '~/.cache/ghostty/theme-matugen'
 
+[templates.dircolors]
+input_path = '~/.config/matugen/templates/dircolorsTemplate.sh'
+output_path = '~/.cache/dircolors/theme-matugen'
+

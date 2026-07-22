@@ -54,6 +54,10 @@ _src \
   /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
   /run/current-system/sw/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# ── ls colors (matugen-themed overrides on top of stock defaults) ──
+eval "$(dircolors -b)"
+_src ~/.cache/dircolors/theme-matugen
+
 # ── nixos ────────────────────────────────────────────────────
 # ATTENTION : supprime TOUTES les anciennes générations NixOS (plus de rollback possible).
 # Nom explicite exprès (l'original s'appelait juste "clean", trop discret pour ce que ça fait),
