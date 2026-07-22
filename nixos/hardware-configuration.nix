@@ -24,16 +24,7 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  # Swapfile persistant pour l'hibernation (mise en veille prolongée, façon
-  # Windows). zramSwap (configuration.nix) reste utilisé pour le swap
-  # quotidien (volatile, RAM compressée) ; ce fichier sert uniquement de
-  # cible d'écriture pour l'image mémoire au moment de `systemctl hibernate`.
-  # Taille = 34G, un peu au-dessus des 32G de RAM de la machine (marge de
-  # sécurité). boot.resumeDevice / boot.kernelParams (resume_offset) dans
-  # configuration.nix pointent dessus une fois le fichier créé sur disque.
-  swapDevices = [
-    { device = "/var/lib/swapfile"; size = 34 * 1024; }
-  ];
+  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

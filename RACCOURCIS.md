@@ -20,7 +20,6 @@ Vérifiés directement dans `~/nixos-config/dots/hypr/.config/hypr/modules/*.lua
 | `SUPER + Shift + Espace` | Cacher/afficher la barre Quickshell |
 | `SUPER + P` | Changer de wallpaper manuellement (régénère les couleurs Matugen) |
 | `SUPER + Ctrl + L` | Verrouiller l'écran (hyprlock) |
-| `SUPER + Ctrl + H` | Hiberner (mise en veille prolongée façon Windows) |
 | `SUPER + T` | Sélecteur de session tmux (sesh) — retrouver/créer une session par projet, fenêtre flottante |
 | `SUPER + Shift + W` | Ouvrir Zed + Zen + Discord d'un coup (pas de placement par workspace) |
 
@@ -123,32 +122,6 @@ Une fois le focus dans la sidebar :
 **Important** : chaque nouveau terminal (`SUPER+Entrée`) ouvre un shell zsh normal, **sans tmux** — l'auto-attach à une session partagée a été désactivé (voir `.zshrc`). Pour retrouver ou créer une session tmux par projet : `SUPER+T` depuis un nouveau terminal, ou `Ctrl+b` puis `s` si tu es déjà dans une session — les deux ouvrent le même sélecteur `sesh`.
 
 ---
-
-## Hibernation (mise en veille prolongée)
-
-`SUPER + Ctrl + H` sauvegarde toute la RAM sur un swapfile disque
-(`/var/lib/swapfile`, 34G, `hardware-configuration.nix`) puis coupe
-l'alimentation ; tout est restauré (apps, fenêtres) au redémarrage suivant.
-Le swap quotidien reste géré par zram (RAM compressée), inchangé.
-
-Mise en service (une seule fois, sur la machine réelle) :
-
-1. `rebuild` (ou `sudo nixos-rebuild switch --flake /etc/nixos#nixos`) — crée
-   le fichier `/var/lib/swapfile` sur disque.
-2. Calculer l'offset physique du fichier dans le système de fichiers :
-   ```
-   sudo filefrag -v /var/lib/swapfile | awk '$1=="0:"{print $4}' | tr -d '.'
-   ```
-3. Ajouter le résultat dans `nixos/configuration.nix`, à côté de
-   `boot.resumeDevice` :
-   ```nix
-   boot.kernelParams = [ "resume_offset=<valeur>" ];
-   ```
-4. `rebuild` à nouveau, puis tester avec `SUPER + Ctrl + H` (ou
-   `systemctl hibernate`).
-
-Si le fichier est recréé un jour (suppression manuelle, changement de
-taille), refaire les étapes 2-3 : l'offset change à chaque recréation.
 
 ## Clavier — inversion Ctrl/Alt gauche
 

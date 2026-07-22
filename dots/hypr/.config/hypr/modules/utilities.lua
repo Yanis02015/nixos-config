@@ -7,12 +7,6 @@ local bind = hl.bind
 -- lock
 bind("SUPER + CTRL + L", hl.dsp.exec_cmd("hyprlock"))
 
--- hibernate (mise en veille prolongée façon Windows) : sauvegarde toute la
--- RAM sur le swapfile disque puis coupe l'alimentation ; restauration au
--- prochain démarrage. Nécessite swapDevices + boot.resumeDevice/resume_offset
--- (voir hardware-configuration.nix / configuration.nix / RACCOURCIS.md).
-bind("SUPER + CTRL + H", hl.dsp.exec_cmd("systemctl hibernate"))
-
 -- volume and brightness
 bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
 bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { repeating = true })
