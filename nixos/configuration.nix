@@ -11,6 +11,13 @@
     boot.loader.efi.canTouchEfiVariables = true;
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
+    # Hibernation : le swapfile (hardware-configuration.nix) vit sur "/",
+    # donc resumeDevice = même UUID que la racine. resume_offset ne peut être
+    # calculé qu'une fois le fichier réellement créé sur disque (après un
+    # premier rebuild) — voir RACCOURCIS.md pour la procédure et la valeur
+    # à reporter ici une fois connue.
+    boot.resumeDevice = "/dev/disk/by-uuid/1dd67c82-10eb-408b-8fb8-75b182ca9fe0";
+
     services.xserver.xkb.layout = "fr";
     services.xserver.xkb.options = "ctrl:swap_lalt_lctl";
     console.useXkbConfig = true;
