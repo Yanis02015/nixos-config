@@ -4,7 +4,7 @@
 #   - SUPER+T (bindings.lua)   : nouveau terminal hors tmux -> fzf classique
 #   - prefix+s (tmux.conf)     : déjà dans tmux -> popup fzf-tmux, passer --popup
 if [[ "$1" == "--popup" ]]; then
-  FZF=(fzf-tmux -p 80%,70%)
+  FZF=(fzf-tmux -p "80%,70%")
 else
   FZF=(fzf)
 fi
