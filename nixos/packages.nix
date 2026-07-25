@@ -5,6 +5,7 @@
     adwaita-qt
       adwaita-qt6
       ansible
+      awscli2
       awww
       bibata-cursors
       brave
