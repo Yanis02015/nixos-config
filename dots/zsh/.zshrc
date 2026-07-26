@@ -37,6 +37,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 # ── tools & plugins ──────────────────────────────────────────
 eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
 
 _src /usr/share/fzf/completion.zsh   /run/current-system/sw/share/fzf/completion.zsh
 _src /usr/share/fzf/key-bindings.zsh /run/current-system/sw/share/fzf/key-bindings.zsh

@@ -14,6 +14,7 @@
       bun
       claude-code
       cliphist
+      direnv
       discord
       fastfetch
       fd
