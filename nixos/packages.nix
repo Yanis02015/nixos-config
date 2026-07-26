@@ -34,6 +34,7 @@
       jdk
       jq
       k9s
+      kamal
       kitty
       kubectl
       lazydocker
