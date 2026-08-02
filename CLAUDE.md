@@ -25,6 +25,18 @@ Le repo upstream de Leabua est pensé pour un laptop **Intel-only** — ne jamai
 5. **tmux s'auto-attachait à une session partagée unique** entre tous les terminaux (`.zshrc` : `tmux attach || tmux new-session`). C'était voulu chez l'auteur upstream (workflow de l'auteur), mais désactivé ici le 2026-07-20 (bloc commenté dans `.zshrc`, pas supprimé) — Yanis n'aime pas que chaque nouveau terminal rejoigne automatiquement la même session tmux. Remplacé le même jour par `sesh` (paquet dans `packages.nix`, script `scripts/sesh-picker.sh`, binds `SUPER+T` et tmux `prefix+s`) : sélecteur fuzzy de session par projet, sans le comportement "tout dans une seule session" rejeté ci-dessus. Voir `RACCOURCIS.md`.
 6. **`SUPER+O` (toggle floating)** a une règle de taille par défaut (`windowrules.lua`, match `float = true` → 60%×60% centré) pour ne pas juste garder la taille pleine du tiling. Cette règle est placée **avant** les règles spécifiques par app (wiremix, bluetui...) pour qu'elles restent prioritaires.
 
+## SDK Android global + émulateur (pilotage via MCP)
+
+Ajouté le 2026-08-02 pour que Claude Code puisse piloter un émulateur Android depuis n'importe quel projet (pas seulement minimonde-mobile), via le serveur MCP `mobile-mcp`.
+
+- **SDK déclaré globalement dans `packages.nix`** (`androidenv.composeAndroidPackages`, `includeEmulator = true`, une seule system image API 35 x86_64 `google_apis` pour limiter la taille du téléchargement) — pas dans un `flake.nix` de projet. `androidsdk` symlinke `adb`/`emulator`/`avdmanager`/`sdkmanager` dans son `bin/`, donc l'ajouter à `environment.systemPackages` suffit à les rendre disponibles partout, pas besoin de bidouiller `PATH`. `ANDROID_HOME`/`ANDROID_SDK_ROOT` pointent dessus via `environment.variables` (packages.nix).
+- **`nixpkgs.config.android_sdk.accept_license = true`** ajouté dans `configuration.nix` (à côté de `allowUnfree`) — requis par `composeAndroidPackages`, licence Google acceptée de façon déclarative.
+- **Remplace l'ancien SDK factice** qui vivait dans `configuration.nix` (`ANDROID_HOME=/home/yanis/Android/Sdk` avec juste `adb`/`fastboot` symlinkés via `systemd.tmpfiles.rules`, suffisant pour Expo Go seul) — devenu redondant, supprimé.
+- **`programs.nix-ld.libraries`** (configuration.nix) étendu avec les libs Qt/X11/audio/GL nécessaires au binaire émulateur précompilé (non patché NixOS) — même liste que celle qui fait déjà tourner le debugger-shell Electron de minimonde-mobile (React Native DevTools), confirmée fonctionnelle sur cette machine.
+- **AVD unique partagé entre projets** : `mcp-dev` (Pixel 7, Android 15 / API 35). Créé et lancé via [`scripts/android-avd.sh`](./scripts/android-avd.sh) (`create`|`start`). Rendu logiciel par défaut (`-gpu swiftshader_indirect`) — le driver NVIDIA legacy (Pascal) sous Wayland/Hyprland n'est pas fiable pour le passthrough GPU host ; `-gpu host` à tester si besoin de perf.
+- **Serveur MCP `mobile-mcp`** (`@mobilenext/mobile-mcp` — attention au typosquat `@mobilenext-pay/mobile-mcp`, ne pas utiliser) enregistré en **scope `user`** (`claude mcp add mobile -s user -- npx -y @mobilenext/mobile-mcp@latest`), donc disponible sur tous les projets sans `.mcp.json` par projet. Pilote via `adb`, marche aussi bien sur l'émulateur que sur un device physique (un vrai téléphone Samsung déjà vu branché en USB sur cette machine, `adb devices` le liste en parallèle de l'émulateur).
+- minimonde-mobile garde son propre `flake.nix` (SDK dédié aux builds Gradle, NDK inclus, `includeEmulator = false`) — coexiste sans conflit avec le SDK global : deux SDK Android distincts, l'un pour compiler, l'autre pour piloter l'émulateur.
+
 ## Déviations connues vs upstream (Leabua)
 
 - NVIDIA GTX 1070 configuré (`hardware.nvidia`, `services.xserver.videoDrivers`), absent chez l'auteur (Intel-only)
@@ -42,6 +54,7 @@ Le repo upstream de Leabua est pensé pour un laptop **Intel-only** — ne jamai
 - `nautilus` ajouté aux paquets (référencé comme `FILEMANAGER` par l'auteur mais oublié dans son propre `packages.nix`)
 - Alias `.zshrc` `tmux_kill` réécrit (2026-07-20) : à l'origine `rm -rf ~/.local/share/tmux/resurrect/*.txt && tmux kill-server`, un reliquat du plugin `tmux-resurrect` de l'upstream — jamais déclaré dans `tmux.conf` à l'époque, donc le dossier n'existait jamais et le glob raté empêchait `tmux kill-server` de s'exécuter (`&&` court-circuité). D'abord simplifié en `tmux kill-server` seul, puis `tmux-resurrect` a été ajouté pour de vrai (voir plus bas) — l'alias nettoie maintenant `rm -rf ~/.local/share/tmux/resurrect` (dossier entier, plus de glob) avant `tmux kill-server` : comme cet alias n'est **jamais appelé automatiquement**, c'est un choix conscient de repartir de zéro, pas une régression.
 - Repo réorganisé et renommé (2026-07-19) : `~/dotfiles` → `~/nixos-config`, packages stow déplacés sous `dots/` (voir section Architecture ci-dessus) — pure préférence de lisibilité personnelle, aucun changement fonctionnel côté upstream.
+- SDK Android global + émulateur ajoutés (2026-08-02) pour pilotage via MCP (`mobile-mcp`), absent chez l'auteur upstream — voir section dédiée ci-dessus.
 
 ## Workflow de modification
 

@@ -183,6 +183,11 @@
         EDITOR = "nvim";
         VISUAL = "nvim";
         BROWSER = "zen-beta";
+        # ANDROID_HOME/ANDROID_SDK_ROOT : voir packages.nix (SDK Android
+        # global). Remplace l'ancien SDK factice minimal (juste
+        # adb/fastboot symlinkés dans ~/Android/Sdk/platform-tools, suffisant
+        # pour Expo Go) — devenu redondant depuis l'ajout d'un vrai SDK
+        # complet (émulateur + system image) pour le pilotage MCP.
     };
 
     programs.dconf.enable = true;
@@ -238,7 +243,43 @@
     programs.nix-ld.enable = true;
     programs.nix-ld.libraries = with pkgs; [
         stdenv.cc.cc.lib
-    ] ++ pythonManylinuxPackages.manylinux2014;
+    ] ++ pythonManylinuxPackages.manylinux2014
+    # libs requises par l'UI Qt bundlée de l'émulateur Android (SDK global,
+    # voir packages.nix) — même stack de libs que le debugger-shell Electron
+    # de minimonde-mobile (binaire précompilé non patché pour NixOS).
+    ++ [
+        alsa-lib
+        at-spi2-atk
+        at-spi2-core
+        atk
+        cairo
+        cups
+        dbus
+        expat
+        gdk-pixbuf
+        glib
+        gtk3
+        libdrm
+        libglvnd
+        libgbm
+        libnotify
+        libpulseaudio
+        libxkbcommon
+        mesa
+        nspr
+        nss
+        pango
+        systemd
+        xorg.libX11
+        xorg.libxcb
+        xorg.libXcomposite
+        xorg.libXdamage
+        xorg.libXext
+        xorg.libXfixes
+        xorg.libXrandr
+        xorg.libXScrnSaver
+        xorg.libXtst
+    ];
 
     nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -254,5 +295,9 @@
     nix.optimise.automatic = true;
 
     nixpkgs.config.allowUnfree = true;
+    # accept_license : requis par androidenv.composeAndroidPackages (SDK
+    # Android global, voir packages.nix) pour accepter la licence Google du
+    # SDK de façon déclarative (pas de prompt interactif possible en build).
+    nixpkgs.config.android_sdk.accept_license = true;
     system.stateVersion = "26.05";
 }

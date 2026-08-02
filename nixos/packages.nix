@@ -1,9 +1,41 @@
 { pkgs, inputs, ... }:
 
+let
+  # SDK Android global (émulateur + une image système API 35 x86_64) pour
+  # piloter un émulateur via un serveur MCP (mobile-mcp) depuis n'importe
+  # quel projet — pas seulement minimonde-mobile, qui a son propre
+  # flake.nix dédié au build Gradle et exclut exprès l'émulateur
+  # (includeEmulator = false) pour ce cas d'usage différent. google_apis
+  # (pas playstore) : pas besoin de compte Google pour de l'automatisation.
+  # `androidsdk` symlinke adb/emulator/sdkmanager/avdmanager dans son bin/,
+  # donc l'ajouter à systemPackages suffit à les rendre disponibles — pas
+  # besoin de bidouiller le PATH comme dans le flake.nix de minimonde-mobile.
+  androidComposition = pkgs.androidenv.composeAndroidPackages {
+    platformVersions = [ "35" ];
+    buildToolsVersions = [ "35.0.0" ];
+    cmdLineToolsVersion = "latest";
+    platformToolsVersion = "latest";
+    includeSystemImages = true;
+    systemImageTypes = [ "google_apis" ];
+    abiVersions = [ "x86_64" ];
+    includeEmulator = true;
+  };
+  androidSdk = androidComposition.androidsdk;
+in
 {
+  # ANDROID_HOME/ANDROID_SDK_ROOT : requis par les tools du SDK (avdmanager,
+  # emulator, et les builds Gradle des projets comme minimonde-mobile qui ne
+  # définissent pas leur propre variante dans un flake.nix de projet).
+  environment.variables = {
+    ANDROID_HOME = "${androidSdk}/libexec/android-sdk";
+    ANDROID_SDK_ROOT = "${androidSdk}/libexec/android-sdk";
+  };
+
   environment.systemPackages = with pkgs; [
-    adwaita-qt
+    androidSdk
+      adwaita-qt
       adwaita-qt6
+      android-tools
       ansible
       awscli2
       awww
