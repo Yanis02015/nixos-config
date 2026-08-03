@@ -4,6 +4,14 @@
 # disponible sans dépendre de la config d'un projet en particulier.
 set -euo pipefail
 
+# Ne pas compter sur ANDROID_HOME/ANDROID_SDK_ROOT déjà présents dans le
+# shell interactif (peu fiable : un terminal ouvert avant un rebuild, ou
+# lancé via un environnement tiers type FHS, ne les a pas forcément) — on les
+# lit directement depuis la génération système active à chaque lancement.
+if [ -z "${ANDROID_HOME:-}" ]; then
+  eval "$(grep -h '^export ANDROID_HOME=\|^export ANDROID_SDK_ROOT=' /run/current-system/etc/set-environment)"
+fi
+
 AVD_NAME="mcp-dev"
 PACKAGE="system-images;android-35;google_apis;x86_64"
 
