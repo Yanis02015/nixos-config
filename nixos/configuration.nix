@@ -70,6 +70,13 @@
 # Note : fileSystems."/mnt/hdd" du repo original est omis — c'est un disque
 # secondaire propre à la machine de l'auteur, absent ici.
 
+    # ancien disque D: (Windows), conservé lors du passage à NixOS
+    fileSystems."/mnt/d" = {
+        device = "/dev/disk/by-uuid/4426152726151C0C";
+        fsType = "ntfs3";
+        options = [ "rw" "uid=1000" "gid=100" "nofail" ];
+    };
+
 # backend services for the quickshell bar widgets
     services.upower.enable = true;                 # battery
     services.power-profiles-daemon.enable = true;  # power profiles
