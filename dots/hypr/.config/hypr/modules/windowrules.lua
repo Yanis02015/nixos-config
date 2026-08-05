@@ -118,6 +118,15 @@ hl.window_rule({
 	size = "900 600",
 })
 
+-- claude account picker (x-scheme-handler/claude)
+hl.window_rule({
+	name = "claude-picker-float",
+	match = { title = "^claude-picker-term$", class = "com.mitchellh.ghostty" },
+	float = true,
+	center = true,
+	size = "600 300",
+})
+
 -- rencal calendar
 hl.window_rule({
 	name = "rencal-float",

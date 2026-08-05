@@ -162,6 +162,28 @@ in
         categories = [ "Utility" "Network" ];
         startupNotify = false;
       })
+
+# handler de x-scheme-handler/claude (liens claude://, ex. OAuth MCP) :
+# deux apps Claude coexistent sur cette machine (standard + compte Team
+# "1of10", voir ~/.local/share/applications/claude-1of10.desktop, pas géré
+# par ce repo car propre à l'app elle-même). Le bon compte dépend du
+# contexte au moment du clic, donc pas de défaut fixe : cette entrée ouvre
+# un picker fzf (scripts/claude-account-picker.sh) dans ghostty flottant
+# (même contournement Terminal=true que nvim-terminal/nmtui), qui relance
+# claude-desktop avec le bon --user-data-dir. Doit être fait défaut pour
+# x-scheme-handler/claude via ~/.config/mimeapps.list (prioritaire sur ce
+# que ce fichier déclare, voir xdg.mime.defaultApplications plus bas).
+      (makeDesktopItem {
+        name = "claude-account-picker";
+        desktopName = "Claude (choix du compte)";
+        genericName = "AI Assistant";
+        exec = "ghostty --title=claude-picker-term -e /home/yanis/nixos-config/scripts/claude-account-picker.sh %u";
+        terminal = false;
+        icon = "claude-desktop";
+        categories = [ "Utility" "Development" ];
+        mimeTypes = [ "x-scheme-handler/claude" ];
+        startupNotify = false;
+      })
       ];
 
 # fonts (system-wide, via fonts.packages not systemPackages)
