@@ -21,6 +21,14 @@ let
     includeEmulator = true;
   };
   androidSdk = androidComposition.androidsdk;
+
+  # ChatGPT desktop (OpenAI), embarque l'agent Codex — repackagé depuis le
+  # .deb officiel Linux (sorti le 2026-08-11, pas encore dans nixpkgs ni
+  # dans une flake communautaire mûre). Voir chatgpt-desktop.nix /
+  # chatgpt-desktop-fhs.nix pour le détail du wrapping FHS.
+  chatgptDesktop = pkgs.callPackage ./chatgpt-desktop-fhs.nix {
+    chatgpt-desktop = pkgs.callPackage ./chatgpt-desktop.nix { };
+  };
 in
 {
   # ANDROID_HOME/ANDROID_SDK_ROOT : requis par les tools du SDK (avdmanager,
@@ -135,6 +143,9 @@ in
       # claude-desktop-fhs (default de ce flake) : wrappe le .deb officiel Anthropic
       # (bêta Linux depuis le 2026-06-30) + support MCP via npx/uvx/docker (FHS env)
       inputs.claude-desktop.packages."${pkgs.stdenv.hostPlatform.system}".default
+      # chatgptDesktop : wrappe le .deb officiel OpenAI (ChatGPT + Codex,
+      # sorti le 2026-08-11) en environnement FHS, voir plus haut
+      chatgptDesktop
 
 # desktop entry so GUI apps open text files in nvim inside
 # ghostty. Named nvim-terminal to avoid colliding with neovim's own nvim.desktop.
