@@ -184,6 +184,11 @@ in
 # claude-desktop avec le bon --user-data-dir. Doit être fait défaut pour
 # x-scheme-handler/claude via ~/.config/mimeapps.list (prioritaire sur ce
 # que ce fichier déclare, voir xdg.mime.defaultApplications plus bas).
+# ATTENTION : claude-desktop (standard) se ré-enregistre lui-même comme
+# handler par défaut à chaque lancement (Electron app.setAsDefaultProtocolClient,
+# confirmé dans son app.asar), donc ce réglage ne "tient" pas seul — un path
+# unit systemd --user (claude-mimeapps-guard, configuration.nix) surveille
+# mimeapps.list et réaffirme claude-account-picker.desktop dès qu'il change.
       (makeDesktopItem {
         name = "claude-account-picker";
         desktopName = "Claude (choix du compte)";

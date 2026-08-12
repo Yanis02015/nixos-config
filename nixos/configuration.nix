@@ -158,6 +158,22 @@
         };
     };
 
+    # claude-desktop (standard) se ré-enregistre comme handler de claude://
+    # à chaque lancement (Electron app.setAsDefaultProtocolClient), écrasant
+    # ~/.config/mimeapps.list et cassant le picker de compte (voir
+    # claude-account-picker.desktop dans packages.nix). Ce path unit surveille
+    # le fichier et reprend la main dès qu'il est modifié ; le service tourne
+    # aussi au login pour couvrir le cas où le fichier était déjà faux avant.
+    systemd.user.services.claude-mimeapps-guard.serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "%h/nixos-config/scripts/claude-mimeapps-guard.sh";
+    };
+    systemd.user.services.claude-mimeapps-guard.wantedBy = [ "default.target" ];
+    systemd.user.paths.claude-mimeapps-guard = {
+        wantedBy = [ "paths.target" ];
+        pathConfig.PathModified = "%h/.config/mimeapps.list";
+    };
+
     programs.firefox.enable = true;
     services.openssh.enable = false; # désactivé, pas de besoin d'accès distant
     services.printing.enable = true;
