@@ -20,6 +20,14 @@
     networking.hostName = "nixos"; # Define your hostname.
     networking.networkmanager.enable = true;
 
+    # résolution des noms .local (mDNS) : sans ça les téléphones (mDNS natif Android/iOS)
+    # arrivent à joindre server.local mais pas ce PC — nssmdns4 branche nsswitch.conf
+    services.avahi = {
+        enable = true;
+        nssmdns4 = true;
+        openFirewall = true;
+    };
+
     time.timeZone = "America/Toronto";
 
     i18n.defaultLocale = "en_US.UTF-8";
