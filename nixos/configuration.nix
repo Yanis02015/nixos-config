@@ -157,7 +157,12 @@
     };
 
     # Change de wallpaper (+ régénère les couleurs Matugen) toutes les heures.
+    # Environment=PATH requis : le PATH par défaut d'un systemd.user.service NixOS
+    # est réduit à coreutils/findutils/grep/sed/systemd (pas de bash ni /run/current-system/sw/bin),
+    # donc le "#!/usr/bin/env bash" du script échouait silencieusement (exit 127) — trouvé le
+    # 2026-08-13 en debuggant claude-mimeapps-guard, qui a le même souci.
     systemd.user.services.wallpaper-rotate.serviceConfig.ExecStart = "%h/nixos-config/scripts/rotate_wallpaper.sh";
+    systemd.user.services.wallpaper-rotate.serviceConfig.Environment = "PATH=/run/current-system/sw/bin";
     systemd.user.timers.wallpaper-rotate = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
@@ -175,6 +180,7 @@
     systemd.user.services.claude-mimeapps-guard.serviceConfig = {
         Type = "oneshot";
         ExecStart = "%h/nixos-config/scripts/claude-mimeapps-guard.sh";
+        Environment = "PATH=/run/current-system/sw/bin";
     };
     systemd.user.services.claude-mimeapps-guard.wantedBy = [ "default.target" ];
     systemd.user.paths.claude-mimeapps-guard = {
