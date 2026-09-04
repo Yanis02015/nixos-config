@@ -72,6 +72,7 @@ alias dots="cd $HOME/nixos-config"
 
 # ── general QoL ──────────────────────────────────────────────
 alias catall="find . -type f -exec tail -n +1 {} + | nvim"
+alias emu="emulator -avd Pixel_7_API_35 -gpu host"
 alias ff="fastfetch"
 alias p="python3"
 alias py="python"
