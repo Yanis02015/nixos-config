@@ -15,8 +15,15 @@ fi
 AVD_NAME="mcp-dev"
 PACKAGE="system-images;android-35;google_apis;x86_64"
 
+# Détection par présence du .ini sur disque plutôt que via `avdmanager list
+# avd` : ce dernier lève un NPE ("img is null") et tronque sa sortie dès
+# qu'un AUTRE AVD du store a une system image manquante (ex. s9_api28 en API
+# 28 non installée), ce qui faisait échouer la détection de mcp-dev de façon
+# non-déterministe et déclenchait une recréation ("already exists").
+AVD_HOME="${ANDROID_AVD_HOME:-$HOME/.android/avd}"
+
 ensure_avd() {
-  if ! avdmanager list avd | grep -q "Name: $AVD_NAME\$"; then
+  if [ ! -f "$AVD_HOME/$AVD_NAME.ini" ]; then
     echo "Création de l'AVD $AVD_NAME ($PACKAGE)..."
     echo "no" | avdmanager create avd -n "$AVD_NAME" -k "$PACKAGE" --device "pixel_7"
   fi
