@@ -28,11 +28,12 @@ case "${1:-start}" in
     ;;
   start)
     ensure_avd
-    # swiftshader_indirect : rendu logiciel, plus fiable que le passthrough
-    # GPU host avec le driver NVIDIA legacy (Pascal) que sur cette machine
-    # sous Wayland/Hyprland. Essayer `-gpu host` si besoin de perf et que ça
-    # marche pour toi.
-    exec emulator -avd "$AVD_NAME" -gpu swiftshader_indirect "${@:2}"
+    # Mode GPU surchargeable via EMULATOR_GPU. Défaut swiftshader_indirect :
+    # rendu logiciel, plus fiable que le passthrough GPU host avec le driver
+    # NVIDIA legacy (Pascal) sur cette machine sous Wayland/Hyprland. Passer
+    # EMULATOR_GPU=host si besoin de perf et que ça marche pour toi (c'est ce
+    # que fait l'alias `emu` du .zshrc).
+    exec emulator -avd "$AVD_NAME" -gpu "${EMULATOR_GPU:-swiftshader_indirect}" "${@:2}"
     ;;
   *)
     echo "Usage: $0 [create|start] [args émulateur supplémentaires]" >&2
