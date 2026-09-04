@@ -74,6 +74,16 @@ Pas de "suppression" de workspace à proprement parler : un workspace disparaît
 | Lecture/Pause/Suivant/Précédent | Contrôle média (playerctl) |
 | Bouton Power | Ouvre le menu power de Quickshell |
 
+## Alias shell (zsh)
+
+Définis dans `~/nixos-config/dots/zsh/.zshrc`.
+
+| Alias | Commande |
+|---|---|
+| `emu` | Lance l'émulateur Android `mcp-dev` en `-gpu host` (passe par `scripts/android-avd.sh`, qui crée l'AVD au besoin et retrouve le SDK tout seul) |
+
+La fenêtre de l'émulateur s'ouvre **flottante automatiquement** (windowrule `class = Emulator` dans `windowrules.lua`) — plus besoin de `SUPER + O`. Pour le lancer en rendu logiciel plutôt que `-gpu host` : `scripts/android-avd.sh start` directement.
+
 ---
 
 ## tmux (préfixe = `Ctrl + b`)
