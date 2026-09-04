@@ -145,6 +145,18 @@ hl.window_rule({
 	size = "900 600",
 })
 
+-- Android emulator (SDK) : flotte automatiquement ses fenêtres (class
+-- "Emulator") pour éviter le SUPER+O manuel à chaque lancement — seule la
+-- fenêtre principale s'ouvrait tuilée, la barre d'outils annexe flotte déjà.
+-- Pas de center/size : l'émulateur (fenêtre XWayland) impose et mémorise sa
+-- propre géométrie, donc ces directives sont ignorées ici ; il suffit de le
+-- déplacer une fois, il rouvrira au même endroit.
+hl.window_rule({
+	name = "android-emulator-float",
+	match = { class = "^Emulator$" },
+	float = true,
+})
+
 -- Apple Music PWA
 hl.window_rule({
 	name = "apple-music",
