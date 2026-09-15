@@ -114,7 +114,6 @@ in
       wireguard-tools
       wl-clipboard
       yazi
-      zapzap
       zed-editor
       zoxide
       zsh-powerlevel10k
