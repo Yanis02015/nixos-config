@@ -29,6 +29,11 @@ let
   chatgptDesktop = pkgs.callPackage ./chatgpt-desktop-fhs.nix {
     chatgpt-desktop = pkgs.callPackage ./chatgpt-desktop.nix { };
   };
+
+  # Pen (pen.dev), canvas de design agentique — repackagé depuis l'AppImage
+  # officiel via appimageTools.wrapType2 (env FHS), pas dans nixpkgs.
+  # Voir pen.nix pour le choix de la source et du wrapping.
+  penDesktop = pkgs.callPackage ./pen.nix { };
 in
 {
   # ANDROID_HOME/ANDROID_SDK_ROOT : requis par les tools du SDK (avdmanager,
@@ -146,6 +151,8 @@ in
       # chatgptDesktop : wrappe le .deb officiel OpenAI (ChatGPT + Codex,
       # sorti le 2026-08-11) en environnement FHS, voir plus haut
       chatgptDesktop
+      # penDesktop : Pen (pen.dev) depuis l'AppImage officiel, voir plus haut
+      penDesktop
 
 # desktop entry so GUI apps open text files in nvim inside
 # ghostty. Named nvim-terminal to avoid colliding with neovim's own nvim.desktop.
