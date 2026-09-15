@@ -58,6 +58,8 @@ Desktop.ini
 *password*
 *.token
 .claude/
+# ...sauf le paquet stow `claude` (skills utilisateur Claude Code versionnés, pas de secrets dedans)
+!dots/claude/.claude/
 
 # hyprlock.conf's wallpaper path changes locally when wallpaper switches;
 # it's still tracked, but marked skip-worktree so local edits don't show as diffs
