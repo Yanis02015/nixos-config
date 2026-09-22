@@ -22,6 +22,18 @@ let
   };
   androidSdk = androidComposition.androidsdk;
 
+  # Claude Desktop — repackagé depuis le .deb OFFICIEL Anthropic (bêta Linux,
+  # dépôt apt downloads.claude.ai). Remplace (2026-09-22) le flake
+  # aaddrick/claude-desktop-debian, qui wrappe le même .deb officiel mais
+  # épingle une version en retard de quelques builds → Anthropic gate les
+  # derniers modèles (Opus 5.5) sur une version client minimale, d'où le
+  # message "Upgrade Claude to use this model on this computer". En le
+  # packageant nous-mêmes on maîtrise la version (bump version+hash dans
+  # claude-desktop.nix). Voir claude-desktop.nix / claude-desktop-fhs.nix.
+  claudeDesktop = pkgs.callPackage ./claude-desktop-fhs.nix {
+    claude-desktop = pkgs.callPackage ./claude-desktop.nix { };
+  };
+
   # ChatGPT desktop (OpenAI), embarque l'agent Codex — repackagé depuis le
   # .deb officiel Linux (sorti le 2026-08-11, pas encore dans nixpkgs ni
   # dans une flake communautaire mûre). Voir chatgpt-desktop.nix /
@@ -145,9 +157,9 @@ in
 
 # flakes
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
-      # claude-desktop-fhs (default de ce flake) : wrappe le .deb officiel Anthropic
-      # (bêta Linux depuis le 2026-06-30) + support MCP via npx/uvx/docker (FHS env)
-      inputs.claude-desktop.packages."${pkgs.stdenv.hostPlatform.system}".default
+      # claudeDesktop : wrappe le .deb officiel Anthropic (bêta Linux) en
+      # environnement FHS (MCP via npx/uvx), voir plus haut
+      claudeDesktop
       # chatgptDesktop : wrappe le .deb officiel OpenAI (ChatGPT + Codex,
       # sorti le 2026-08-11) en environnement FHS, voir plus haut
       chatgptDesktop
