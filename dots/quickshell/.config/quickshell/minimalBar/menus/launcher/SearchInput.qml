@@ -6,6 +6,7 @@ Item {
     id: input
 
     property string query: ""
+    property string placeholder: "Search apps…"
     property bool active: true // drives caret blink
 
     implicitHeight: 34
@@ -15,7 +16,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: Globals.spacing
         anchors.verticalCenter: parent.verticalCenter
-        text: input.query.length > 0 ? input.query : "Search apps…"
+        text: input.query.length > 0 ? input.query : input.placeholder
         color: input.query.length === 0 ? Qt.alpha(Globals.fgColor, 0.4) : Globals.fgColor
         font.family: Globals.textFont.family
         font.pixelSize: Globals.textFont.pixelSize

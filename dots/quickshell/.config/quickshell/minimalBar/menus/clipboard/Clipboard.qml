@@ -3,6 +3,8 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Io
 import qs.templates
+import qs.menus.launcher
+import "Fuzzy.js" as Fuzzy
 
 import QtQuick
 import QtQuick.Layouts
@@ -12,6 +14,8 @@ import QtQuick.Layouts
 //   cliphist list           -> "<id>\t<preview>" per line ([[ binary data ... ]] for images)
 //   cliphist decode <id>    -> full text (stdout) or raw image bytes
 //   cliphist wipe           -> clear all
+// Typing filters the list with fzf-style fuzzy matching on the cliphist preview
+// line (Fuzzy.js); matched characters are highlighted, ties keep recency order.
 // Styling mirrors the notification center; window chrome comes from PopupWindow.
 
 Scope {
@@ -22,6 +26,10 @@ Scope {
 
     // drives both the highlight and the preview pane
     property int selectedIndex: 0
+
+    // full history from `cliphist list` (newest first); clipModel holds the filtered view
+    property var entries: []
+    property string query: ""
 
     // ----- sizing -----
     readonly property int listWidth: 300                              // left list / truncation width
@@ -41,6 +49,46 @@ Scope {
 
     function refresh(): void {
         listProc.running = true;
+    }
+
+    // filter + rank the history against the query; an empty query keeps every
+    // entry in recency order
+    function rebuild(): void {
+        const q = root.query.trim().toLowerCase();
+        const tokens = q.length ? q.split(/\s+/) : [];
+        const hl = String(Globals.fgColor2);
+        let scored = [];
+        for (let i = 0; i < root.entries.length; i++) {
+            const e = root.entries[i];
+            const m = tokens.length ? Fuzzy.match(e._l, tokens) : {
+                score: 0,
+                positions: []
+            };
+            if (!m)
+                continue;
+            scored.push({
+                e: e,
+                i: i,
+                score: m.score,
+                positions: m.positions
+            });
+        }
+        scored.sort((a, b) => b.score !== a.score ? b.score - a.score : a.i - b.i);
+
+        clipModel.clear();
+        for (const s of scored)
+            clipModel.append({
+                cid: s.e.cid,
+                isImage: s.e.isImage,
+                label: Fuzzy.highlight(s.e.preview, s.positions, hl)
+            });
+
+        // select + preview the best match (or the most recent entry)
+        root.selectedIndex = 0;
+        if (clipModel.count > 0)
+            root.select(0);
+        else
+            root.clearPreview();
     }
 
     // load the full content of an entry into the preview pane on hover
@@ -98,6 +146,15 @@ Scope {
     // outside click) is left to PopupWindow, which closes the panel
     function handleKey(event): void {
         const k = event.key;
+        if (k === Qt.Key_Escape) {
+            // first Escape clears a non-empty query; an empty query is left
+            // unaccepted so PopupWindow closes the panel
+            if (root.query.length > 0) {
+                root.query = "";
+                event.accepted = true;
+            }
+            return;
+        }
         if (k === Qt.Key_Down || (k === Qt.Key_Tab && !(event.modifiers & Qt.ShiftModifier))) {
             root.moveSel(1);
             event.accepted = true;
@@ -111,6 +168,17 @@ Scope {
         if (k === Qt.Key_Return || k === Qt.Key_Enter) {
             root.activateAt(root.selectedIndex);
             event.accepted = true;
+            return;
+        }
+        if (k === Qt.Key_Backspace) {
+            root.query = root.query.slice(0, -1);
+            event.accepted = true;
+            return;
+        }
+        // printable characters extend the query
+        if (event.text && event.text.length === 1 && event.text.charCodeAt(0) >= 0x20) {
+            root.query += event.text;
+            event.accepted = true;
         }
     }
 
@@ -121,9 +189,12 @@ Scope {
         root.previewIsImage = false;
     }
 
-    // refresh list + reset preview/selection whenever the panel opens
+    onQueryChanged: rebuild()
+
+    // refresh list + reset query/preview/selection whenever the panel opens
     onClipboardOpenChanged: {
         if (clipboardOpen) {
+            query = "";
             selectedIndex = 0;
             clearPreview();
             refresh();
@@ -140,7 +211,7 @@ Scope {
         command: ["cliphist", "list"]
         stdout: StdioCollector {
             onStreamFinished: {
-                clipModel.clear();
+                let out = [];
                 const lines = text.split("\n");
 
                 for (const line of lines) {
@@ -155,17 +226,15 @@ Scope {
                     const isImg = prev.startsWith("[[ binary data");
                     // turn "[[ binary data 2 MiB png 1920x2160 ]]" into a tidy label
                     const label = isImg ? "Image · " + prev.replace("[[ binary data ", "").replace(" ]]", "") : prev;
-                    clipModel.append({
+                    out.push({
                         cid: id,
                         preview: label,
-                        isImage: isImg
+                        isImage: isImg,
+                        _l: label.toLowerCase()
                     });
                 }
-                // select + preview the most recent entry by default
-                if (clipModel.count > 0)
-                    root.select(0);
-                else
-                    root.clearPreview();
+                root.entries = out;
+                root.rebuild();
             }
         }
     }
@@ -254,7 +323,7 @@ Scope {
 
                 Text {
                     text: "Clear all"
-                    visible: clipModel.count > 0
+                    visible: root.entries.length > 0
                     color: Globals.criticalColor
                     font.family: Globals.textFont.family
                     font.weight: Globals.textFont.weight
@@ -274,9 +343,24 @@ Scope {
                 Layout.rightMargin: Globals.spacing
             }
 
+            // ---- search (fuzzy filter, typed straight into the panel) ----
+            SearchInput {
+                visible: root.entries.length > 0
+                Layout.fillWidth: true
+                query: root.query
+                placeholder: "Search clipboard…"
+                active: root.clipboardOpen
+            }
+
+            MenuDivider {
+                visible: root.entries.length > 0
+                Layout.leftMargin: Globals.spacing
+                Layout.rightMargin: Globals.spacing
+            }
+
             // empty state - keeps the list column's width (no preview pane) so the panel doesn't shrink horizontally when there's no history
             Text {
-                visible: clipModel.count === 0
+                visible: root.entries.length === 0
                 Layout.preferredWidth: root.listWidth
                 text: "No clipboard history"
                 color: Qt.alpha(Globals.fgColor, 0.4)
@@ -288,7 +372,7 @@ Scope {
             // ---- body: list (left) + preview (right) ----
             // only present when there is history; otherwise the second column doesn't exist
             RowLayout {
-                visible: clipModel.count > 0
+                visible: root.entries.length > 0
                 Layout.fillWidth: true
                 spacing: Globals.spacing + 2
 
@@ -307,6 +391,17 @@ Scope {
                     pixelAligned: true
                     spacing: Globals.spacing
 
+                    // nothing matches the query - same muted style as the empty state
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        y: Globals.spacing
+                        visible: clipModel.count === 0
+                        text: "No matches"
+                        color: Qt.alpha(Globals.fgColor, 0.4)
+                        font.family: Globals.textFont.family
+                        font.pixelSize: Globals.textFont.pixelSize - 1
+                    }
+
                     // keep the keyboard-selected row scrolled into view
                     onCurrentIndexChanged: positionViewAtIndex(currentIndex, ListView.Contain)
 
@@ -323,7 +418,7 @@ Scope {
                     delegate: Rectangle {
                         id: entry
                         required property string cid
-                        required property string preview
+                        required property string label
                         required property bool isImage
                         required property int index
 
@@ -370,7 +465,8 @@ Scope {
                                 leftMargin: Globals.spacing + 8
                                 rightMargin: Globals.spacing + 2
                             }
-                            text: entry.preview
+                            text: entry.label
+                            textFormat: Text.StyledText
                             color: Globals.fgColor
                             font.family: Globals.textFont.family
                             font.pixelSize: Globals.textFont.pixelSize - 1
