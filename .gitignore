@@ -74,3 +74,7 @@ result-*
 # Nautilus sidebar bookmarks: purely local (which folders you've pinned),
 # not something a fresh machine should inherit from this one.
 dots/gtk/.config/gtk-3.0/bookmarks
+
+# Karabiner réécrit lui-même ces fichiers : seules les règles dans assets/ sont versionnées
+dots/karabiner/.config/karabiner/karabiner.json
+dots/karabiner/.config/karabiner/automatic_backups/

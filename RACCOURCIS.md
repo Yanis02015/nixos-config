@@ -140,3 +140,19 @@ Ctrl et Alt **gauche** sont inversés (`ctrl:swap_lalt_lctl` dans `inputs.lua`) 
 Conséquence directe : pour déclencher le préfixe tmux (`Ctrl+b`), il faut appuyer sur la touche physique **Alt gauche + b** (puisque le Ctrl gauche physique envoie maintenant Alt). Idem pour tout autre raccourci `Ctrl+...` habituel (copier/coller, etc.) tant que tu utilises la main gauche — utilise Ctrl/Alt **droite** si tu veux le comportement classique sans réfléchir.
 
 (Échap et Verr. Maj, eux, sont redevenus normaux — l'inversion `caps:swapescape` du setup original a été retirée.)
+
+## macOS (AeroSpace) — MacBook
+
+Mêmes raccourcis que Hyprland, avec **Verr. Maj** à la place de `SUPER` (Karabiner la transforme en `Cmd+Ctrl+Opt`, voir `dots/karabiner`). Config : `dots/aerospace/.config/aerospace/aerospace.toml`. Les binds sont posés sur les positions **physiques**, donc la mémoire musculaire reste la même. Différences :
+
+| Hyprland | macOS |
+|---|---|
+| `SUPER + W` (fermer) | `Caps + W` aussi, mais déclaré `z` dans la config (position QWERTY) |
+| `SUPER + Espace` (launcher) | Raycast, raccourci `Caps + Espace` à régler dans Raycast |
+| `SUPER + C` (presse-papier) | Historique du presse-papier Raycast |
+| `SUPER + Shift + Ctrl + …` (déplacer sans suivre) | Pas d'équivalent (Ctrl fait déjà partie de Caps) |
+| `SUPER + Ctrl + L` (lock) | `Ctrl + Cmd + Q` (natif) |
+| `SUPER + glisser` | `Ctrl + Cmd` + glisser (après `defaults write -g NSWindowShouldDragOnGesture -bool true`) |
+| `Print` / `SUPER + Print` | `Cmd + Shift + 4` / `Cmd + Shift + 3` (natif), ou Shottr |
+| `SUPER + N`, `R`, `P`, `Alt+Espace`, `Shift+Espace` | Pas encore portés (pas de quickshell/matugen sur Mac) |
+| — | `Caps + Échap` : mode service (`r` remet le layout à plat, `h/j/k/l` regroupe avec la fenêtre voisine, `Échap` recharge la config) |
