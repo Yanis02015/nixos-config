@@ -10,8 +10,11 @@
 # Pas de nix-darwin ici, choix volontaire : sur macOS les apps graphiques passent de
 # toute façon par les casks, et leurs auto-updaters marchent.
 
-tap "nikitabobko/tap"     # AeroSpace
-tap "FelixKratz/formulae" # JankyBorders
+# Homebrew ≥ 6 refuse les taps tiers non approuvés (`brew trust`). `trusted: true` les
+# approuve ; l'URL explicite est nécessaire, sinon l'option est ignorée silencieusement
+# (bug Homebrew/brew#22668).
+tap "nikitabobko/tap", "https://github.com/nikitabobko/homebrew-tap", trusted: true         # AeroSpace
+tap "FelixKratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true # JankyBorders
 
 # ── bureau façon Hyprland ──────────────────────────────────────
 cask "aerospace"                   # tiling WM, config : dots/aerospace
