@@ -1,112 +1,106 @@
-# Brewfile — équivalent macOS de nixos/packages.nix (MacBook M5 Pro).
-# Installer / mettre à jour tout d'un coup :   brew bundle --file ~/nixos-config/mac/Brewfile
-# Voir ce qui manque sans rien installer :       brew bundle check --file ~/nixos-config/mac/Brewfile
-# Lister ce qui est installé mais absent d'ici : brew bundle cleanup --file ~/nixos-config/mac/Brewfile
+# Brewfile du Mac (MacBook M5 Pro) : de quoi retrouver le bureau Hyprland + le terminal, rien de plus.
+#   Installer / mettre à jour :            brew bundle --file ~/nixos-config/mac/Brewfile
+#   Voir ce qui manque :                   brew bundle check --file ~/nixos-config/mac/Brewfile
+#   Voir ce qui est en trop (sans rien     brew bundle cleanup --file ~/nixos-config/mac/Brewfile
+#   supprimer ; --force pour désinstaller)
+#
+# Installer au fil des besoins : décommenter une ligne de la section « À la demande »
+# puis relancer `brew bundle`, pour garder ce fichier à jour.
 #
 # Pas de nix-darwin ici, choix volontaire : sur macOS les apps graphiques passent de
-# toute façon par les casks, et leurs auto-updaters marchent (pas de store en lecture
-# seule comme pour Pen/Claude Desktop sous NixOS).
+# toute façon par les casks, et leurs auto-updaters marchent.
 
-tap "nikitabobko/tap"   # AeroSpace
-tap "FelixKratz/formulae" # JankyBorders (+ SketchyBar)
+tap "nikitabobko/tap"     # AeroSpace
+tap "FelixKratz/formulae" # JankyBorders
 
-# ── tiling / équivalents Hyprland + Quickshell ─────────────────
-cask "aerospace"            # tiling WM (≈ Hyprland), config : dots/aerospace
-brew "FelixKratz/formulae/borders" # bordures colorées de la fenêtre active (≈ border_size/col.active_border)
-# brew "FelixKratz/formulae/sketchybar" # barre (≈ quickshell bar) — pas encore configurée
-cask "karabiner-elements"   # Caps Lock → Cmd+Ctrl+Opt (la touche SUPER), config : dots/karabiner
-cask "raycast"              # launcher + historique presse-papier (≈ quickshell launcher/clipboard)
-cask "shottr"               # captures annotées (≈ grim/slurp + satty)
+# ── bureau façon Hyprland ──────────────────────────────────────
+cask "aerospace"                   # tiling WM, config : dots/aerospace
+brew "FelixKratz/formulae/borders" # bordure de la fenêtre active
+cask "karabiner-elements"          # Caps Lock → touche SUPER, config : dots/karabiner
+cask "raycast"                     # launcher (SUPER+Espace) + historique presse-papier (SUPER+C)
 
-# ── terminal / shell ───────────────────────────────────────────
+# ── terminal ───────────────────────────────────────────────────
 cask "ghostty"
-cask "kitty"
+cask "font-maple-mono-nf"          # police de la config Ghostty
 brew "tmux"
-brew "sesh"
-brew "neovim"
-brew "yazi"
-brew "sevenzip"             # aperçus d'archives dans yazi
-brew "poppler"              # aperçus PDF dans yazi
-brew "btop"
-brew "fastfetch"
-brew "lazygit"
-brew "lazydocker"
-brew "fd"
-brew "fzf"
-brew "ripgrep"
-brew "jq"
-brew "zoxide"
-brew "direnv"
-brew "stow"
-brew "trash"
-brew "wget"
-brew "tree-sitter-cli"
-brew "powerlevel10k"
-brew "zsh-autosuggestions"
-brew "zsh-syntax-highlighting"
-brew "zsh-history-substring-search"
-
-# ── dev / ops ──────────────────────────────────────────────────
-brew "git"
-brew "gh"
-brew "ansible"
-brew "awscli"
-brew "kubectl"
+brew "sesh"                        # SUPER+T / prefix+s
+brew "fzf"                         # requis par sesh-picker.sh
+brew "fd"                          # requis par sesh-picker.sh (ctrl-f)
+brew "stow"                        # déploie dots/
 brew "k9s"
-brew "wireguard-tools"
-cask "orbstack"             # Docker sur Apple Silicon (fournit le socket docker pour lazydocker)
-# cask "podman-desktop"     # alternative à OrbStack si tu préfères rester sur Podman
-cask "claude-code"
-
-# ── langages / runtimes ────────────────────────────────────────
-brew "go"
-brew "node"
-brew "python"
-brew "bun"
-brew "pnpm"
-brew "openjdk"
-brew "maven"
-
-# ── LSP + formatters (mêmes que packages.nix, nvim n'utilise pas mason) ──
-brew "basedpyright"
-brew "gopls"
-brew "jdtls"
-brew "lua-language-server"
-brew "tailwindcss-language-server"
-brew "typescript-language-server"
-brew "vscode-langservers-extracted"
-brew "black"
-brew "prettier"
-brew "shfmt"
-brew "stylua"
-
-# ── mobile (≈ SDK Android global + mobile-mcp) ─────────────────
-cask "android-studio"       # SDK manager + émulateur arm64 natif (rapide sur Apple Silicon)
-cask "android-platform-tools" # adb
-# Xcode (simulateur iOS, aussi pilotable par mobile-mcp) : via l'App Store,
-# ou `brew "mas"` + `mas "Xcode", id: 497799835` une fois connecté à l'App Store.
 
 # ── apps ───────────────────────────────────────────────────────
-cask "zen"
-cask "brave-browser"
-cask "google-chrome"
-cask "zed"
-cask "visual-studio-code"
-cask "obsidian"
-cask "discord"
-cask "obs"
 cask "claude"
-cask "chatgpt"
-# Pen (pen.dev) : pas de cask, DMG à télécharger depuis pen.dev.
+cask "zen"
+cask "google-chrome"
 
-# ── polices (fonts.packages) ───────────────────────────────────
-cask "font-maple-mono-nf"
-cask "font-departure-mono"
-cask "font-departure-mono-nerd-font"
-cask "font-iosevka-nerd-font"
-
-# Absents volontairement : tout ce qui est Wayland/Hyprland/Linux (quickshell,
-# hyprlock, cliphist, wl-clipboard, grim, slurp, brightnessctl, playerctl,
-# nautilus, thèmes GTK/Qt…), gcc/make (fournis par les Xcode Command Line Tools),
-# kamal (gem Ruby : `gem install kamal`), matugen (pas dans Homebrew :
-# `cargo install matugen` le jour où le thème dynamique sera porté).
+# ── À la demande (décommenter quand le besoin arrive) ──────────
+# Les binds AeroSpace correspondants (SUPER+Shift+E/D/O/W) ne font rien tant que l'app manque.
+#
+# terminal / TUI
+# brew "neovim"
+# brew "yazi"                      # SUPER+Shift+E
+# brew "lazydocker"                # SUPER+Shift+D (+ orbstack ci-dessous)
+# brew "lazygit"
+# brew "btop"
+# brew "fastfetch"
+# brew "ripgrep"
+# brew "jq"
+# brew "zoxide"
+# brew "direnv"
+# brew "trash"
+# brew "powerlevel10k"             # pour le .zshrc, quand il sera porté
+# brew "zsh-autosuggestions"
+# brew "zsh-syntax-highlighting"
+# brew "zsh-history-substring-search"
+#
+# dev / ops
+# brew "gh"
+# cask "orbstack"                  # Docker sur Apple Silicon
+# cask "claude-code"               # CLI (Claude Desktop inclut déjà l'onglet Code)
+# brew "kubectl"
+# brew "awscli"
+# brew "ansible"
+# brew "wireguard-tools"
+#
+# langages, LSP, formatters (même liste que packages.nix, nvim n'utilise pas mason)
+# brew "node"
+# brew "pnpm"
+# brew "bun"
+# brew "python"
+# brew "go"
+# brew "gopls"
+# brew "openjdk"
+# brew "maven"
+# brew "jdtls"
+# brew "basedpyright"
+# brew "lua-language-server"
+# brew "typescript-language-server"
+# brew "tailwindcss-language-server"
+# brew "vscode-langservers-extracted"
+# brew "tree-sitter-cli"
+# brew "black"
+# brew "prettier"
+# brew "shfmt"
+# brew "stylua"
+#
+# mobile
+# cask "android-studio"            # lourd : SDK + émulateur arm64
+# cask "android-platform-tools"    # adb
+#
+# apps
+# cask "obsidian"                  # SUPER+Shift+O
+# cask "zed"                       # SUPER+Shift+W (avec Zen + Discord)
+# cask "discord"
+# cask "chatgpt"
+# cask "shottr"                    # captures annotées
+# cask "brave-browser"
+# cask "visual-studio-code"
+# cask "kitty"
+# cask "obs"
+# cask "font-departure-mono"
+# cask "font-departure-mono-nerd-font"
+# cask "font-iosevka-nerd-font"
+#
+# Pas dans Homebrew : Pen (DMG sur pen.dev), kamal (`gem install kamal`),
+# matugen (`cargo install matugen`).
