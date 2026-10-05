@@ -15,7 +15,7 @@ Vérifiés directement dans `~/nixos-config/dots/hypr/.config/hypr/modules/*.lua
 | `SUPER + Espace` | Launcher Quickshell (recherche d'applis) |
 | `SUPER + Alt + Espace` | Basculer le panneau de droite (Quickshell) |
 | `SUPER + N` | Panneau de notifications |
-| `SUPER + C` | Panneau presse-papier (taper pour filtrer en fuzzy, `Échap` vide la recherche puis ferme) |
+| `SUPER + C` | Panneau presse-papier (taper pour filtrer en fuzzy, `Ctrl+P`/`Alt+P` ou icône 󰐃 pour épingler/désépingler, `Échap` vide la recherche puis ferme) |
 | `SUPER + R` | Panneau rappels/reminders |
 | `SUPER + Shift + Espace` | Cacher/afficher la barre Quickshell |
 | `SUPER + P` | Changer de wallpaper manuellement (régénère les couleurs Matugen) |
