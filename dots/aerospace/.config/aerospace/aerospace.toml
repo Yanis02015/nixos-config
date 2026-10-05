@@ -73,7 +73,9 @@ cmd-alt-ctrl-c = 'exec-and-forget open raycast://extensions/raycast/clipboard-hi
 # ── fenêtres (tiling.lua) ─────────────────────────────────────
 cmd-alt-ctrl-z = 'close'                 # touche W en AZERTY
 cmd-alt-ctrl-o = 'layout floating tiling'
-cmd-alt-ctrl-f = 'fullscreen'
+# --no-outer-gaps : bord à bord comme sous Hyprland (la barre de menus macOS reste,
+# sauf si elle est en masquage automatique dans les Réglages)
+cmd-alt-ctrl-f = 'fullscreen --no-outer-gaps'
 
 cmd-alt-ctrl-h = 'focus left'
 cmd-alt-ctrl-j = 'focus down'
