@@ -32,6 +32,14 @@ brew "fd"                          # requis par sesh-picker.sh (ctrl-f)
 brew "stow"                        # déploie dots/
 brew "k9s"
 
+# ── shell (dots/zsh/.zshrc) ────────────────────────────────────
+brew "powerlevel10k"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+brew "zsh-history-substring-search"
+brew "zoxide"
+brew "direnv"
+
 # ── apps ───────────────────────────────────────────────────────
 cask "claude"
 cask "zen"
@@ -49,13 +57,7 @@ cask "google-chrome"
 # brew "fastfetch"
 # brew "ripgrep"
 # brew "jq"
-# brew "zoxide"
-# brew "direnv"
 # brew "trash"
-# brew "powerlevel10k"             # pour le .zshrc, quand il sera porté
-# brew "zsh-autosuggestions"
-# brew "zsh-syntax-highlighting"
-# brew "zsh-history-substring-search"
 #
 # dev / ops
 # brew "gh"
