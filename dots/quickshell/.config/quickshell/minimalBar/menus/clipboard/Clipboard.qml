@@ -20,6 +20,8 @@ import QtQuick.Layouts
 // in pinDir - one raw file per pin + pins.json - so they survive "Clear all" and
 // cliphist's max-items pruning. They stay on top, and the history hides entries
 // whose preview matches a pin so a pinned item isn't listed twice.
+// Ctrl+Delete removes the selected entry for good: from cliphist for history,
+// and for a pin both its stored copy and any hidden cliphist duplicates.
 // Styling mirrors the notification center; window chrome comes from PopupWindow.
 
 Scope {
@@ -194,6 +196,32 @@ Scope {
         pinProc.running = true;
     }
 
+    // delete the entry at index; the selection moves to its neighbour (next,
+    // else previous) so repeated Ctrl+Delete walks down the list
+    function deleteAt(index: int): void {
+        if (index < 0 || index >= clipModel.count || deleteProc.running || pinProc.running)
+            return;
+        const it = clipModel.get(index);
+        const next = index + 1 < clipModel.count ? clipModel.get(index + 1).preview : (index > 0 ? clipModel.get(index - 1).preview : "");
+
+        let ids = [];
+        if (it.pinned) {
+            ids = root.entries.filter(e => e.preview === it.preview).map(e => e.cid);
+            root.pins = root.pins.filter(p => p.file !== it.file);
+            root.savePins();
+            unpinProc.command = ["rm", "-f", root.pinPath(it.file)];
+            unpinProc.running = true;
+        } else {
+            ids = [it.cid];
+        }
+        if (ids.length) {
+            deleteProc.command = ["sh", "-c", "printf '%s\\n' \"$@\" | cliphist delete", "_"].concat(ids);
+            deleteProc.running = true;
+            root.entries = root.entries.filter(e => !ids.includes(e.cid));
+        }
+        root.rebuild(next);
+    }
+
     // ----- selection (single source of truth, mirrors the launcher) -----
 
     // set the active row + load its preview; the hoveredKey guard dedupes the
@@ -238,6 +266,11 @@ Scope {
         // checked before the printable branch since Alt+P still carries a "p"
         if (k === Qt.Key_P && (event.modifiers & (Qt.ControlModifier | Qt.AltModifier))) {
             root.togglePinAt(root.selectedIndex);
+            event.accepted = true;
+            return;
+        }
+        if (k === Qt.Key_Delete && (event.modifiers & Qt.ControlModifier)) {
+            root.deleteAt(root.selectedIndex);
             event.accepted = true;
             return;
         }
@@ -363,6 +396,10 @@ Scope {
 
     Process {
         id: unpinProc
+    }
+
+    Process {
+        id: deleteProc
     }
 
     Process {
