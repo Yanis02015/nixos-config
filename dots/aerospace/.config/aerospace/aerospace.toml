@@ -55,6 +55,21 @@ on-window-detected = [
   { if = 'test %{app-bundle-id} = com.apple.Music', run = 'move-node-to-workspace 5' },
 ]
 
+# ≈ hl.workspace_rule de monitors.lua : workspace 1 sur l'écran externe, 2-10 sur le
+# laptop. `1` = écran le plus à gauche : l'externe s'il est branché à gauche (comme
+# sous Hyprland), sinon le laptop seul. Écran externe à droite → remplacer par 2.
+[workspace-to-monitor-force-assignment]
+1 = 1
+2 = 'built-in'
+3 = 'built-in'
+4 = 'built-in'
+5 = 'built-in'
+6 = 'built-in'
+7 = 'built-in'
+8 = 'built-in'
+9 = 'built-in'
+10 = 'built-in'
+
 [mode.main.binding]
 # ── apps (bindings.lua) ───────────────────────────────────────
 cmd-alt-ctrl-enter = 'exec-and-forget ~/nixos-config/scripts/mac-ghostty.sh main-term'
@@ -94,6 +109,8 @@ cmd-alt-ctrl-shift-minus = 'resize height -100'
 cmd-alt-ctrl-shift-equal = 'resize height +100'
 
 cmd-alt-ctrl-tab = 'focus dfs-next --boundaries-action wrap-around-the-workspace'
+# envoyer la fenêtre sur l'autre écran (et la suivre)
+cmd-alt-ctrl-shift-tab = 'move-node-to-monitor --focus-follows-window --wrap-around next'
 
 # ── workspaces ────────────────────────────────────────────────
 cmd-alt-ctrl-left = 'workspace --wrap-around prev'

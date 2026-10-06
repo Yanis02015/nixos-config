@@ -155,4 +155,6 @@ Mêmes raccourcis que Hyprland, avec **Verr. Maj** à la place de `SUPER` (Karab
 | `SUPER + glisser` | `Ctrl + Cmd` + glisser (après `defaults write -g NSWindowShouldDragOnGesture -bool true`) |
 | `Print` / `SUPER + Print` | `Cmd + Shift + 4` / `Cmd + Shift + 3` (natif), ou Shottr |
 | `SUPER + N`, `R`, `P`, `Alt+Espace`, `Shift+Espace` | Pas encore portés (pas de quickshell/matugen sur Mac) |
+| Workspace 1 sur l'écran externe, 2-10 sur le laptop (`monitors.lua`) | Pareil (`workspace-to-monitor-force-assignment`) : `Caps + Shift + 1` envoie la fenêtre sur l'écran externe, `Caps + Shift + 2..0` sur le laptop |
+| — | `Caps + Shift + Tab` : envoie la fenêtre sur l'autre écran et la suit |
 | — | `Caps + Échap` : mode service (`r` remet le layout à plat, `h/j/k/l` regroupe avec la fenêtre voisine, `Échap` recharge la config) |
