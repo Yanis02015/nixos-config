@@ -16,6 +16,7 @@
 # (bug Homebrew/brew#22668).
 tap "yanis02015/tap", "https://github.com/Yanis02015/homebrew-tap", trusted: true # casks perso (apps absentes de Homebrew)
 tap "jackielii/tap", "https://github.com/jackielii/homebrew-tap", trusted: true   # skhd.zig
+tap "mmathys/tap", "https://github.com/mmathys/homebrew-tap", trusted: true       # noswoosh
 
 # ── terminal ───────────────────────────────────────────────────
 cask "ghostty"
@@ -29,6 +30,7 @@ brew "k9s"
 
 # ── raccourcis globaux ─────────────────────────────────────────
 cask "jackielii/tap/skhd-zig"      # Option gauche + Entrée → Terminal, config : dots/skhd
+cask "mmathys/tap/noswoosh"         # Ctrl+←/→ et swipe 3 doigts : bureaux sans animation (macOS ≥ 26.6)
 
 # ── shell (dots/zsh/.zshrc) ────────────────────────────────────
 brew "starship"                    # prompt, config : dots/starship
