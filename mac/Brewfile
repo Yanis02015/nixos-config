@@ -42,6 +42,7 @@ cask "zen"
 cask "zed"
 cask "google-chrome"
 cask "yanis02015/tap/clipcascade"  # presse-papier partagé avec NixOS, serveur : http://192.168.2.15:8080 (homelab)
+cask "maccy"                       # historique du presse-papier (équivalent du panneau clipboard quickshell)
 
 # ── À la demande (décommenter quand le besoin arrive) ──────────
 #
