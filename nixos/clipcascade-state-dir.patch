@@ -1,0 +1,23 @@
+--- a/core/constants.py
++++ b/core/constants.py
+@@ -243,12 +243,14 @@
+ 
+         return app_dir
+     else:
+-        if getattr(sys, "frozen", False):  # Running as a PyInstaller executable
+-            return os.path.dirname(sys.executable)
+-        else:  # Running as a regular Python script
+-            running_dir = os.path.dirname(os.path.abspath(__file__))
+-            parent_dir = os.path.dirname(running_dir)  # Go one folder up
+-            return parent_dir
++        # NixOS: the program directory is the read-only Nix store, so keep
++        # DATA (login/session), the log and the lock file in $XDG_STATE_HOME.
++        state_home = os.environ.get("XDG_STATE_HOME") or os.path.join(
++            get_user_home_directory(), ".local", "state"
++        )
++        app_dir = os.path.join(state_home, "clipcascade")
++        os.makedirs(app_dir, mode=0o700, exist_ok=True)
++        return app_dir
+ 
+ 
+ def get_downloads_folder():

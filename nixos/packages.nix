@@ -46,6 +46,10 @@ let
   # officiel via appimageTools.wrapType2 (env FHS), pas dans nixpkgs.
   # Voir pen.nix pour le choix de la source et du wrapping.
   penDesktop = pkgs.callPackage ./pen.nix { };
+
+  # ClipCascade, client Linux de synchro du presse-papier avec le Mac (serveur
+  # sur le homelab) — pas dans nixpkgs. Voir clipcascade.nix.
+  clipcascade = pkgs.callPackage ./clipcascade.nix { };
 in
 {
   # ANDROID_HOME/ANDROID_SDK_ROOT : requis par les tools du SDK (avdmanager,
@@ -165,6 +169,8 @@ in
       chatgptDesktop
       # penDesktop : Pen (pen.dev) depuis l'AppImage officiel, voir plus haut
       penDesktop
+      # clipcascade : presse-papier partagé NixOS <-> macOS, lancé par autostart.lua
+      clipcascade
 
 # desktop entry so GUI apps open text files in nvim inside
 # ghostty. Named nvim-terminal to avoid colliding with neovim's own nvim.desktop.
