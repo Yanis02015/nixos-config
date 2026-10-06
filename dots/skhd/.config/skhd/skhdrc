@@ -6,3 +6,13 @@
 # Hyprland). Si Terminal n'est pas lancé, `activate` l'ouvre avec sa fenêtre par défaut ; `do script`
 # n'est appelé que s'il tourne déjà, sinon on aurait deux fenêtres au premier appui.
 lalt - return : osascript -e 'if application "Terminal" is running then tell application "Terminal" to do script ""' -e 'tell application "Terminal" to activate'
+
+# Option gauche + B : Zen (le lance, ou le passe au premier plan ; Cmd+N pour une nouvelle fenêtre).
+lalt - b : open -a Zen
+
+# Option gauche + C : historique du presse-papier Maccy. Renvoie son raccourci par défaut
+# (Maccy → Réglages → General → Open), à ajuster ici si on le change dans Maccy.
+lalt - c | shift + cmd - c
+
+# Option gauche + F : plein écran natif, bascule comme SUPER+F (= Ctrl+Cmd+F, bureau à part).
+lalt - f | ctrl + cmd - f

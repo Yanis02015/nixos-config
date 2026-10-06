@@ -148,12 +148,13 @@ Pas de tiling ni de remappage clavier sur le Mac (AeroSpace, Karabiner, Raycast 
 | Hyprland | macOS |
 |---|---|
 | `SUPER + Entrée` (terminal) | `Option gauche + Entrée` : nouvelle fenêtre du Terminal d'Apple (skhd.zig) |
+| `SUPER + B` (navigateur) | `Option gauche + B` : Zen (skhd.zig) |
 | `SUPER + Espace` (launcher) | `Cmd + Espace` (Spotlight) |
-| `SUPER + C` (presse-papier) | `Cmd + Espace` puis `Cmd + 4` (historique du presse-papier de Spotlight, macOS Tahoe) |
+| `SUPER + C` (presse-papier) | `Option gauche + C` : Maccy (skhd.zig renvoie `Shift + Cmd + C`) ; sinon `Cmd + Espace` puis `Cmd + 4` (historique de Spotlight) |
 | `SUPER + 1..0` / `SUPER + ←/→` (workspaces) | `Ctrl + ←/→` entre les bureaux ; `Ctrl + 1..9` après activation dans Réglages → Clavier → Raccourcis → Mission Control |
 | Vue d'ensemble | `Ctrl + ↑` (Mission Control), `Ctrl + ↓` (fenêtres de l'app) |
 | `SUPER + Shift + 1..0` (envoyer la fenêtre) | Pas de raccourci natif : maintenir la barre de titre + `Ctrl + ←/→`, ou glisser la fenêtre dans Mission Control |
-| `SUPER + F` (plein écran) | `Fn + Ctrl + F` (remplir l'écran) ; `Ctrl + Cmd + F` (plein écran natif, dans un bureau à part) |
+| `SUPER + F` (plein écran) | `Option gauche + F` = `Ctrl + Cmd + F` (plein écran natif, dans un bureau à part, skhd.zig) ; `Fn + Ctrl + F` (remplir l'écran) |
 | Tiling | `Fn + Ctrl + ←/→/↑/↓` (moitiés d'écran), `Fn + Ctrl + C` (centrer), `Fn + Ctrl + R` (taille d'avant) |
 | `SUPER + Tab` | `Cmd + Tab` (apps), `Cmd + <` (fenêtres de la même app, touche à gauche du W en AZERTY ISO) |
 | `SUPER + W` | `Cmd + W` (fenêtre), `Cmd + Q` (app) |
