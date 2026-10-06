@@ -2,10 +2,20 @@
 # lalt = Option GAUCHE seulement : Option droite reste libre pour la saisie AZERTY ({ } [ ] | ~ \).
 # Tester une touche : skhd -o   ·   logs : ~/Library/Logs/skhd.log
 
-# Option gauche + Entrée : nouvelle fenêtre du Terminal d'Apple (équivalent de SUPER+Entrée sous
-# Hyprland). Si Terminal n'est pas lancé, `activate` l'ouvre avec sa fenêtre par défaut ; `do script`
-# n'est appelé que s'il tourne déjà, sinon on aurait deux fenêtres au premier appui.
-lalt - return : osascript -e 'if application "Terminal" is running then tell application "Terminal" to do script ""' -e 'tell application "Terminal" to activate'
+# Option gauche + Entrée : nouvelle fenêtre du Terminal d'Apple (équivalent de SUPER+Entrée).
+lalt - return : ~/nixos-config/scripts/mac-terminal.sh
+
+# Option gauche + T : Terminal avec le sélecteur de session tmux (sesh), comme SUPER+T.
+lalt - t : ~/nixos-config/scripts/mac-terminal.sh '~/nixos-config/scripts/sesh-picker.sh'
+
+# Option gauche + Shift + F : nouvelle fenêtre Finder sur le dossier perso (SUPER+Shift+F).
+lalt + shift - f : open ~
+
+# Option gauche + W : fermer la fenêtre (Cmd+W), comme SUPER+W.
+lalt - w | cmd - w
+
+# Option gauche + Espace : Spotlight (Cmd+Espace), comme le launcher SUPER+Espace.
+lalt - space | cmd - space
 
 # Option gauche + B : Zen (le lance, ou le passe au premier plan ; Cmd+N pour une nouvelle fenêtre).
 lalt - b : open -a Zen
