@@ -146,6 +146,16 @@
     security.polkit.enable = true;
     systemd.packages = with pkgs; [ hyprpolkitagent ];
     systemd.user.services.hyprpolkitagent.wantedBy = [ "graphical-session.target" ];
+    # Target started by autostart.lua (`systemctl --user start hyprland-session.target`)
+    # — inherited from upstream but never defined on NixOS, so graphical-session.target
+    # never came up. Required since xdg-desktop-portal 1.22 (Requisite=graphical-session.target),
+    # otherwise the portal refuses to start (file pickers, screen sharing...).
+    systemd.user.targets.hyprland-session = {
+        description = "Hyprland compositor session";
+        bindsTo = [ "graphical-session.target" ];
+        wants = [ "graphical-session-pre.target" ];
+        after = [ "graphical-session-pre.target" ];
+    };
 
     systemd.user.services.trash-cleanup.serviceConfig.ExecStart = "${pkgs.trash-cli}/bin/trash-empty 20";
     systemd.user.timers.trash-cleanup = {
