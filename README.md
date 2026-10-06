@@ -62,7 +62,7 @@ You will be able to change the contents of anything either in the repo or in the
 
 Every package below is stowed the same way -`stow <package>` from inside `~/nixos-config/dots`, no flags (a `.stowrc` there pins the target to your home directory) — except `wallpapers`, which lives at the repo root instead of `dots/` and stows with plain `stow wallpapers` from `~/nixos-config`. Pick only what you need, they're all independent.
 
-Almost everything lands in `~/.config/<package>`. The only two exceptions are `zsh` (which drops `.zshrc` and `.p10k.zsh` straight into your home directory, since that's where zsh looks for them) and `wallpapers` (which lands at `~/Wallpapers`, since that's where `rotate_wallpaper.sh` looks).
+Almost everything lands in `~/.config/<package>`. The only two exceptions are `zsh` (which drops `.zshrc` straight into your home directory, since that's where zsh looks for it) and `wallpapers` (which lands at `~/Wallpapers`, since that's where `rotate_wallpaper.sh` looks).
 NB: quickshell is the bar, launcher, notification daemon and power menu, so the standalone alternatives that used to live here (`alacritty`, `mako`, `rofi`, `walker`, `waybar`, `niri`, `pacseek`) have been removed from this fork — nothing stows or runs them anymore.
 
 ### What I actually run
@@ -88,11 +88,12 @@ stow hypr quickshell matugen wallpapers ghostty tmux zsh nvim btop fastfetch gtk
 | `nvim` | Neovim: LSP, plugins and colours | [nvim](https://github.com/Yanis02015/nixos-config/tree/master/dots/nvim/.config/nvim) |
 | `quickshell` | Custom QtQuick desktop shell: bar, menus, OSDs and launcher. Two bars live here, `minimalBar` and `onebarV2`. Setup requires matugen for dynamic color switching. | [quickshell](https://github.com/Yanis02015/nixos-config/tree/master/dots/quickshell/.config/quickshell) |
 | `satty` | Screenshot annotation tool | [satty](https://github.com/Yanis02015/nixos-config/tree/master/dots/satty/.config/satty) |
+| `starship` | Prompt (Starship), shared with macOS | [starship](https://github.com/Yanis02015/nixos-config/tree/master/dots/starship/.config) |
 | `tmux` | Terminal multiplexer | [tmux](https://github.com/Yanis02015/nixos-config/tree/master/dots/tmux/.config/tmux) |
 | `wallpapers` | The wallpaper collection - lands at `~/Wallpapers`, which is where `rotate_wallpaper.sh` looks | [wallpapers](https://github.com/Yanis02015/nixos-config/tree/master/wallpapers/Wallpapers) |
 | `wiremix` | TUI mixer for PipeWire audio | [wiremix](https://github.com/Yanis02015/nixos-config/tree/master/dots/wiremix/.config/wiremix) |
 | `yazi` | Terminal file manager | [yazi](https://github.com/Yanis02015/nixos-config/tree/master/dots/yazi/.config/yazi) |
-| `zsh` | Shell config with the powerlevel10k prompt (`.zshrc`, `.p10k.zsh`) | [zsh](https://github.com/Yanis02015/nixos-config/tree/master/dots/zsh) |
+| `zsh` | Shell config, shared with macOS (`.zshrc`) | [zsh](https://github.com/Yanis02015/nixos-config/tree/master/dots/zsh) |
 
 ## Not stow packages
 

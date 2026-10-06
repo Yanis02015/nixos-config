@@ -1,11 +1,6 @@
 # Partagé entre NixOS (PC) et macOS (MacBook) : les chemins sont essayés dans l'ordre
 # via _src (le premier qui existe gagne), le reste est séparé par $OSTYPE plus bas.
 
-# ── p10k instant prompt ──────────────────────────────────────
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # ── homebrew (macOS) ─────────────────────────────────────────
 # avant le reste : met /opt/homebrew/bin dans le PATH (zoxide, direnv…)
 [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -34,19 +29,14 @@ export PATH="$PATH:$HOME/.local/bin"
 #   tmux attach 2>/dev/null || tmux new-session
 # fi
 
-# ── prompt (powerlevel10k) ───────────────────────────────────
+# ── helpers ──────────────────────────────────────────────────
 _src() { local f; for f in "$@"; do [[ -r $f ]] && { source "$f"; return 0; }; done; return 1 }
-
-_src \
-  /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme \
-  /run/current-system/sw/share/zsh/themes/powerlevel10k/powerlevel10k.zsh-theme \
-  /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 # ── tools & plugins ──────────────────────────────────────────
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 command -v direnv &>/dev/null && eval "$(direnv hook zsh)"
+# prompt : dots/starship/.config/starship.toml
+command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 _src /usr/share/fzf/completion.zsh   /run/current-system/sw/share/fzf/completion.zsh   /opt/homebrew/opt/fzf/shell/completion.zsh
 _src /usr/share/fzf/key-bindings.zsh /run/current-system/sw/share/fzf/key-bindings.zsh /opt/homebrew/opt/fzf/shell/key-bindings.zsh

@@ -195,7 +195,6 @@
     programs.zsh.enable = true;
     environment.pathsToLink = [
         "/share/fzf"
-        "/share/zsh-powerlevel10k"
         "/share/zsh-autosuggestions"
         "/share/zsh-syntax-highlighting"
         "/share/zsh-history-substring-search"

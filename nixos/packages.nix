@@ -117,6 +117,7 @@ in
       satty
       sesh # sélecteur/créateur de session tmux fuzzy (SUPER+T / tmux prefix+s)
       slurp
+      starship # prompt zsh (dots/starship), remplace powerlevel10k
       stow
       tmux
       trash-cli
@@ -128,7 +129,6 @@ in
       yazi
       zed-editor
       zoxide
-      zsh-powerlevel10k
       zsh-autosuggestions
       zsh-syntax-highlighting
       zsh-history-substring-search

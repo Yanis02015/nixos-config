@@ -1,0 +1,33 @@
+# Prompt Starship, partagé NixOS + macOS (remplace powerlevel10k le 2026-10-05).
+# Style sur une ligne :  user@machine:repo/sous/dossier on  branche [$] via 🐍 v3.13 ❯
+# Doc des modules : https://starship.rs/config/
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# user@machine:dossier, puis tout le reste dans l'ordre par défaut de Starship
+# (git, langages, durée…). Pas de saut de ligne : tout tient sur une ligne.
+format = "$username[@](bold)$hostname[:](bold)$directory$all"
+
+[line_break]
+disabled = true
+
+[username]
+show_always = true      # par défaut, seulement en SSH ou en root
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false        # idem, toujours affiché
+format = "[$hostname]($style)"
+
+[directory]
+# Dans un repo git, le chemin part du nom du repo (truncate_to_repo, défaut).
+truncation_length = 6
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+# bindkey -v dans .zshrc : ❮ en mode commande vi
+vimcmd_symbol = "[❮](bold green)"
+
+[battery]
+disabled = true         # le Mac l'affiche déjà dans la barre de menus

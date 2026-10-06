@@ -22,7 +22,7 @@ brew "stow"                        # déploie dots/
 brew "k9s"
 
 # ── shell (dots/zsh/.zshrc) ────────────────────────────────────
-brew "powerlevel10k"
+brew "starship"                    # prompt, config : dots/starship
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "zsh-history-substring-search"
