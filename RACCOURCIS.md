@@ -143,10 +143,11 @@ Conséquence directe : pour déclencher le préfixe tmux (`Ctrl+b`), il faut app
 
 ## macOS — MacBook (gestion des fenêtres native)
 
-Pas de tiling ni de remappage clavier sur le Mac (AeroSpace, Karabiner, Raycast retirés le 2026-10-05) : ce sont les raccourcis d'Apple. Équivalents des habitudes Hyprland :
+Pas de tiling ni de remappage clavier sur le Mac (AeroSpace, Karabiner, Raycast retirés le 2026-10-05) : ce sont les raccourcis d'Apple, plus un seul raccourci global via skhd.zig (`dots/skhd`). Équivalents des habitudes Hyprland :
 
 | Hyprland | macOS |
 |---|---|
+| `SUPER + Entrée` (terminal) | `Option gauche + Entrée` : nouvelle fenêtre du Terminal d'Apple (skhd.zig) |
 | `SUPER + Espace` (launcher) | `Cmd + Espace` (Spotlight) |
 | `SUPER + C` (presse-papier) | `Cmd + Espace` puis `Cmd + 4` (historique du presse-papier de Spotlight, macOS Tahoe) |
 | `SUPER + 1..0` / `SUPER + ←/→` (workspaces) | `Ctrl + ←/→` entre les bureaux ; `Ctrl + 1..9` après activation dans Réglages → Clavier → Raccourcis → Mission Control |

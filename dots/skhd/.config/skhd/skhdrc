@@ -1,0 +1,8 @@
+# skhd.zig (Mac uniquement) : raccourcis globaux. Rechargé automatiquement à l'enregistrement.
+# lalt = Option GAUCHE seulement : Option droite reste libre pour la saisie AZERTY ({ } [ ] | ~ \).
+# Tester une touche : skhd -o   ·   logs : ~/Library/Logs/skhd.log
+
+# Option gauche + Entrée : nouvelle fenêtre du Terminal d'Apple (équivalent de SUPER+Entrée sous
+# Hyprland). Si Terminal n'est pas lancé, `activate` l'ouvre avec sa fenêtre par défaut ; `do script`
+# n'est appelé que s'il tourne déjà, sinon on aurait deux fenêtres au premier appui.
+lalt - return : osascript -e 'if application "Terminal" is running then tell application "Terminal" to do script ""' -e 'tell application "Terminal" to activate'
