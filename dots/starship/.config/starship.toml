@@ -1,5 +1,5 @@
 # Prompt Starship, partagé NixOS + macOS (remplace powerlevel10k le 2026-10-05).
-# Style sur une ligne :  user@machine:repo/sous/dossier on  branche [$] via 🐍 v3.13 ❯
+# Style sur une ligne :  user@machine:dossier on  branche [$] via 🐍 v3.13 ❯
 # Doc des modules : https://starship.rs/config/
 
 "$schema" = 'https://starship.rs/config-schema.json'
@@ -20,8 +20,8 @@ ssh_only = false        # idem, toujours affiché
 format = "[$hostname]($style)"
 
 [directory]
-# Dans un repo git, le chemin part du nom du repo (truncate_to_repo, défaut).
-truncation_length = 6
+# Uniquement le dossier courant (à la racine d'un repo git : le nom du repo).
+truncation_length = 1
 
 [character]
 success_symbol = "[❯](bold green)"
