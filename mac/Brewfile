@@ -1,4 +1,5 @@
-# Brewfile du Mac (MacBook M5 Pro) : de quoi retrouver le bureau Hyprland + le terminal, rien de plus.
+# Brewfile du Mac (MacBook M5 Pro) : apps + terminal, gestion des fenêtres 100 % native macOS.
+# (AeroSpace, JankyBorders, Karabiner, Raycast essayés puis retirés le 2026-10-05, voir CLAUDE.md)
 #   Installer / mettre à jour :            brew bundle --file ~/nixos-config/mac/Brewfile
 #   Voir ce qui manque :                   brew bundle check --file ~/nixos-config/mac/Brewfile
 #   Voir ce qui est en trop (sans rien     brew bundle cleanup --file ~/nixos-config/mac/Brewfile
@@ -10,23 +11,11 @@
 # Pas de nix-darwin ici, choix volontaire : sur macOS les apps graphiques passent de
 # toute façon par les casks, et leurs auto-updaters marchent.
 
-# Homebrew ≥ 6 refuse les taps tiers non approuvés (`brew trust`). `trusted: true` les
-# approuve ; l'URL explicite est nécessaire, sinon l'option est ignorée silencieusement
-# (bug Homebrew/brew#22668).
-tap "nikitabobko/tap", "https://github.com/nikitabobko/homebrew-tap", trusted: true         # AeroSpace
-tap "FelixKratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true # JankyBorders
-
-# ── bureau façon Hyprland ──────────────────────────────────────
-cask "aerospace"                   # tiling WM, config : dots/aerospace
-brew "FelixKratz/formulae/borders" # bordure de la fenêtre active
-cask "karabiner-elements"          # Caps Lock → touche SUPER, config : dots/karabiner
-cask "raycast"                     # launcher (SUPER+Espace) + historique presse-papier (SUPER+C)
-
 # ── terminal ───────────────────────────────────────────────────
 cask "ghostty"
 cask "font-maple-mono-nf"          # police de la config Ghostty
 brew "tmux"
-brew "sesh"                        # SUPER+T / prefix+s
+brew "sesh"                        # tmux prefix+s
 brew "fzf"                         # requis par sesh-picker.sh
 brew "fd"                          # requis par sesh-picker.sh (ctrl-f)
 brew "stow"                        # déploie dots/
@@ -40,18 +29,22 @@ brew "zsh-history-substring-search"
 brew "zoxide"
 brew "direnv"
 
+# ── dev ────────────────────────────────────────────────────────
+brew "git"
+brew "gh"
+
 # ── apps ───────────────────────────────────────────────────────
 cask "claude"
 cask "zen"
+cask "zed"
 cask "google-chrome"
 
 # ── À la demande (décommenter quand le besoin arrive) ──────────
-# Les binds AeroSpace correspondants (SUPER+Shift+E/D/O/W) ne font rien tant que l'app manque.
 #
 # terminal / TUI
 # brew "neovim"
-# brew "yazi"                      # SUPER+Shift+E
-# brew "lazydocker"                # SUPER+Shift+D (+ orbstack ci-dessous)
+# brew "yazi"
+# brew "lazydocker"                # + orbstack ci-dessous
 # brew "lazygit"
 # brew "btop"
 # brew "fastfetch"
@@ -60,7 +53,6 @@ cask "google-chrome"
 # brew "trash"
 #
 # dev / ops
-# brew "gh"
 # cask "orbstack"                  # Docker sur Apple Silicon
 # cask "claude-code"               # CLI (Claude Desktop inclut déjà l'onglet Code)
 # brew "kubectl"
@@ -94,8 +86,7 @@ cask "google-chrome"
 # cask "android-platform-tools"    # adb
 #
 # apps
-# cask "obsidian"                  # SUPER+Shift+O
-# cask "zed"                       # SUPER+Shift+W (avec Zen + Discord)
+# cask "obsidian"
 # cask "discord"
 # cask "chatgpt"
 # cask "shottr"                    # captures annotées

@@ -41,18 +41,24 @@ Ajouté le 2026-08-02 pour que Claude Code puisse piloter un émulateur Android 
 
 Ajouté le 2026-10-05. Le repo sert aussi au Mac de Yanis, mais **sans nix-darwin** (choix volontaire, à ne pas reproposer) : Homebrew + stow, c'est tout.
 
-- **Paquets** : [`mac/Brewfile`](./mac/Brewfile) (`brew bundle --file ~/nixos-config/mac/Brewfile`). **Volontairement minimal** : le bureau façon Hyprland, le terminal, Claude, Zen, Chrome, k9s. Yanis ne veut installer le reste qu'au fil des besoins. Le reste de `packages.nix` y est listé en commentaire, à décommenter quand il le faut ; ne pas tout réactiver d'office. Noms vérifiés dans l'index Homebrew au moment de l'écriture. AeroSpace vient du tap `nikitabobko/tap`, JankyBorders de `FelixKratz/formulae`.
-- **Tiling** : AeroSpace, dans le package stow [`dots/aerospace`](./dots/aerospace/.config/aerospace/aerospace.toml). C'est un portage un pour un des binds `tiling.lua`/`bindings.lua` (tableau des différences dans `RACCOURCIS.md`). La config utilise la syntaxe `if = 'test …'` de `on-window-detected` (≥ v0.21) ; l'ancienne `if.app-id` est dépréciée.
-- **Modificateur** : `cmd-alt-ctrl`, produit par Caps Lock via Karabiner (règle dans [`dots/karabiner/…/assets/complex_modifications/hyper.json`](./dots/karabiner/.config/karabiner/assets/complex_modifications/hyper.json), à activer une fois dans l'UI Karabiner). **Pas Option** : en AZERTY Mac, Option sert à taper `{ } [ ] | ~ \`. **Pas Shift dans la touche Caps** non plus, pour garder les variantes SUPER+Shift (du coup, pas de variante SUPER+Shift+Ctrl).
-- **Les touches AeroSpace sont des positions physiques QWERTY** : `z` dans la config = touche W en AZERTY, `minus`/`equal` = touches `)` et `=`.
-- **Ghostty depuis AeroSpace** : via [`scripts/mac-ghostty.sh`](./scripts/mac-ghostty.sh) (`open -na Ghostty.app --args --title=X -e …`). Le script force le PATH Homebrew, parce qu'une app lancée par `open` ne l'hérite pas. Les règles flottantes matchent sur ces titres `X-term`, même convention que les `windowrule` Hyprland.
-- **Stow sur le Mac** : faire `mkdir -p ~/.config` **avant** le premier `stow`, sinon stow replie tout `~/.config` en un seul symlink vers le premier package et les apps écrivent dans le repo. Même chose pour Karabiner : lancer l'app une fois (elle crée `~/.config/karabiner`) avant `stow karabiner`. `karabiner.json` et `automatic_backups/` sont gitignorés par sécurité.
+- **Paquets** : [`mac/Brewfile`](./mac/Brewfile) (`brew bundle --file ~/nixos-config/mac/Brewfile`). **Volontairement minimal** : terminal (Ghostty, tmux, sesh, shell), git/gh, Claude, Zen, Zed, Chrome, k9s. Yanis ne veut installer le reste qu'au fil des besoins. Le reste de `packages.nix` y est listé en commentaire, à décommenter quand il le faut ; ne pas tout réactiver d'office. Noms vérifiés dans l'index Homebrew au moment de l'écriture. Une app déjà installée à la main (cas de Zen, Zed) fait échouer le cask : la reprendre avec `brew install --cask --adopt <cask>`.
+- **Gestion des fenêtres : 100 % native macOS**, décision du 2026-10-05. Le même jour ont été essayés puis **retirés** :
+  - **AeroSpace**, plus JankyBorders lancé par lui. Yanis aimait le placement en tuiles, mais pas ses workspaces virtuels : ils doublent les Spaces/Mission Control de macOS (« je me retrouve avec les deux en même temps »), et sa gestion des écrans ne lui plaisait pas.
+  - **Karabiner**, pour Caps Lock → `Cmd+Ctrl+Opt` comme touche SUPER. **Pas Option** comme modificateur : en AZERTY Mac, Option sert à taper `{ } [ ] | ~ \`.
+  - **Raycast** : Spotlight de Tahoe fait déjà launcher et historique du presse-papier.
+
+  Pistes étudiées si Yanis veut un jour revenir au tiling, à ne **pas** reproposer de lui-même :
+  - **yabai + skhd** : tuiles sur les vrais Spaces, H/J/K/L. Sans désactiver SIP, l'envoi d'une fenêtre vers un autre Space n'est pas fiable.
+  - **Amethyst** : Spaces natifs, `throw-space` sans SIP, mais focus en rotation seulement.
+  - **macOS natif n'a aucun raccourci pour envoyer une fenêtre vers un Space.**
+
+  Les configs AeroSpace/Karabiner sont dans l'historique git (commits du 2026-10-05). Raccourcis natifs : section macOS de `RACCOURCIS.md`.
+- **Stow sur le Mac** : faire `mkdir -p ~/.config` **avant** le premier `stow`, sinon stow replie tout `~/.config` en un seul symlink vers le premier package et les apps écrivent dans le repo.
 - **`.zshrc` partagé** (2026-10-05) : un seul fichier pour les deux machines. Les plugins et le prompt sont cherchés via `_src` (chemins NixOS puis `/opt/homebrew/...`). Ce qui est propre à un OS est séparé par `$OSTYPE` : alias NixOS, `zed=zeditor` et `trackpad` côté Linux ; `rebuild`, `upgrade` et `search` passent par brew côté Mac. `SSH_AUTH_SOCK` (gnome-keyring) n'est défini **que sous Linux** : sur macOS il casserait l'agent SSH du trousseau fourni par launchd. `dircolors` n'existe pas sur macOS → `CLICOLOR=1`.
 - **Ghostty partagé** (2026-10-05) : `theme = Ayu` + `config-file = ?~/.cache/ghostty/theme-matugen`. Sous Linux, le fichier matugen est chargé après le reste et écrase toutes les couleurs ; sur le Mac, il est absent et Ayu reste. Les surcharges macOS vivent dans le package stow **`ghostty-macos`** (à stow sur le Mac **uniquement**). Il cible `~/Library/Application Support/com.mitchellh.ghostty/config`, un fichier que Ghostty lit seulement sur macOS, après la config XDG. Il contient :
-  - `window-decoration = auto` + `macos-titlebar-style = hidden` : `window-decoration = false`, voulu sous Hyprland, rend les coins **carrés** sur macOS, et la bordure arrondie de JankyBorders ne colle plus ;
-  - `macos-option-as-alt = left` ;
-  - `quit-after-last-window-closed = true` (sinon chaque `open -na` laisse une instance vide dans le Dock).
-- **Pas encore portés** : matugen et la rotation de wallpaper, SketchyBar. Package stow propre au Mac : `ghostty-macos`. Packages stow propres à Linux à ne pas stow sur Mac : `hypr`, `quickshell`, `gtk`, `matugen`, `satty`, `bluetui`, `impala`, `wiremix`.
+  - `window-decoration = auto` + `macos-titlebar-style = hidden` : `window-decoration = false`, voulu sous Hyprland, rend les coins **carrés** sur macOS. Avec "hidden", on garde les coins arrondis sans barre de titre (choix de Yanis). Il suffit de retirer la ligne pour retrouver la barre native ;
+  - `macos-option-as-alt = left` (binds tmux `M-h/j/k/l`), Option droite gardant la saisie AZERTY.
+- **Pas portés** (pas de ricing sur le Mac pour l'instant) : matugen, rotation de wallpaper, barre. Package stow propre au Mac : `ghostty-macos`. Packages stow propres à Linux à ne pas stow sur Mac : `hypr`, `quickshell`, `gtk`, `matugen`, `satty`, `bluetui`, `impala`, `wiremix`.
 
 ## Déviations connues vs upstream (Leabua)
 

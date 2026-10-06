@@ -141,20 +141,23 @@ Conséquence directe : pour déclencher le préfixe tmux (`Ctrl+b`), il faut app
 
 (Échap et Verr. Maj, eux, sont redevenus normaux — l'inversion `caps:swapescape` du setup original a été retirée.)
 
-## macOS (AeroSpace) — MacBook
+## macOS — MacBook (gestion des fenêtres native)
 
-Mêmes raccourcis que Hyprland, avec **Verr. Maj** à la place de `SUPER` (Karabiner la transforme en `Cmd+Ctrl+Opt`, voir `dots/karabiner`). Config : `dots/aerospace/.config/aerospace/aerospace.toml`. Les binds sont posés sur les positions **physiques**, donc la mémoire musculaire reste la même. Différences :
+Pas de tiling ni de remappage clavier sur le Mac (AeroSpace, Karabiner, Raycast retirés le 2026-10-05) : ce sont les raccourcis d'Apple. Équivalents des habitudes Hyprland :
 
 | Hyprland | macOS |
 |---|---|
-| `SUPER + W` (fermer) | `Caps + W` aussi, mais déclaré `z` dans la config (position QWERTY) |
-| `SUPER + Espace` (launcher) | Raycast, raccourci `Caps + Espace` à régler dans Raycast |
-| `SUPER + C` (presse-papier) | Historique du presse-papier Raycast |
-| `SUPER + Shift + Ctrl + …` (déplacer sans suivre) | Pas d'équivalent (Ctrl fait déjà partie de Caps) |
-| `SUPER + Ctrl + L` (lock) | `Ctrl + Cmd + Q` (natif) |
-| `SUPER + glisser` | `Ctrl + Cmd` + glisser (après `defaults write -g NSWindowShouldDragOnGesture -bool true`) |
-| `Print` / `SUPER + Print` | `Cmd + Shift + 4` / `Cmd + Shift + 3` (natif), ou Shottr |
-| `SUPER + N`, `R`, `P`, `Alt+Espace`, `Shift+Espace` | Pas encore portés (pas de quickshell/matugen sur Mac) |
-| Workspace 1 sur l'écran externe, 2-10 sur le laptop (`monitors.lua`) | Pareil (`workspace-to-monitor-force-assignment`) : `Caps + Shift + 1` envoie la fenêtre sur l'écran externe, `Caps + Shift + 2..0` sur le laptop |
-| — | `Caps + Shift + Tab` : envoie la fenêtre sur l'autre écran et la suit |
-| — | `Caps + Échap` : mode service (`r` remet le layout à plat, `h/j/k/l` regroupe avec la fenêtre voisine, `Échap` recharge la config) |
+| `SUPER + Espace` (launcher) | `Cmd + Espace` (Spotlight) |
+| `SUPER + C` (presse-papier) | `Cmd + Espace` puis `Cmd + 4` (historique du presse-papier de Spotlight, macOS Tahoe) |
+| `SUPER + 1..0` / `SUPER + ←/→` (workspaces) | `Ctrl + ←/→` entre les bureaux ; `Ctrl + 1..9` après activation dans Réglages → Clavier → Raccourcis → Mission Control |
+| Vue d'ensemble | `Ctrl + ↑` (Mission Control), `Ctrl + ↓` (fenêtres de l'app) |
+| `SUPER + Shift + 1..0` (envoyer la fenêtre) | Pas de raccourci natif : maintenir la barre de titre + `Ctrl + ←/→`, ou glisser la fenêtre dans Mission Control |
+| `SUPER + F` (plein écran) | `Fn + Ctrl + F` (remplir l'écran) ; `Ctrl + Cmd + F` (plein écran natif, dans un bureau à part) |
+| Tiling | `Fn + Ctrl + ←/→/↑/↓` (moitiés d'écran), `Fn + Ctrl + C` (centrer), `Fn + Ctrl + R` (taille d'avant) |
+| `SUPER + Tab` | `Cmd + Tab` (apps), `Cmd + <` (fenêtres de la même app, touche à gauche du W en AZERTY ISO) |
+| `SUPER + W` | `Cmd + W` (fenêtre), `Cmd + Q` (app) |
+| `SUPER + glisser` | `Ctrl + Cmd` + glisser n'importe où (après `defaults write -g NSWindowShouldDragOnGesture -bool true` + reconnexion) |
+| `SUPER + Ctrl + L` (lock) | `Ctrl + Cmd + Q` |
+| `Print` / `SUPER + Print` | `Cmd + Shift + 4` / `Cmd + Shift + 3` (ajouter `Ctrl` pour copier dans le presse-papier au lieu d'un fichier) |
+
+Dans Ghostty : **Option gauche** = Alt (binds tmux `M-h/j/k/l`), **Option droite** tape `{ } [ ] | ~ \`.

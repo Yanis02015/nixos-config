@@ -2,16 +2,14 @@
 # (~/Library/Application Support/com.mitchellh.ghostty/config) après la config XDG,
 # et seulement sur macOS : c'est l'endroit pour ce qui ne doit pas toucher Linux.
 
-# `window-decoration = false` (voulu sous Hyprland) rend les coins carrés sur macOS,
-# et la bordure arrondie de JankyBorders ne colle plus aux coins. "hidden" cache la
-# barre de titre mais garde le cadre et les coins arrondis natifs.
+# `window-decoration = false` (voulu sous Hyprland) rend les coins carrés sur macOS.
+# "hidden" cache la barre de titre mais garde le cadre et les coins arrondis natifs
+# (déplacer la fenêtre : Ctrl+Cmd+glisser, avec NSWindowShouldDragOnGesture).
+# Pour retrouver la barre native (boutons, glisser, menu de tiling du bouton vert) :
+# supprimer la ligne macos-titlebar-style.
 window-decoration = auto
 macos-titlebar-style = hidden
 
 # Option gauche = Alt (binds tmux M-h/j/k/l, zsh, nvim) ; Option droite garde la
 # saisie AZERTY Mac de { } [ ] | ~ \
 macos-option-as-alt = left
-
-# Défaut false sur macOS : chaque `open -na` (scripts/mac-ghostty.sh) laisserait une
-# instance vide dans le Dock après fermeture de sa fenêtre.
-quit-after-last-window-closed = true
