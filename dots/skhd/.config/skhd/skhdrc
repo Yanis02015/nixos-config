@@ -18,7 +18,9 @@ lalt - w | cmd - w
 lalt - space | cmd - space
 
 # Option gauche + B : Zen (le lance, ou le passe au premier plan ; Cmd+N pour une nouvelle fenêtre).
-lalt - b : open -a Zen
+# Zen (Firefox) propose le mode de dépannage s'il démarre avec Option enfoncée, ce qui est
+# toujours le cas ici : MOZ_DISABLE_SAFE_MODE_KEY coupe ce test (toolkit/xre/SafeMode.h).
+lalt - b : open --env MOZ_DISABLE_SAFE_MODE_KEY=1 -a Zen
 
 # Option gauche + C : historique du presse-papier Maccy. Renvoie son raccourci par défaut
 # (Maccy → Réglages → General → Open), à ajuster ici si on le change dans Maccy.
