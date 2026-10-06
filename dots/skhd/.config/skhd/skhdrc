@@ -26,3 +26,8 @@ lalt - c | shift + cmd - c
 
 # Option gauche + F : plein écran natif, bascule comme SUPER+F (= Ctrl+Cmd+F, bureau à part).
 lalt - f | ctrl + cmd - f
+
+# Option gauche + ←/→ : bureau (Space) précédent/suivant (= Ctrl+←/→), comme SUPER+←/→.
+# Prend le saut de mot des champs texte à Option GAUCHE : utiliser Option DROITE + ←/→ pour ça.
+lalt - left | ctrl - left
+lalt - right | ctrl - right

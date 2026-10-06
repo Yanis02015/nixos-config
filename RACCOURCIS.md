@@ -153,7 +153,7 @@ Pas de tiling ni de remappage clavier sur le Mac (AeroSpace, Karabiner, Raycast 
 | `SUPER + Shift + F` (fichiers) | `Option gauche + Shift + F` : fenêtre Finder sur le dossier perso (skhd.zig) |
 | `SUPER + Espace` (launcher) | `Option gauche + Espace` ou `Cmd + Espace` (Spotlight) |
 | `SUPER + C` (presse-papier) | `Option gauche + C` : Maccy (skhd.zig renvoie `Shift + Cmd + C`) ; sinon `Cmd + Espace` puis `Cmd + 4` (historique de Spotlight) |
-| `SUPER + 1..0` / `SUPER + ←/→` (workspaces) | `Ctrl + ←/→` entre les bureaux ; `Ctrl + 1..9` après activation dans Réglages → Clavier → Raccourcis → Mission Control |
+| `SUPER + 1..0` / `SUPER + ←/→` (workspaces) | `Option gauche + ←/→` ou `Ctrl + ←/→` entre les bureaux (skhd.zig ; le saut de mot passe à **Option droite** + ←/→) ; `Ctrl + 1..9` après activation dans Réglages → Clavier → Raccourcis → Mission Control |
 | Vue d'ensemble | `Ctrl + ↑` (Mission Control), `Ctrl + ↓` (fenêtres de l'app) |
 | `SUPER + Shift + 1..0` (envoyer la fenêtre) | Pas de raccourci natif : maintenir la barre de titre + `Ctrl + ←/→`, ou glisser la fenêtre dans Mission Control |
 | `SUPER + F` (plein écran) | `Option gauche + F` = `Ctrl + Cmd + F` (plein écran natif, dans un bureau à part, skhd.zig) ; `Fn + Ctrl + F` (remplir l'écran) |
