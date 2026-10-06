@@ -53,10 +53,5 @@ confirm-close-surface = false
 
 window-decoration = false
 
-# ── macOS (sans effet sous Linux) ────────────────────────────
-# Option gauche = Alt (binds tmux M-h/j/k/l, zsh, nvim) ; Option droite garde la
-# saisie AZERTY Mac de { } [ ] | ~ \
-macos-option-as-alt = left
-# Défaut false sur macOS : chaque `open -na` (scripts/mac-ghostty.sh) laisserait une
-# instance vide dans le Dock après fermeture de sa fenêtre. Déjà le défaut sous Linux.
-quit-after-last-window-closed = true
+# macOS : surcharges dans dots/ghostty-macos (Ghostty y lit
+# ~/Library/Application Support/com.mitchellh.ghostty/config après ce fichier)
