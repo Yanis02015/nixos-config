@@ -7,8 +7,10 @@
 
 # ── history ──────────────────────────────────────────────────
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=50000
+SAVEHIST=50000
+setopt INC_APPEND_HISTORY   # écrit chaque commande tout de suite, pas seulement à la fermeture
+setopt HIST_IGNORE_DUPS     # pas de doublons consécutifs
 
 # ── input & completion ───────────────────────────────────────
 bindkey -v
