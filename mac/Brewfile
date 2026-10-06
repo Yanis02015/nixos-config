@@ -11,6 +11,9 @@
 # Pas de nix-darwin ici, choix volontaire : sur macOS les apps graphiques passent de
 # toute façon par les casks, et leurs auto-updaters marchent.
 
+# Casks perso pour les apps absentes de Homebrew : github.com/Yanis02015/homebrew-tap
+tap "yanis02015/tap"
+
 # ── terminal ───────────────────────────────────────────────────
 cask "ghostty"
 cask "font-maple-mono-nf"          # police de la config Ghostty
@@ -38,6 +41,7 @@ cask "claude"
 cask "zen"
 cask "zed"
 cask "google-chrome"
+cask "yanis02015/tap/clipcascade"  # presse-papier partagé avec NixOS, serveur : http://192.168.2.15:8080 (homelab)
 
 # ── À la demande (décommenter quand le besoin arrive) ──────────
 #
