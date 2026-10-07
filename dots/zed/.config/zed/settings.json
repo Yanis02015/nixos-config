@@ -12,6 +12,11 @@
       "type": "registry"
     }
   },
+  // installées au démarrage si absentes : thème et icônes choisis plus bas
+  "auto_install_extensions": {
+    "one-dark-pro-max": true, // One Dark Pro Glass
+    "charmed-icons": true // Base Charmed Icons
+  },
   "diff_view_style": "split",
   "format_on_save": "on",
   "diagnostics": {
