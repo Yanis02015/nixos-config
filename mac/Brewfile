@@ -43,6 +43,13 @@ brew "direnv"
 # ── dev ────────────────────────────────────────────────────────
 brew "git"
 brew "gh"
+brew "node"
+brew "pnpm"                        # pas corepack : il n'est plus livré avec Node depuis la v25
+brew "uv"                          # Python (`uv python install`), venvs, uvx ; à la place de brew "python",
+                                   # dont les montées de version cassent les venvs
+cask "orbstack"                    # Docker. Gratuit en usage perso SEULEMENT, pro = licence Pro (8 $/mois/utilisateur).
+                                   # En test le 2026-10-07 avant de décider pour le travail ; alternative gratuite :
+                                   # brew "colima" + brew "docker" + brew "docker-compose"
 
 # ── apps ───────────────────────────────────────────────────────
 cask "claude"
@@ -57,7 +64,7 @@ cask "maccy"                       # historique du presse-papier (équivalent du
 # terminal / TUI
 # brew "neovim"
 # brew "yazi"
-# brew "lazydocker"                # + orbstack ci-dessous
+# brew "lazydocker"
 # brew "lazygit"
 # brew "btop"
 # brew "fastfetch"
@@ -66,7 +73,6 @@ cask "maccy"                       # historique du presse-papier (équivalent du
 # brew "trash"
 #
 # dev / ops
-# cask "orbstack"                  # Docker sur Apple Silicon
 # cask "claude-code"               # CLI (Claude Desktop inclut déjà l'onglet Code)
 # brew "kubectl"
 # brew "awscli"
@@ -74,10 +80,7 @@ cask "maccy"                       # historique du presse-papier (équivalent du
 # brew "wireguard-tools"
 #
 # langages, LSP, formatters (même liste que packages.nix, nvim n'utilise pas mason)
-# brew "node"
-# brew "pnpm"
 # brew "bun"
-# brew "python"
 # brew "go"
 # brew "gopls"
 # brew "openjdk"
