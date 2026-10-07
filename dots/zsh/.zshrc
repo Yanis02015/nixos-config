@@ -20,7 +20,12 @@ compinit
 
 # ── path ─────────────────────────────────────────────────────
 export PATH="$HOME/nixos-config/scripts:$PATH"
-export PATH="$PATH:$HOME/.local/bin"
+if [[ $OSTYPE == darwin* ]]; then
+  # devant /usr/bin : python/python3 de `uv python install --default`, pas celui d'Apple (3.9)
+  export PATH="$HOME/.local/bin:$PATH"
+else
+  export PATH="$PATH:$HOME/.local/bin"
+fi
 
 # ── ssh agent (gcr/gnome-keyring, Linux uniquement) ──────────
 # sur macOS, surtout ne pas toucher : SSH_AUTH_SOCK vient de launchd (agent du trousseau)
