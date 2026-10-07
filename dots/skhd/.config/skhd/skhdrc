@@ -22,12 +22,12 @@ lalt - space | cmd - space
 # toujours le cas ici : MOZ_DISABLE_SAFE_MODE_KEY coupe ce test (toolkit/xre/SafeMode.h).
 lalt - b : open --env MOZ_DISABLE_SAFE_MODE_KEY=1 -a Zen
 
-# Option gauche + C : historique du presse-papier Maccy. Relais vers F19, une touche absente du
-# clavier du MacBook (donc libre de tout conflit), réglée comme raccourci "Open" de Maccy :
-#   defaults write org.p0deje.Maccy KeyboardShortcuts_popup -string '{"carbonKeyCode":80,"carbonModifiers":0}'
-# puis relancer Maccy (80 = kVK_F19). Ne pas mettre ⌥C dans Maccy : il ne distingue pas Option
-# gauche/droite. Ne pas utiliser ⇧⌘C non plus : Yanis s'en sert ailleurs.
-lalt - c | f19
+# Option gauche + C : historique du presse-papier Maccy. Relancer Maccy déjà ouvert affiche son
+# panneau (applicationShouldHandleReopen → panel.toggle), donc aucun raccourci à régler dans Maccy :
+# celui de ses réglages peut rester vide. Ne pas y mettre ⌥C (Maccy ne distingue pas Option
+# gauche/droite) ni ⇧⌘C (utilisé dans Zen). Le relais vers F19 a été abandonné : impossible à régler,
+# Maccy est sandboxé (defaults write sans effet) et son enregistreur captait ⌥.
+lalt - c : open -a Maccy
 
 # Option gauche + F : plein écran natif, bascule comme SUPER+F (= Ctrl+Cmd+F, bureau à part).
 lalt - f | ctrl + cmd - f

@@ -152,7 +152,7 @@ Pas de tiling ni de remappage clavier sur le Mac (AeroSpace, Karabiner, Raycast 
 | `SUPER + T` (sesh) | `Option gauche + T` : Terminal avec le sélecteur de session tmux (skhd.zig) |
 | `SUPER + Shift + F` (fichiers) | `Option gauche + Shift + F` : fenêtre Finder sur le dossier perso (skhd.zig) |
 | `SUPER + Espace` (launcher) | `Option gauche + Espace` ou `Cmd + Espace` (Spotlight) |
-| `SUPER + C` (presse-papier) | `Option gauche + C` : Maccy (skhd.zig renvoie `F19`, réglé comme raccourci de Maccy) ; sinon `Cmd + Espace` puis `Cmd + 4` (historique de Spotlight) |
+| `SUPER + C` (presse-papier) | `Option gauche + C` : Maccy (skhd.zig lance `open -a Maccy`, qui affiche le panneau ; aucun raccourci réglé dans Maccy) ; sinon `Cmd + Espace` puis `Cmd + 4` (historique de Spotlight) |
 | `SUPER + 1..0` / `SUPER + ←/→` (workspaces) | `Ctrl + ←/→` ou swipe 3 doigts entre les bureaux, sans animation grâce à noswoosh ; `Ctrl + 1..9` après activation dans Réglages → Clavier → Raccourcis → Mission Control |
 | Vue d'ensemble | `Ctrl + ↑` (Mission Control), `Ctrl + ↓` (fenêtres de l'app) |
 | `SUPER + Shift + 1..0` (envoyer la fenêtre) | Pas de raccourci natif : maintenir la barre de titre + `Ctrl + ←/→`, ou glisser la fenêtre dans Mission Control |
