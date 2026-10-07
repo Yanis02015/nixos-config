@@ -164,4 +164,4 @@ Pas de tiling ni de remappage clavier sur le Mac (AeroSpace, Karabiner, Raycast 
 | `SUPER + Ctrl + L` (lock) | `Ctrl + Cmd + Q` |
 | `Print` / `SUPER + Print` | `Cmd + Shift + 4` / `Cmd + Shift + 3` (ajouter `Ctrl` pour copier dans le presse-papier au lieu d'un fichier) |
 
-Dans Ghostty : **Option gauche** = Alt (binds tmux `M-h/j/k/l`), **Option droite** tape `{ } [ ] | ~ \`.
+Dans le Terminal d'Apple, les binds tmux avec Alt (`M-h/j/k/l`, `M-0..9`…) ne marchent pas : passer par les binds avec préfixe. **Option droite** tape `{ } [ ] | ~ \`.

@@ -19,8 +19,8 @@ tap "jackielii/tap", "https://github.com/jackielii/homebrew-tap", trusted: true 
 tap "mmathys/tap", "https://github.com/mmathys/homebrew-tap", trusted: true       # noswoosh
 
 # ── terminal ───────────────────────────────────────────────────
-cask "ghostty"
-cask "font-maple-mono-nf"          # police de la config Ghostty
+# Terminal d'Apple (Ghostty retiré du Mac le 2026-10-07, il reste le terminal sous Linux)
+cask "font-maple-mono-nf"          # Nerd Font : icônes du prompt Starship (ex. branche git)
 brew "tmux"
 brew "sesh"                        # tmux prefix+s
 brew "fzf"                         # requis par sesh-picker.sh
