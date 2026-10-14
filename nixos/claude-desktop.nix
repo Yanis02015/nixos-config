@@ -56,14 +56,15 @@
   nss,
   openssl,
   pango,
+  pipewire,
   systemd,
   xz,
 }:
 let
-  version = "2.9939.4";
+  version = "2.37337.1";
   src = fetchurl {
     url = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop/claude-desktop_${version}_amd64.deb";
-    hash = "sha256-PP3bI78pEeBeJ7TtOFa455XflGQ7LDW1nesxfPmVvKA=";
+    hash = "sha256-QXRbCRTw/1FjGh/xu0A7g2v1yZWEXMpnQt05vKOi2hQ=";
   };
 in
 stdenv.mkDerivation {
@@ -110,6 +111,7 @@ stdenv.mkDerivation {
     nss
     openssl
     pango
+    pipewire # libpipewire-0.3.so.0 — addon @ant/claude-native (Depends libpipewire-0.3-0, depuis 2.31226)
     stdenv.cc.cc.lib # libstdc++/libgcc_s (Electron + addons node embarqués)
     systemd # libudev.so.1
     xz # liblzma
