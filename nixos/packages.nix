@@ -110,6 +110,7 @@ in
       neovim
       obs-studio
       obsidian
+      openssl # CLI openssl (rand, s_client, x509…), absent du PATH par défaut sur NixOS
       papirus-icon-theme
       pavucontrol
       playerctl
