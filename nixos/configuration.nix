@@ -28,6 +28,26 @@
         openFirewall = true;
     };
 
+    # server.home = le homelab, enregistré par la box Virgin via DHCP (suit ses changements
+    # d'IP). server.local (mDNS) lâche souvent : homelab et laptop sont sur deux radios WiFi
+    # différentes de la box, le multicast passe mal de l'une à l'autre. Sans resolved, le DNS
+    # du VPN WireGuard `yanis` (10.8.0.1, interrogé en premier) répond NXDOMAIN pour .home et
+    # glibc ne demande jamais à la box. Le delegate épingle .home sur la box : le 2e DNS
+    # qu'elle distribue (207.164.234.129, Bell) ne connaît pas .home non plus.
+    # mDNS/LLMNR coupés dans resolved : les .local restent à avahi.
+    services.resolved = {
+        enable = true;
+        settings.Resolve = {
+            MulticastDNS = false;
+            LLMNR = false;
+        };
+        dnsDelegates.home.Delegate = {
+            DNS = "192.168.2.1";
+            Domains = "home";
+        };
+    };
+    networking.networkmanager.dns = "systemd-resolved";
+
     time.timeZone = "America/Toronto";
 
     i18n.defaultLocale = "en_US.UTF-8";
