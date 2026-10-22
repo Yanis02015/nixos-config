@@ -61,10 +61,10 @@
   xz,
 }:
 let
-  version = "3.1623.1";
+  version = "3.1623.4";
   src = fetchurl {
     url = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop/claude-desktop_${version}_amd64.deb";
-    hash = "sha256-cxZ30vObKnND7jgexdM5bdKOwdgyz8sfnkoCLp6A6ts=";
+    hash = "sha256-Zxyf3+CwK1DUuQfDvfE23P7CkFGrjP/Pop6+MCanLD0=";
   };
 in
 stdenv.mkDerivation {
