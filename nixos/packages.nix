@@ -124,6 +124,7 @@ in
       slurp
       starship # prompt zsh (dots/starship), remplace powerlevel10k
       stow
+      telegram-desktop
       tmux
       trash-cli
       tree-sitter

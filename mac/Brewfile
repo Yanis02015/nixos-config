@@ -104,6 +104,7 @@ cask "maccy"                       # historique du presse-papier (équivalent du
 # apps
 # cask "obsidian"
 # cask "discord"
+# cask "telegram"
 # cask "chatgpt"
 # cask "shottr"                    # captures annotées
 # cask "brave-browser"
