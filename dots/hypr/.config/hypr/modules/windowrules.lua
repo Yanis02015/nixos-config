@@ -157,6 +157,18 @@ hl.window_rule({
 	float = true,
 })
 
+-- Telegram : flotte et centré à l'ouverture, comme le terminal principal
+-- (taille reprise de la fenêtre redimensionnée à la main). Match sur la
+-- classe seule : le titre change selon la conversation ouverte. Le
+-- visualiseur de médias (même classe) passe quand même en plein écran.
+hl.window_rule({
+	name = "telegram-float",
+	match = { class = "^org.telegram.desktop$" },
+	float = true,
+	center = true,
+	size = "600 700",
+})
+
 -- Apple Music PWA
 hl.window_rule({
 	name = "apple-music",
